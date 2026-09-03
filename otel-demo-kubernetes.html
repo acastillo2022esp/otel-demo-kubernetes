@@ -3,337 +3,403 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OTel Demo — Kubernetes Deployment Guide</title>
+  <title>OTel Demo — Guía de Despliegue Kubernetes</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #1f2328;
-      background: #ffffff;
+    :root {
+      --blue:    #3b82f6;
+      --blue-dk: #1d4ed8;
+      --orange:  #f97316;
+      --green:   #10b981;
+      --purple:  #7c3aed;
+      --text:    #1e293b;
+      --muted:   #64748b;
+      --border:  #e2e8f0;
+      --bg:      #f8fafc;
+      --white:   #ffffff;
     }
 
-    header {
-      background: #1f2328;
-      color: #ffffff;
-      padding: 36px 0 28px;
-      text-align: center;
-    }
-    header .badge {
-      display: inline-block;
-      background: #3b82d4;
+    body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 15px; line-height: 1.65; color: var(--text); background: var(--white); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0c1a35 100%);
       color: #fff;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 4px;
-      margin-bottom: 12px;
+      padding: 72px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    header h1 { font-size: 28px; font-weight: 700; letter-spacing: -.3px; }
-    header p  { font-size: 14px; color: #c9d1d9; margin-top: 6px; }
-    header a  { color: #79c0ff; }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(59,130,246,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(59,130,246,.25);
+      border: 1px solid rgba(59,130,246,.5);
+      color: #93c5fd;
+      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 38px; font-weight: 800; letter-spacing: -.5px; line-height: 1.2; margin-bottom: 16px; }
+    .hero h1 span { color: #60a5fa; }
+    .hero p { font-size: 16px; color: #94a3b8; max-width: 560px; margin: 0 auto 28px; }
+    .hero-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .hero-links a {
+      display: inline-block;
+      padding: 9px 20px; border-radius: 6px; font-size: 13px; font-weight: 600; text-decoration: none;
+    }
+    .hero-links a.primary { background: var(--blue); color: #fff; }
+    .hero-links a.secondary { background: rgba(255,255,255,.1); color: #cbd5e1; border: 1px solid rgba(255,255,255,.2); }
 
-    .container {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 36px 24px 60px;
+    /* ── STATS ROW ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
     }
+    .stat {
+      padding: 22px 16px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat .val { font-size: 26px; font-weight: 800; color: var(--blue); line-height: 1; }
+    .stat .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-    /* Intro box */
-    .intro {
-      background: #f7f8fa;
-      border: 1px solid #e5e7eb;
-      border-left: 4px solid #3b82d4;
-      border-radius: 6px;
-      padding: 18px 20px;
-      margin-bottom: 32px;
-    }
-    .intro h2 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .intro p  { font-size: 14px; color: #444; }
+    /* ── CONTAINER ── */
+    .container { max-width: 1000px; margin: 0 auto; padding: 48px 24px 80px; }
 
-    /* ── TAB SYSTEM ── */
-    .tab-bar {
-      display: flex;
-      border-bottom: 2px solid #e5e7eb;
-      margin-bottom: 36px;
-      gap: 4px;
+    /* ── SECTION TITLE ── */
+    .section-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .section-sub   { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+    /* ── OPTION CARDS (above tabs) ── */
+    .option-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
     }
-    .tab-btn {
-      padding: 10px 22px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #57606a;
-      background: transparent;
-      border: none;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
+    .option-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 20px;
       cursor: pointer;
-      border-radius: 4px 4px 0 0;
-      transition: color .15s, border-color .15s, background .15s;
+      transition: border-color .2s, box-shadow .2s;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
     }
-    .tab-btn:hover { color: #3b82d4; background: #f0f6ff; }
-    .tab-btn.active { color: #3b82d4; border-bottom-color: #3b82d4; background: #f0f6ff; }
-    .tab-btn .tab-icon { margin-right: 6px; }
+    .option-card:hover { border-color: var(--blue); box-shadow: 0 4px 16px rgba(59,130,246,.12); }
+    .option-card.active { border-color: var(--blue); box-shadow: 0 4px 20px rgba(59,130,246,.18); }
+    .option-card .card-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 12px;
+    }
+    .option-card .card-icon.k8s    { background: #eff6ff; }
+    .option-card .card-icon.oci    { background: #fff7ed; }
+    .option-card .card-icon.laptop { background: #f0fdf4; }
+    .option-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .option-card p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .option-card .card-tag {
+      position: absolute; top: 14px; right: 14px;
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+    }
+    .tag-free   { background: #dcfce7; color: #166534; }
+    .tag-cloud  { background: #fff7ed; color: #9a3412; }
+    .tag-local  { background: #f3e8ff; color: #6b21a8; }
+    .option-card.active::after {
+      content: '✓';
+      position: absolute; top: 12px; right: 12px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .option-card.active .card-tag { display: none; }
 
+    /* ── TAB PANELS ── */
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* Progress nav */
-    .progress-nav {
-      display: flex;
-      gap: 0;
-      margin-bottom: 40px;
-      border-radius: 6px;
-      overflow: hidden;
-      border: 1px solid #e5e7eb;
-      flex-wrap: wrap;
+    /* ── STEP PROGRESS NAV ── */
+    .step-nav {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 36px;
     }
-    .progress-nav a {
-      flex: 1;
-      min-width: 60px;
-      text-align: center;
-      padding: 10px 4px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #57606a;
-      background: #f7f8fa;
-      text-decoration: none;
-      border-right: 1px solid #e5e7eb;
-      transition: background .15s;
+    .step-nav a {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      color: var(--muted); background: var(--bg);
+      border: 1px solid var(--border); text-decoration: none;
+      transition: all .15s;
     }
-    .progress-nav a:last-child { border-right: none; }
-    .progress-nav a:hover { background: #eef2ff; color: #3b82d4; }
-    .progress-nav a .num {
-      display: block;
-      font-size: 15px;
-      font-weight: 700;
-      color: #3b82d4;
-    }
-
-    /* Steps */
-    .step { margin-bottom: 48px; scroll-margin-top: 20px; }
-    .step-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-    .step-num {
+    .step-nav a:hover { background: #eff6ff; color: var(--blue); border-color: var(--blue); }
+    .step-nav a .sn {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: #3b82d4;
-      color: #fff;
-      font-weight: 700;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .step h2 { font-size: 19px; font-weight: 700; color: #1f2328; }
-    .step p, .step li { font-size: 14px; color: #444; margin-bottom: 8px; }
-    .step ul, .step ol { padding-left: 20px; margin-bottom: 12px; }
 
-    /* Code blocks */
+    /* ── STEPS ── */
+    .step { margin-bottom: 52px; scroll-margin-top: 20px; }
+    .step-header {
+      display: flex; align-items: flex-start; gap: 16px;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-circle {
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px; color: #fff;
+    }
+    .step-circle.blue   { background: var(--blue); }
+    .step-circle.orange { background: var(--orange); }
+    .step-circle.green  { background: var(--green); }
+    .step-circle.purple { background: var(--purple); }
+    .step h2 { font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+    .step .step-desc { font-size: 13px; color: var(--muted); }
+
+    .step p, .step li { font-size: 14px; color: #334155; margin-bottom: 8px; }
+    .step ul, .step ol { padding-left: 22px; margin-bottom: 14px; }
+
+    /* ── CODE ── */
     pre {
-      background: #0d1117;
-      color: #c9d1d9;
+      background: #0f172a;
+      color: #e2e8f0;
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 13px;
-      line-height: 1.55;
-      border-radius: 6px;
-      padding: 16px 18px;
+      font-size: 13px; line-height: 1.6;
+      border-radius: 10px;
+      padding: 18px 20px;
       overflow-x: auto;
-      margin: 12px 0 16px;
-      border: 1px solid #30363d;
+      margin: 12px 0 18px;
+      border: 1px solid #1e293b;
     }
-    pre .cmd { color: #79c0ff; }
-    pre .cmt { color: #8b949e; font-style: italic; }
+    pre .cmd { color: #60a5fa; }
+    pre .cmt { color: #64748b; font-style: italic; }
     pre .val { color: #a5d6ff; }
-    pre .kw  { color: #ff7b72; }
+    pre .str { color: #86efac; }
 
-    /* Callouts */
+    /* ── CALLOUTS ── */
     .callout {
-      border-radius: 6px;
-      padding: 14px 16px;
-      margin: 14px 0;
-      font-size: 13.5px;
+      border-radius: 8px; padding: 14px 18px; margin: 14px 0; font-size: 13.5px;
+      display: flex; gap: 12px;
     }
-    .callout.info    { background: #dbeafe; border-left: 4px solid #3b82d4; color: #1e3a5f; }
-    .callout.warn    { background: #fef3c7; border-left: 4px solid #f59e0b; color: #78350f; }
-    .callout.success { background: #d1fae5; border-left: 4px solid #10b981; color: #064e3b; }
-    .callout.oci     { background: #fff7ed; border-left: 4px solid #f97316; color: #7c2d12; }
+    .callout .ci { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout.info    { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+    .callout.warn    { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .callout.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+    .callout.oci     { background: #fff7ed; border: 1px solid #fed7aa; color: #7c2d12; }
+    .callout.laptop  { background: #faf5ff; border: 1px solid #e9d5ff; color: #4c1d95; }
     .callout strong  { font-weight: 700; }
 
-    /* Tables */
-    table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0 18px; }
-    thead { background: #f7f8fa; }
-    th, td { border: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; }
-    th { font-weight: 700; color: #1f2328; }
-    td { color: #444; }
-    tr:nth-child(even) td { background: #fafafa; }
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 14px 0 18px; border-radius: 8px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead { background: var(--bg); }
+    th, td { border-bottom: 1px solid var(--border); padding: 10px 14px; text-align: left; }
+    th { font-weight: 700; color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    td { color: #475569; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
 
-    /* Divider */
-    hr { border: none; border-top: 1px solid #e5e7eb; margin: 40px 0; }
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
 
-    /* Tags */
-    .tag {
-      display: inline-block;
-      font-size: 11px; font-weight: 600;
-      padding: 2px 7px; border-radius: 20px; margin-right: 4px;
+    /* ── SOFTWARE GRID (Laptop tab) ── */
+    .sw-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 16px 0 24px; }
+    .sw-card {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 18px; background: var(--white);
     }
-    .tag.req  { background: #fee2e2; color: #991b1b; }
-    .tag.opt  { background: #e0f2fe; color: #075985; }
-    .tag.free { background: #d1fae5; color: #065f46; }
+    .sw-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .sw-card p  { font-size: 12px; color: var(--muted); margin: 0; }
+    .sw-card .sw-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 1px 7px; border-radius: 20px; margin-bottom: 6px;
+      background: #dcfce7; color: #166534;
+    }
 
-    /* OCI accent color */
-    .oci-accent { color: #f97316; font-weight: 700; }
+    /* ── REFS ── */
+    .refs ul { list-style: none; padding: 0; }
+    .refs li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .refs li:last-child { border-bottom: none; }
+    .refs a { color: var(--blue); text-decoration: none; font-weight: 500; }
+    .refs a:hover { text-decoration: underline; }
 
-    /* Footer */
+    /* ── FOOTER ── */
     footer {
-      border-top: 1px solid #e5e7eb;
-      margin-top: 60px; padding: 18px 0;
-      text-align: center; font-size: 12px; color: #57606a;
+      border-top: 1px solid var(--border);
+      padding: 20px 0; text-align: center;
+      font-size: 12px; color: var(--muted);
     }
-    footer a { color: #3b82d4; }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 26px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .option-cards { grid-template-columns: 1fr; }
+      .sw-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="badge">Kubernetes Deployment Guide</div>
-  <h1>OpenTelemetry Demo — Paso a Paso</h1>
-  <p>Guía completa para desplegar el OTel Demo en Kubernetes &nbsp;·&nbsp;
-     <a href="https://opentelemetry.io/docs/demo/" target="_blank">Documentación oficial</a>
-  </p>
-</header>
+<!-- ══════════ HERO ══════════ -->
+<div class="hero">
+  <div class="hero-badge">OpenTelemetry · CNCF Demo</div>
+  <h1>Despliega el <span>OTel Demo</span><br>en Kubernetes</h1>
+  <p>Guía paso a paso y completamente documentada para desplegar la aplicación de microservicios de referencia de OpenTelemetry. Elige tu entorno y sigue cada paso.</p>
+  <div class="hero-links">
+    <a href="https://opentelemetry.io/docs/demo/" target="_blank" class="primary">Documentación oficial</a>
+    <a href="https://github.com/open-telemetry/opentelemetry-demo" target="_blank" class="secondary">GitHub del Demo</a>
+    <a href="https://opentelemetry.io/docs/demo/kubernetes-deployment/" target="_blank" class="secondary">K8s Deployment Guide</a>
+  </div>
+</div>
 
+<!-- ══════════ STATS ══════════ -->
+<div class="stats">
+  <div class="stat"><div class="val">20+</div><div class="lbl">Microservicios</div></div>
+  <div class="stat"><div class="val">11</div><div class="lbl">Lenguajes de programación</div></div>
+  <div class="stat"><div class="val">3</div><div class="lbl">Entornos de despliegue</div></div>
+  <div class="stat"><div class="val">100%</div><div class="lbl">Gratuito</div></div>
+</div>
+
+<!-- ══════════ MAIN CONTENT ══════════ -->
 <div class="container">
 
-  <!-- Intro -->
-  <div class="intro">
-    <h2>¿Qué es el OTel Demo?</h2>
-    <p>
-      El <strong>OpenTelemetry Demo</strong> es una aplicación de microservicios de referencia
-      mantenida por la CNCF que demuestra en la práctica el uso de trazas, métricas y logs con
-      OpenTelemetry. Incluye más de 20 servicios escritos en distintos lenguajes, un frontend web,
-      un generador de carga y el stack completo de observabilidad (Collector, Jaeger, Prometheus, Grafana).
-    </p>
+  <div class="section-title">Elige tu entorno de despliegue</div>
+  <div class="section-sub">Selecciona la opción que mejor se adapte a tus necesidades. Cada tab contiene la guía completa paso a paso.</div>
+
+  <!-- OPTION CARDS -->
+  <div class="option-cards">
+    <div class="option-card active" onclick="switchTab('k8s', this)">
+      <div class="card-tag tag-free">Cualquier K8s</div>
+      <div class="card-icon k8s">☸</div>
+      <h3>Kubernetes General</h3>
+      <p>kind, minikube, EKS, GKE, AKS o cualquier clúster Kubernetes existente.</p>
+    </div>
+    <div class="option-card" onclick="switchTab('oci', this)">
+      <div class="card-tag tag-cloud">Always Free</div>
+      <div class="card-icon oci">☁</div>
+      <h3>Oracle Cloud (OCI)</h3>
+      <p>4 ARM CPUs + 24 GB RAM gratis para siempre. OKE con control plane sin costo.</p>
+    </div>
+    <div class="option-card" onclick="switchTab('laptop', this)">
+      <div class="card-tag tag-local">100% Local</div>
+      <div class="card-icon laptop">💻</div>
+      <h3>Laptop / PC Local</h3>
+      <p>Instala todo el software gratuito necesario y ejecuta el demo sin internet ni cuenta cloud.</p>
+    </div>
   </div>
 
-  <!-- ── TAB BAR ── -->
-  <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('k8s', this)">
-      <span class="tab-icon">☸</span> Kubernetes General
-    </button>
-    <button class="tab-btn" onclick="switchTab('oci', this)">
-      <span class="tab-icon">☁</span> Oracle Cloud (OCI) — Always Free
-    </button>
-  </div>
-
-  <!-- ════════════════════════════════════════
-       TAB 1 — KUBERNETES GENERAL
-  ════════════════════════════════════════ -->
+  <!-- ════════════════════ TAB K8S ════════════════════ -->
   <div id="tab-k8s" class="tab-panel active">
 
-    <nav class="progress-nav">
-      <a href="#k8s-step1"><span class="num">1</span>Prerequisitos</a>
-      <a href="#k8s-step2"><span class="num">2</span>Helm Repo</a>
-      <a href="#k8s-step3"><span class="num">3</span>Namespace</a>
-      <a href="#k8s-step4"><span class="num">4</span>Valores</a>
-      <a href="#k8s-step5"><span class="num">5</span>Instalar</a>
-      <a href="#k8s-step6"><span class="num">6</span>Verificar</a>
-      <a href="#k8s-step7"><span class="num">7</span>Acceder</a>
-      <a href="#k8s-step8"><span class="num">8</span>Explorar</a>
-      <a href="#k8s-recomendacion"><span class="num">★</span>Recomendación</a>
-    </nav>
-
-    <!-- STEP 1 -->
-    <div class="step" id="k8s-step1">
-      <div class="step-header"><div class="step-num">1</div><h2>Prerequisitos</h2></div>
-      <p>Antes de comenzar asegúrate de tener instaladas y configuradas las siguientes herramientas:</p>
-      <table>
-        <thead><tr><th>Herramienta</th><th>Versión mínima</th><th>Propósito</th></tr></thead>
-        <tbody>
-          <tr><td><strong>kubectl</strong></td><td>v1.24+</td><td>Gestión del clúster Kubernetes</td></tr>
-          <tr><td><strong>Helm</strong></td><td>v3.9+</td><td>Gestor de paquetes para Kubernetes</td></tr>
-          <tr><td><strong>Clúster Kubernetes</strong></td><td>v1.24+</td><td>kind, minikube, EKS, GKE, AKS, etc.</td></tr>
-        </tbody>
-      </table>
-      <div class="callout warn">
-        <strong>Recursos mínimos recomendados:</strong> El demo requiere al menos
-        <strong>6 GB de RAM</strong> y <strong>4 vCPUs</strong> disponibles en el clúster.
-      </div>
-      <p>Verifica que tienes acceso al clúster:</p>
-      <pre><span class="cmd">kubectl</span> cluster-info
-<span class="cmd">kubectl</span> get nodes</pre>
-      <p>Verifica la versión de Helm:</p>
-      <pre><span class="cmd">helm</span> version</pre>
+    <div class="step-nav">
+      <a href="#k-1"><span class="sn">1</span>Prerequisitos</a>
+      <a href="#k-2"><span class="sn">2</span>Helm Repo</a>
+      <a href="#k-3"><span class="sn">3</span>Namespace</a>
+      <a href="#k-4"><span class="sn">4</span>Valores</a>
+      <a href="#k-5"><span class="sn">5</span>Instalar</a>
+      <a href="#k-6"><span class="sn">6</span>Verificar</a>
+      <a href="#k-7"><span class="sn">7</span>Acceder</a>
+      <a href="#k-8"><span class="sn">8</span>Explorar</a>
     </div>
 
-    <hr />
+    <!-- K8S STEP 1 -->
+    <div class="step" id="k-1">
+      <div class="step-header">
+        <div class="step-circle blue">1</div>
+        <div><h2>Prerequisitos</h2><div class="step-desc">Herramientas necesarias antes de comenzar</div></div>
+      </div>
+      <p>Asegúrate de tener instaladas y configuradas las siguientes herramientas en tu máquina:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Herramienta</th><th>Versión mínima</th><th>Propósito</th><th>Instalación</th></tr></thead>
+        <tbody>
+          <tr><td><strong>kubectl</strong></td><td>v1.24+</td><td>Gestión del clúster Kubernetes</td><td><code>brew install kubectl</code></td></tr>
+          <tr><td><strong>Helm</strong></td><td>v3.9+</td><td>Gestor de paquetes para Kubernetes</td><td><code>brew install helm</code></td></tr>
+          <tr><td><strong>Clúster K8s</strong></td><td>v1.24+</td><td>kind, minikube, EKS, GKE, AKS…</td><td>Ver pestaña Laptop para local</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Recursos mínimos:</strong> El demo necesita al menos <strong>6 GB de RAM</strong> y <strong>4 vCPUs</strong> disponibles en el clúster. En entornos locales (kind/minikube) configura estos límites primero.</div></div>
+      <p>Verifica acceso al clúster y versión de Helm:</p>
+      <pre><span class="cmd">kubectl</span> cluster-info
+<span class="cmd">kubectl</span> get nodes
+<span class="cmd">helm</span> version</pre>
+    </div>
 
-    <!-- STEP 2 -->
-    <div class="step" id="k8s-step2">
-      <div class="step-header"><div class="step-num">2</div><h2>Agregar el repositorio Helm de OTel</h2></div>
-      <p>El chart oficial está publicado en el repositorio Helm de la CNCF OpenTelemetry:</p>
+    <hr/>
+
+    <!-- K8S STEP 2 -->
+    <div class="step" id="k-2">
+      <div class="step-header">
+        <div class="step-circle blue">2</div>
+        <div><h2>Agregar repositorio Helm de OTel</h2><div class="step-desc">Registrar el chart oficial de CNCF OpenTelemetry</div></div>
+      </div>
       <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 <span class="cmd">helm</span> repo update</pre>
-      <div class="callout info">
-        <strong>¿Qué hace este comando?</strong><br />
-        <code>helm repo add</code> registra la URL bajo el alias <em>open-telemetry</em>.
-        <code>helm repo update</code> descarga el índice actualizado con todos los charts disponibles.
-      </div>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué hace esto?</strong> <code>helm repo add</code> registra la URL bajo el alias <em>open-telemetry</em>. <code>helm repo update</code> descarga el índice actualizado con todos los charts disponibles y sus versiones.</div></div>
       <p>Confirma que el chart está disponible:</p>
       <pre><span class="cmd">helm</span> search repo open-telemetry/opentelemetry-demo</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- STEP 3 -->
-    <div class="step" id="k8s-step3">
-      <div class="step-header"><div class="step-num">3</div><h2>Crear el Namespace</h2></div>
-      <p>Aislar el demo en su propio namespace facilita la gestión de recursos y su posterior limpieza.</p>
-      <pre><span class="cmd">kubectl</span> create namespace otel-demo</pre>
-      <div class="callout info">
-        <strong>¿Qué es un Namespace?</strong><br />
-        Un Namespace en Kubernetes es un mecanismo de aislamiento lógico dentro del mismo clúster.
-        Permite organizar recursos (Pods, Services, ConfigMaps…) en grupos independientes y
-        evitar colisiones de nombres.
+    <!-- K8S STEP 3 -->
+    <div class="step" id="k-3">
+      <div class="step-header">
+        <div class="step-circle blue">3</div>
+        <div><h2>Crear el Namespace</h2><div class="step-desc">Aislar el demo en su propio espacio lógico</div></div>
       </div>
-      <pre><span class="cmd">kubectl</span> get namespace otel-demo</pre>
+      <pre><span class="cmd">kubectl</span> create namespace otel-demo</pre>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué es un Namespace?</strong> Un Namespace en Kubernetes es un mecanismo de aislamiento lógico. Permite organizar recursos (Pods, Services, ConfigMaps) en grupos independientes, aplicar políticas de acceso separadas y facilitar la limpieza posterior.</div></div>
+      <pre><span class="cmt"># Verificar creación</span>
+<span class="cmd">kubectl</span> get namespace otel-demo</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- STEP 4 -->
-    <div class="step" id="k8s-step4">
-      <div class="step-header"><div class="step-num">4</div><h2>Personalizar valores <span class="tag opt">Opcional</span></h2></div>
-      <p>El chart acepta un archivo <code>values.yaml</code> para sobrescribir la configuración por defecto:</p>
+    <!-- K8S STEP 4 -->
+    <div class="step" id="k-4">
+      <div class="step-header">
+        <div class="step-circle blue">4</div>
+        <div><h2>Personalizar valores <em style="font-size:12px;font-weight:400;color:var(--muted)">(opcional)</em></h2><div class="step-desc">Ajustar recursos, habilitar/deshabilitar componentes</div></div>
+      </div>
+      <p>El chart acepta un archivo <code>values.yaml</code> para sobrescribir la configuración por defecto. Descárgalo para inspeccionarlo:</p>
       <pre><span class="cmd">helm</span> show values open-telemetry/opentelemetry-demo &gt; my-values.yaml</pre>
-      <table>
+      <div class="table-wrap"><table>
         <thead><tr><th>Sección en values.yaml</th><th>Descripción</th></tr></thead>
         <tbody>
           <tr><td><code>components.&lt;service&gt;.resources</code></td><td>CPU / Memory requests y limits por servicio</td></tr>
-          <tr><td><code>components.&lt;service&gt;.enabled</code></td><td>Habilitar o deshabilitar servicios individuales</td></tr>
-          <tr><td><code>opentelemetry-collector.config</code></td><td>Pipelines del OTel Collector</td></tr>
-          <tr><td><code>jaeger.enabled</code></td><td>Desplegar Jaeger como backend de trazas (default: true)</td></tr>
-          <tr><td><code>prometheus.enabled</code></td><td>Desplegar Prometheus (default: true)</td></tr>
-          <tr><td><code>grafana.enabled</code></td><td>Desplegar Grafana (default: true)</td></tr>
+          <tr><td><code>components.&lt;service&gt;.enabled</code></td><td>Habilitar o deshabilitar servicios individualmente</td></tr>
+          <tr><td><code>opentelemetry-collector.config</code></td><td>Pipelines del OTel Collector (receivers, processors, exporters)</td></tr>
+          <tr><td><code>jaeger.enabled</code></td><td>Backend de trazas distribuidas (default: true)</td></tr>
+          <tr><td><code>prometheus.enabled</code></td><td>Backend de métricas (default: true)</td></tr>
+          <tr><td><code>grafana.enabled</code></td><td>Dashboards de observabilidad (default: true)</td></tr>
           <tr><td><code>loadgenerator.enabled</code></td><td>Generador de carga sintética Locust (default: true)</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- STEP 5 -->
-    <div class="step" id="k8s-step5">
-      <div class="step-header"><div class="step-num">5</div><h2>Instalar el chart con Helm</h2></div>
+    <!-- K8S STEP 5 -->
+    <div class="step" id="k-5">
+      <div class="step-header">
+        <div class="step-circle blue">5</div>
+        <div><h2>Instalar el chart con Helm</h2><div class="step-desc">Desplegar todos los microservicios en el clúster</div></div>
+      </div>
       <p><strong>Instalación estándar:</strong></p>
       <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
   --namespace otel-demo \
@@ -343,275 +409,225 @@
   --namespace otel-demo \
   --values my-values.yaml \
   --wait</pre>
-      <div class="callout info">
-        <strong>Desglose:</strong>
-        <ul style="margin-top:8px; padding-left:18px;">
-          <li><code>my-otel-demo</code> — nombre del release.</li>
-          <li><code>--namespace otel-demo</code> — despliega en el namespace creado.</li>
-          <li><code>--wait</code> — bloquea hasta que todos los Pods estén Ready.</li>
+      <div class="callout info"><span class="ci">ℹ</span><div>
+        <strong>Desglose del comando:</strong>
+        <ul style="margin-top:6px;padding-left:18px;">
+          <li><code>my-otel-demo</code> — nombre del release (puede ser cualquier nombre)</li>
+          <li><code>open-telemetry/opentelemetry-demo</code> — chart a instalar</li>
+          <li><code>--namespace otel-demo</code> — despliega en el namespace creado</li>
+          <li><code>--wait</code> — bloquea hasta que todos los Pods estén Ready</li>
         </ul>
-      </div>
-      <div class="callout warn">
-        <strong>Tiempo de instalación:</strong> Entre 5 y 10 minutos la primera vez por descarga de imágenes.
-      </div>
+      </div></div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Tiempo de instalación:</strong> La primera vez puede tardar <strong>5–10 minutos</strong> por descarga de imágenes de contenedor.</div></div>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- STEP 6 -->
-    <div class="step" id="k8s-step6">
-      <div class="step-header"><div class="step-num">6</div><h2>Verificar el despliegue</h2></div>
-      <pre><span class="cmd">kubectl</span> get pods -n otel-demo
-<span class="cmd">kubectl</span> get services -n otel-demo
-<span class="cmd">helm</span> list -n otel-demo</pre>
-      <p><strong>Ver eventos en caso de problemas:</strong></p>
-      <pre><span class="cmd">kubectl</span> get events -n otel-demo --sort-by=.lastTimestamp</pre>
-      <p><strong>Ver logs de un Pod:</strong></p>
-      <pre><span class="cmd">kubectl</span> logs -n otel-demo deployment/my-otel-demo-frontend --follow</pre>
-      <div class="callout success">
-        <strong>Estado saludable:</strong> ~20–25 Pods en estado <code>Running</code>.
-        Si alguno está en <code>CrashLoopBackOff</code>, revisa con
-        <code>kubectl describe pod &lt;nombre&gt; -n otel-demo</code>.
+    <!-- K8S STEP 6 -->
+    <div class="step" id="k-6">
+      <div class="step-header">
+        <div class="step-circle blue">6</div>
+        <div><h2>Verificar el despliegue</h2><div class="step-desc">Confirmar que todos los Pods y Services están operativos</div></div>
       </div>
-      <table>
+      <pre><span class="cmt"># Ver todos los Pods</span>
+<span class="cmd">kubectl</span> get pods -n otel-demo
+
+<span class="cmt"># Ver todos los Services</span>
+<span class="cmd">kubectl</span> get services -n otel-demo
+
+<span class="cmt"># Ver el release de Helm</span>
+<span class="cmd">helm</span> list -n otel-demo
+
+<span class="cmt"># Ver eventos (útil para diagnosticar problemas)</span>
+<span class="cmd">kubectl</span> get events -n otel-demo --sort-by=.lastTimestamp
+
+<span class="cmt"># Ver logs de un Pod específico</span>
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/my-otel-demo-frontend --follow</pre>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Estado saludable esperado:</strong> 20–25 Pods en estado <code>Running</code>. Si alguno está en <code>CrashLoopBackOff</code>, ejecuta <code>kubectl describe pod &lt;nombre&gt; -n otel-demo</code> para ver el detalle.</div></div>
+      <div class="table-wrap"><table>
         <thead><tr><th>Componente</th><th>Lenguaje</th><th>Función</th></tr></thead>
         <tbody>
-          <tr><td>frontend</td><td>TypeScript (Next.js)</td><td>Tienda web principal</td></tr>
-          <tr><td>cartservice</td><td>C#/.NET</td><td>Carrito de compras (Redis)</td></tr>
+          <tr><td>frontend</td><td>TypeScript / Next.js</td><td>Tienda web principal</td></tr>
+          <tr><td>cartservice</td><td>C# / .NET</td><td>Carrito de compras (Redis)</td></tr>
           <tr><td>checkoutservice</td><td>Go</td><td>Procesamiento de pedidos</td></tr>
           <tr><td>productcatalogservice</td><td>Go</td><td>Catálogo de productos</td></tr>
           <tr><td>currencyservice</td><td>C++</td><td>Conversión de divisas</td></tr>
           <tr><td>emailservice</td><td>Ruby</td><td>Envío de emails</td></tr>
-          <tr><td>paymentservice</td><td>JavaScript (Node)</td><td>Procesamiento de pagos</td></tr>
+          <tr><td>paymentservice</td><td>JavaScript / Node</td><td>Procesamiento de pagos</td></tr>
           <tr><td>shippingservice</td><td>Rust</td><td>Cálculo de envíos</td></tr>
           <tr><td>recommendationservice</td><td>Python</td><td>Recomendaciones de productos</td></tr>
           <tr><td>adservice</td><td>Java</td><td>Publicidad contextual</td></tr>
           <tr><td>frauddetectionservice</td><td>Kotlin</td><td>Detección de fraude</td></tr>
-          <tr><td>otelcol</td><td>—</td><td>OTel Collector: recolección y reenvío de telemetría</td></tr>
+          <tr><td>otelcol</td><td>—</td><td>OTel Collector: recolecta y reenvía telemetría</td></tr>
           <tr><td>jaeger</td><td>—</td><td>Backend de trazas distribuidas</td></tr>
           <tr><td>prometheus</td><td>—</td><td>Backend de métricas</td></tr>
           <tr><td>grafana</td><td>—</td><td>Dashboards de observabilidad</td></tr>
-          <tr><td>loadgenerator</td><td>Python (Locust)</td><td>Generador de carga sintética</td></tr>
+          <tr><td>loadgenerator</td><td>Python / Locust</td><td>Generador de carga sintética</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- STEP 7 -->
-    <div class="step" id="k8s-step7">
-      <div class="step-header"><div class="step-num">7</div><h2>Acceder a los servicios con Port-Forward</h2></div>
-      <div class="callout info">
-        <strong>¿Qué es port-forward?</strong><br />
-        <code>kubectl port-forward</code> crea un túnel TCP entre tu máquina local y un Pod/Service
-        del clúster. Es ideal para desarrollo y debugging, <strong>no para producción</strong>.
+    <!-- K8S STEP 7 -->
+    <div class="step" id="k-7">
+      <div class="step-header">
+        <div class="step-circle blue">7</div>
+        <div><h2>Acceder a los servicios</h2><div class="step-desc">Port-forward para acceder desde tu máquina local</div></div>
       </div>
-      <p><strong>Frontend:</strong></p>
-      <pre><span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-frontend 8080:8080</pre>
-      <p>→ <strong>http://localhost:8080</strong></p>
-      <p><strong>Jaeger (Trazas):</strong></p>
-      <pre><span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-jaeger-query 16686:16686</pre>
-      <p>→ <strong>http://localhost:16686</strong></p>
-      <p><strong>Grafana (Dashboards):</strong></p>
-      <pre><span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-grafana 3000:80</pre>
-      <p>→ <strong>http://localhost:3000</strong> (admin / admin)</p>
-      <p><strong>Prometheus:</strong></p>
-      <pre><span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-prometheus 9090:9090</pre>
-      <p>→ <strong>http://localhost:9090</strong></p>
-      <p><strong>Locust (Generador de carga):</strong></p>
-      <pre><span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-loadgenerator 8089:8089</pre>
-      <p>→ <strong>http://localhost:8089</strong></p>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué es port-forward?</strong> <code>kubectl port-forward</code> crea un túnel TCP entre tu máquina local y un Service del clúster. El tráfico al puerto local se redirige al Pod. Ideal para desarrollo y debugging, no para producción.</div></div>
+      <pre><span class="cmt"># Frontend — http://localhost:8080</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-frontend 8080:8080
+
+<span class="cmt"># Jaeger (Trazas) — http://localhost:16686</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-jaeger-query 16686:16686
+
+<span class="cmt"># Grafana (Dashboards) — http://localhost:3000  (admin/admin)</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-grafana 3000:80
+
+<span class="cmt"># Prometheus — http://localhost:9090</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-prometheus 9090:9090
+
+<span class="cmt"># Locust (Carga) — http://localhost:8089</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-loadgenerator 8089:8089</pre>
+      <div class="callout warn"><span class="ci">⚠</span><div>Abre una terminal separada por cada port-forward, o añade <code>&amp;</code> al final para ejecutar en background.</div></div>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- STEP 8 -->
-    <div class="step" id="k8s-step8">
-      <div class="step-header"><div class="step-num">8</div><h2>Explorar la observabilidad</h2></div>
-      <p><strong>Trazas en Jaeger</strong></p>
+    <!-- K8S STEP 8 -->
+    <div class="step" id="k-8">
+      <div class="step-header">
+        <div class="step-circle blue">8</div>
+        <div><h2>Explorar la observabilidad</h2><div class="step-desc">Trazas en Jaeger · Métricas en Grafana · Queries en Prometheus</div></div>
+      </div>
+      <p><strong>Trazas en Jaeger (http://localhost:16686)</strong></p>
       <ol>
-        <li>Abre <strong>http://localhost:16686</strong>.</li>
-        <li>Selecciona un servicio (ej. <code>frontend</code>) y haz clic en <em>Find Traces</em>.</li>
-        <li>Explora el recorrido de una petición a través de todos los microservicios.</li>
+        <li>Selecciona un servicio en el menú <em>Service</em> (ej. <code>frontend</code>).</li>
+        <li>Haz clic en <em>Find Traces</em>.</li>
+        <li>Abre una traza para ver el recorrido completo a través de todos los microservicios, latencias span a span y atributos OTel.</li>
       </ol>
-      <p><strong>Métricas en Grafana</strong></p>
+      <p><strong>Métricas en Grafana (http://localhost:3000)</strong></p>
       <ol>
-        <li>Abre <strong>http://localhost:3000</strong>.</li>
         <li>Ve a <em>Dashboards → OpenTelemetry Demo</em>.</li>
-        <li>Explora latencias, tasas de error y throughput.</li>
+        <li>Explora los dashboards precargados: latencias p50/p95/p99, tasas de error, throughput y recursos.</li>
       </ol>
-      <p><strong>Queries en Prometheus</strong></p>
+      <p><strong>Query de ejemplo en Prometheus:</strong></p>
       <pre><span class="cmt"># Tasa de peticiones HTTP en los últimos 5 minutos</span>
 rate(http_server_duration_milliseconds_count[5m])</pre>
-      <div class="callout success">
-        <strong>¡Listo!</strong> Trazas, métricas y logs fluyendo a través del OTel Collector.
-      </div>
-      <hr />
-      <p><strong>Limpieza:</strong></p>
+      <div class="callout success"><span class="ci">✅</span><div><strong>¡Listo!</strong> Tienes trazas, métricas y logs fluyendo desde 20+ microservicios a través del OTel Collector hacia Jaeger, Prometheus y Grafana.</div></div>
+      <hr/>
+      <p><strong>Limpieza del entorno:</strong></p>
       <pre><span class="cmd">helm</span> uninstall my-otel-demo -n otel-demo
 <span class="cmd">kubectl</span> delete namespace otel-demo</pre>
     </div>
 
-    <hr />
-
-    <!-- RECOMENDACIÓN -->
-    <div class="step" id="k8s-recomendacion">
-      <div class="step-header">
-        <div class="step-num" style="background:#10b981;">★</div>
-        <h2>¿Dónde desplegarlo de forma innovadora y gratuita?</h2>
-      </div>
-      <div class="callout success">
-        <strong>Recomendación principal: Civo Cloud + GitHub Actions</strong><br />
-        Civo ofrece <strong>$250 USD de crédito gratuito</strong>, clústeres K3s en &lt;90 segundos
-        y es el cloud más económico del mercado. Con GitHub Actions automatizas el deploy completo
-        con un solo <code>git push</code>.
-      </div>
-      <table>
-        <thead><tr><th>Plataforma</th><th>Tier gratuito</th><th>Kubernetes</th><th>Por qué usarlo</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Civo Cloud</strong></td><td>$250 USD crédito</td><td>K3s gestionado</td><td>El más rápido. Clúster en 90s. Perfecto para demos.</td></tr>
-          <tr><td><strong>Oracle Cloud (OCI)</strong></td><td>Always Free permanente: 4 ARM CPUs + 24 GB RAM</td><td>OKE gestionado</td><td>El tier gratuito más generoso y sin vencimiento. Ver pestaña OCI.</td></tr>
-          <tr><td><strong>Google Cloud (GKE)</strong></td><td>$300 USD / 90 días</td><td>GKE Autopilot</td><td>Paga solo por Pods. Integración nativa con Cloud Trace.</td></tr>
-          <tr><td><strong>GitHub Codespaces</strong></td><td>60 horas/mes gratis</td><td>kind en contenedor</td><td>Sin instalar nada. Demo en el navegador en 5 min.</td></tr>
-          <tr><td><strong>Killercoda</strong></td><td>100% gratuito</td><td>Playground efímero</td><td>Pruebas rápidas de 1–2 h sin cuenta ni instalación.</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Referencias K8s -->
-    <hr />
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num" style="background:#57606a;">📎</div>
-        <h2>Referencias oficiales</h2>
-      </div>
+    <div class="refs">
+      <hr/>
+      <p><strong>Referencias</strong></p>
       <ul>
         <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
         <li><a href="https://opentelemetry.io/docs/demo/kubernetes-deployment/" target="_blank">OTel Demo — Kubernetes Deployment Guide</a></li>
-        <li><a href="https://github.com/open-telemetry/opentelemetry-demo" target="_blank">Repositorio GitHub del demo</a></li>
-        <li><a href="https://github.com/open-telemetry/opentelemetry-helm-charts" target="_blank">opentelemetry-helm-charts en GitHub</a></li>
-        <li><a href="https://opentelemetry.io/docs/collector/" target="_blank">OpenTelemetry Collector — Documentación</a></li>
+        <li><a href="https://github.com/open-telemetry/opentelemetry-demo" target="_blank">Repositorio GitHub del Demo</a></li>
+        <li><a href="https://github.com/open-telemetry/opentelemetry-helm-charts" target="_blank">opentelemetry-helm-charts</a></li>
       </ul>
     </div>
 
   </div><!-- /tab-k8s -->
 
 
-  <!-- ════════════════════════════════════════
-       TAB 2 — ORACLE CLOUD (OCI)
-  ════════════════════════════════════════ -->
+  <!-- ════════════════════ TAB OCI ════════════════════ -->
   <div id="tab-oci" class="tab-panel">
 
     <div class="callout oci">
-      <strong>Oracle Cloud Infrastructure (OCI) — Always Free</strong><br />
-      OCI ofrece el tier gratuito más generoso y <strong>permanente</strong> del mercado cloud:
-      4 ARM Ampere A1 CPUs + 24 GB RAM, 2 VMs AMD, 200 GB de almacenamiento en bloque y
-      el servicio OKE (Oracle Kubernetes Engine) <strong>sin costo por el control plane</strong>.
-      No tiene fecha de vencimiento; es gratis para siempre.
+      <span class="ci">☁</span>
+      <div><strong>Oracle Cloud Infrastructure (OCI) — Always Free permanente</strong><br />
+      4 ARM Ampere A1 CPUs + 24 GB RAM gratis para siempre, OKE con control plane sin costo, 200 GB de almacenamiento y 10 TB de egress de red al mes. Sin fecha de vencimiento.</div>
     </div>
 
-    <nav class="progress-nav">
-      <a href="#oci-step1"><span class="num">1</span>Cuenta OCI</a>
-      <a href="#oci-step2"><span class="num">2</span>CLI OCI</a>
-      <a href="#oci-step3"><span class="num">3</span>VCN & Red</a>
-      <a href="#oci-step4"><span class="num">4</span>Clúster OKE</a>
-      <a href="#oci-step5"><span class="num">5</span>kubeconfig</a>
-      <a href="#oci-step6"><span class="num">6</span>Helm Repo</a>
-      <a href="#oci-step7"><span class="num">7</span>Namespace</a>
-      <a href="#oci-step8"><span class="num">8</span>Instalar</a>
-      <a href="#oci-step9"><span class="num">9</span>Acceder</a>
-      <a href="#oci-step10"><span class="num">10</span>Explorar</a>
-    </nav>
+    <div class="step-nav">
+      <a href="#o-1"><span class="sn">1</span>Cuenta OCI</a>
+      <a href="#o-2"><span class="sn">2</span>OCI CLI</a>
+      <a href="#o-3"><span class="sn">3</span>VCN / Red</a>
+      <a href="#o-4"><span class="sn">4</span>Clúster OKE</a>
+      <a href="#o-5"><span class="sn">5</span>kubeconfig</a>
+      <a href="#o-6"><span class="sn">6</span>Helm Repo</a>
+      <a href="#o-7"><span class="sn">7</span>Namespace</a>
+      <a href="#o-8"><span class="sn">8</span>Instalar</a>
+      <a href="#o-9"><span class="sn">9</span>Acceder</a>
+      <a href="#o-10"><span class="sn">10</span>Observar</a>
+    </div>
 
-    <!-- OCI STEP 1 -->
-    <div class="step" id="oci-step1">
+    <!-- OCI 1 -->
+    <div class="step" id="o-1">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">1</div>
-        <h2>Crear cuenta en Oracle Cloud (Always Free)</h2>
+        <div class="step-circle orange">1</div>
+        <div><h2>Crear cuenta en Oracle Cloud (Always Free)</h2><div class="step-desc">Registro gratuito — no se cobra el tier Always Free</div></div>
       </div>
-      <p>
-        Si no tienes cuenta en OCI, regístrate en el tier gratuito. No requiere tarjeta de crédito
-        para los recursos Always Free, aunque el proceso de registro la solicita como verificación.
-      </p>
       <ol>
-        <li>Ve a <a href="https://signup.cloud.oracle.com/" target="_blank">signup.cloud.oracle.com</a>.</li>
-        <li>Selecciona <strong>"Start for free"</strong> y completa el formulario.</li>
-        <li>Elige una región Home (recomendado: <strong>us-ashburn-1</strong> o <strong>us-phoenix-1</strong> por mayor disponibilidad de recursos ARM).</li>
-        <li>Verifica tu email y completa la verificación de identidad.</li>
-        <li>Una vez activada la cuenta, accede a la <strong>OCI Console</strong>.</li>
+        <li>Ve a <a href="https://signup.cloud.oracle.com/" target="_blank">signup.cloud.oracle.com</a> y haz clic en <strong>"Start for free"</strong>.</li>
+        <li>Completa el formulario con nombre, email y país.</li>
+        <li>Elige como región Home <strong>us-ashburn-1</strong> o <strong>us-phoenix-1</strong> — tienen mayor disponibilidad de instancias ARM.</li>
+        <li>Verifica tu email y completa la verificación de identidad (solicita tarjeta como verificación, no se cobra).</li>
+        <li>Una vez activada, accede a la <strong>OCI Console</strong> en <a href="https://cloud.oracle.com/" target="_blank">cloud.oracle.com</a>.</li>
       </ol>
-      <div class="callout info">
-        <strong>Recursos Always Free disponibles:</strong><br />
-        <ul style="margin-top:8px; padding-left:18px;">
-          <li>4 OCPUs ARM Ampere A1 + 24 GB RAM (compartibles entre VMs)</li>
+      <div class="callout info"><span class="ci">ℹ</span><div>
+        <strong>Recursos Always Free incluidos:</strong>
+        <ul style="margin-top:6px;padding-left:18px;">
+          <li>4 OCPUs ARM Ampere A1 + 24 GB RAM (distribuibles entre VMs)</li>
           <li>2 VMs AMD (1 OCPU / 1 GB RAM cada una)</li>
           <li>200 GB almacenamiento en bloque</li>
-          <li>OKE Control Plane — <strong>gratis</strong></li>
-          <li>10 TB de egress de red al mes</li>
+          <li>OKE Control Plane — <strong>sin costo</strong></li>
+          <li>10 TB egress de red al mes</li>
+          <li>1 Load Balancer de 10 Mbps</li>
         </ul>
-      </div>
+      </div></div>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 2 -->
-    <div class="step" id="oci-step2">
+    <!-- OCI 2 -->
+    <div class="step" id="o-2">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">2</div>
-        <h2>Instalar y configurar la OCI CLI</h2>
+        <div class="step-circle orange">2</div>
+        <div><h2>Instalar y configurar la OCI CLI</h2><div class="step-desc">Herramienta de línea de comandos para gestionar Oracle Cloud</div></div>
       </div>
-      <p>
-        La OCI CLI permite gestionar todos los recursos de Oracle Cloud desde la terminal.
-        Es la herramienta principal para crear el clúster y obtener el kubeconfig.
-      </p>
-      <p><strong>Instalar en macOS:</strong></p>
-      <pre><span class="cmd">brew</span> install oci-cli</pre>
-      <p><strong>Instalar en Linux:</strong></p>
+      <p><strong>macOS:</strong></p>
+      <pre><span class="cmd">brew</span> install oci-cli
+<span class="cmd">oci</span> --version</pre>
+      <p><strong>Linux:</strong></p>
       <pre><span class="cmd">bash</span> -c "$(curl -fsSL https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"</pre>
-      <p><strong>Verificar instalación:</strong></p>
-      <pre><span class="cmd">oci</span> --version</pre>
-      <hr />
-      <p><strong>Configurar la CLI (setup inicial):</strong></p>
+      <p><strong>Configuración inicial interactiva:</strong></p>
       <pre><span class="cmd">oci</span> setup config</pre>
-      <div class="callout info">
-        <strong>Este comando interactivo te pedirá:</strong>
-        <ol style="margin-top:8px; padding-left:18px;">
-          <li><strong>User OCID</strong>: lo encuentras en OCI Console → Profile → tu usuario → OCID.</li>
-          <li><strong>Tenancy OCID</strong>: OCI Console → Administration → Tenancy Details → OCID.</li>
-          <li><strong>Region</strong>: la región Home de tu cuenta (ej. <code>us-ashburn-1</code>).</li>
-          <li><strong>Generate new API key pair</strong>: selecciona <code>Y</code>.</li>
+      <div class="callout info"><span class="ci">ℹ</span><div>
+        <strong>El asistente te pedirá:</strong>
+        <ol style="margin-top:6px;padding-left:18px;">
+          <li><strong>User OCID</strong> — OCI Console → Profile (esquina superior derecha) → tu usuario → OCID</li>
+          <li><strong>Tenancy OCID</strong> — OCI Console → Administration → Tenancy Details → OCID</li>
+          <li><strong>Region</strong> — la región Home elegida al registrarte (ej. <code>us-ashburn-1</code>)</li>
+          <li><strong>Generate new API key pair</strong> — selecciona <code>Y</code></li>
         </ol>
-        Guarda la clave pública generada en <code>~/.oci/oci_api_key_public.pem</code> y
-        súbela en OCI Console → Profile → API Keys → Add API Key.
-      </div>
-      <p><strong>Verificar que la CLI tiene acceso:</strong></p>
+        Toma la clave pública generada (<code>~/.oci/oci_api_key_public.pem</code>) y súbela en OCI Console → Profile → API Keys → Add API Key.
+      </div></div>
+      <p>Verifica que la CLI tiene acceso:</p>
       <pre><span class="cmd">oci</span> iam region list --output table</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 3 -->
-    <div class="step" id="oci-step3">
+    <!-- OCI 3 -->
+    <div class="step" id="o-3">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">3</div>
-        <h2>Crear la red virtual (VCN) para el clúster</h2>
+        <div class="step-circle orange">3</div>
+        <div><h2>Red virtual (VCN)</h2><div class="step-desc">OKE necesita una Virtual Cloud Network con subnets</div></div>
       </div>
-      <p>
-        OKE necesita una <strong>Virtual Cloud Network (VCN)</strong> con subnets para los nodos
-        del clúster y el load balancer. La forma más rápida es usar el <strong>Quick Create</strong>
-        de OKE que genera la VCN automáticamente.
-      </p>
-      <div class="callout info">
-        <strong>Opción recomendada — Quick Create:</strong> Cuando crees el clúster OKE en el
-        siguiente paso, selecciona <em>"Quick Create"</em>. OCI creará automáticamente la VCN
-        con todas las subnets y security lists necesarias. No necesitas crear la VCN manualmente.
-      </div>
-      <p>
-        Si prefieres crear la VCN manualmente por la CLI, obtén primero el OCID de tu compartment:
-      </p>
-      <pre><span class="cmt"># Obtener el OCID del compartment raíz (tenancy)</span>
-<span class="cmd">oci</span> iam compartment list --all --query "data[?\"lifecycle-state\"=='ACTIVE'].id | [0]"</pre>
-      <pre><span class="cmt"># Crear VCN</span>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Recomendado — Quick Create:</strong> Al crear el clúster en el Paso 4, selecciona <em>"Quick Create"</em>. OCI genera automáticamente la VCN con todas las subnets y security lists. No necesitas hacer este paso manualmente.</div></div>
+      <p>Si prefieres crear la VCN manualmente:</p>
+      <pre><span class="cmt"># Obtener OCID del compartment raíz</span>
+<span class="cmd">oci</span> iam compartment list --all \
+  --query "data[?\"lifecycle-state\"=='ACTIVE'].id | [0]"
+
+<span class="cmt"># Crear VCN</span>
 <span class="cmd">oci</span> network vcn create \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
   --display-name otel-demo-vcn \
@@ -619,47 +635,38 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
   --dns-label oteldemo</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 4 -->
-    <div class="step" id="oci-step4">
+    <!-- OCI 4 -->
+    <div class="step" id="o-4">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">4</div>
-        <h2>Crear el clúster OKE (Oracle Kubernetes Engine)</h2>
+        <div class="step-circle orange">4</div>
+        <div><h2>Crear el clúster OKE</h2><div class="step-desc">Oracle Kubernetes Engine — control plane gratuito, nodos ARM Always Free</div></div>
       </div>
-      <p>
-        OKE es el servicio Kubernetes gestionado de OCI. El <strong>control plane es gratuito</strong>;
-        solo pagas por los nodos worker. Con los recursos ARM Always Free puedes tener un clúster
-        completamente funcional sin costo.
-      </p>
-
-      <p><strong>Opción A — Desde la OCI Console (recomendado para empezar):</strong></p>
+      <p><strong>Opción A — Desde la OCI Console (recomendado):</strong></p>
       <ol>
-        <li>En la OCI Console, ve al menú hamburguesa → <strong>Developer Services → Kubernetes Clusters (OKE)</strong>.</li>
-        <li>Haz clic en <strong>"Create cluster"</strong>.</li>
-        <li>Selecciona <strong>"Quick create"</strong> y haz clic en <em>Launch workflow</em>.</li>
-        <li>Configura:
-          <ul>
-            <li><strong>Name:</strong> <code>otel-demo-cluster</code></li>
-            <li><strong>Kubernetes version:</strong> selecciona la más reciente disponible.</li>
-            <li><strong>Visibility:</strong> Public endpoint (para acceder con kubectl desde tu máquina).</li>
-            <li><strong>Shape:</strong> <code>VM.Standard.A1.Flex</code> (ARM — Always Free).</li>
-            <li><strong>OCPUs por nodo:</strong> <code>2</code> | <strong>Memory:</strong> <code>12 GB</code>.</li>
-            <li><strong>Number of nodes:</strong> <code>2</code> (total 4 OCPUs / 24 GB — dentro del Always Free).</li>
-          </ul>
+        <li>Menú hamburguesa → <strong>Developer Services → Kubernetes Clusters (OKE)</strong>.</li>
+        <li>Clic en <strong>"Create cluster"</strong> → selecciona <strong>"Quick create"</strong> → <em>Launch workflow</em>.</li>
+        <li>Configura los siguientes valores:
+          <div class="table-wrap" style="margin-top:10px;"><table>
+            <thead><tr><th>Campo</th><th>Valor recomendado</th></tr></thead>
+            <tbody>
+              <tr><td>Name</td><td><code>otel-demo-cluster</code></td></tr>
+              <tr><td>Kubernetes version</td><td>La más reciente disponible</td></tr>
+              <tr><td>Visibility</td><td>Public endpoint (para acceder con kubectl)</td></tr>
+              <tr><td>Shape</td><td><code>VM.Standard.A1.Flex</code> (ARM — Always Free)</td></tr>
+              <tr><td>OCPUs por nodo</td><td><code>2</code></td></tr>
+              <tr><td>Memory por nodo</td><td><code>12 GB</code></td></tr>
+              <tr><td>Number of nodes</td><td><code>2</code> (total: 4 OCPUs / 24 GB = límite Always Free)</td></tr>
+            </tbody>
+          </table></div>
         </li>
-        <li>Haz clic en <strong>"Next"</strong> y luego en <strong>"Create cluster"</strong>.</li>
+        <li>Clic en <strong>"Next"</strong> → <strong>"Create cluster"</strong>.</li>
         <li>Espera ~5–10 minutos hasta que el estado sea <code>Active</code>.</li>
       </ol>
-
-      <div class="callout warn">
-        <strong>Configuración Always Free exacta:</strong> Los recursos ARM Always Free son
-        4 OCPUs + 24 GB RAM en total. Distribuye en máximo <strong>2 nodos</strong> con
-        2 OCPUs / 12 GB cada uno para no salir del tier gratuito.
-      </div>
-
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Límite Always Free ARM:</strong> Son exactamente 4 OCPUs + 24 GB RAM en total. Usa 2 nodos × 2 OCPUs / 12 GB para no salir del tier gratuito.</div></div>
       <p><strong>Opción B — Desde la CLI:</strong></p>
-      <pre><span class="cmt"># Crear clúster OKE (reemplaza los OCIDs con los tuyos)</span>
+      <pre><span class="cmt"># Crear clúster OKE</span>
 <span class="cmd">oci</span> ce cluster create \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
   --name otel-demo-cluster \
@@ -669,7 +676,7 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
   --endpoint-subnet-id &lt;SUBNET_OCID&gt; \
   --endpoint-public-ip-enabled true
 
-<span class="cmt"># Crear node pool con instancias ARM Always Free</span>
+<span class="cmt"># Crear node pool ARM Always Free</span>
 <span class="cmd">oci</span> ce node-pool create \
   --cluster-id &lt;CLUSTER_OCID&gt; \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
@@ -681,251 +688,495 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
   --placement-configs '[{"availabilityDomain":"&lt;AD&gt;","subnetId":"&lt;SUBNET_OCID&gt;"}]'</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 5 -->
-    <div class="step" id="oci-step5">
+    <!-- OCI 5 -->
+    <div class="step" id="o-5">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">5</div>
-        <h2>Obtener el kubeconfig del clúster OKE</h2>
+        <div class="step-circle orange">5</div>
+        <div><h2>Obtener kubeconfig del clúster OKE</h2><div class="step-desc">Conectar kubectl al clúster de Oracle Cloud</div></div>
       </div>
-      <p>
-        El kubeconfig es el archivo de configuración que permite a <code>kubectl</code> conectarse
-        al clúster OKE. La CLI de OCI lo genera y fusiona automáticamente con tu configuración local.
-      </p>
-      <p>Obtén el OCID del clúster creado:</p>
-      <pre><span class="cmd">oci</span> ce cluster list \
+      <pre><span class="cmt"># Obtener OCID del clúster</span>
+<span class="cmd">oci</span> ce cluster list \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
   --query "data[?name=='otel-demo-cluster'].id | [0]" \
-  --raw-output</pre>
-      <p>Genera y guarda el kubeconfig:</p>
-      <pre><span class="cmd">oci</span> ce cluster create-kubeconfig \
+  --raw-output
+
+<span class="cmt"># Generar y fusionar kubeconfig</span>
+<span class="cmd">oci</span> ce cluster create-kubeconfig \
   --cluster-id &lt;CLUSTER_OCID&gt; \
   --file $HOME/.kube/config \
   --region us-ashburn-1 \
   --token-version 2.0.0 \
   --kube-endpoint PUBLIC_ENDPOINT</pre>
-      <div class="callout info">
-        <strong>Parámetros clave:</strong>
-        <ul style="margin-top:8px; padding-left:18px;">
-          <li><code>--file $HOME/.kube/config</code> — fusiona el contexto OKE con el kubeconfig existente.</li>
-          <li><code>--token-version 2.0.0</code> — usa tokens de corta duración (más seguro).</li>
-          <li><code>--kube-endpoint PUBLIC_ENDPOINT</code> — conecta por el endpoint público del cluster.</li>
+      <div class="callout info"><span class="ci">ℹ</span><div>
+        <ul style="padding-left:18px;">
+          <li><code>--file $HOME/.kube/config</code> — fusiona el contexto OKE con el kubeconfig existente</li>
+          <li><code>--token-version 2.0.0</code> — tokens de corta duración, más seguro</li>
+          <li><code>--kube-endpoint PUBLIC_ENDPOINT</code> — conecta al endpoint público</li>
         </ul>
-      </div>
-      <p>Verifica que kubectl puede conectarse al clúster OKE:</p>
+      </div></div>
+      <p>Verifica la conexión — deberías ver los 2 nodos ARM en estado <code>Ready</code>:</p>
       <pre><span class="cmd">kubectl</span> get nodes
-<span class="cmd">kubectl</span> cluster-info</pre>
-      <p>Deberías ver los 2 nodos ARM en estado <code>Ready</code>:</p>
-      <pre><span class="cmt">NAME          STATUS   ROLES    AGE   VERSION
+<span class="cmt">NAME          STATUS   ROLES    AGE   VERSION
 10.0.xx.xxx   Ready    &lt;none&gt;   5m    v1.30.1
 10.0.xx.yyy   Ready    &lt;none&gt;   5m    v1.30.1</span></pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 6 -->
-    <div class="step" id="oci-step6">
+    <!-- OCI 6 -->
+    <div class="step" id="o-6">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">6</div>
-        <h2>Agregar el repositorio Helm de OTel</h2>
+        <div class="step-circle orange">6</div>
+        <div><h2>Agregar repositorio Helm de OTel</h2><div class="step-desc">Desde aquí los comandos son idénticos a cualquier clúster K8s</div></div>
       </div>
-      <p>Desde este paso en adelante los comandos son idénticos a cualquier clúster Kubernetes:</p>
       <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-<span class="cmd">helm</span> repo update</pre>
-      <p>Confirma que el chart está disponible:</p>
-      <pre><span class="cmd">helm</span> search repo open-telemetry/opentelemetry-demo</pre>
+<span class="cmd">helm</span> repo update
+<span class="cmd">helm</span> search repo open-telemetry/opentelemetry-demo</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 7 -->
-    <div class="step" id="oci-step7">
+    <!-- OCI 7 -->
+    <div class="step" id="o-7">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">7</div>
-        <h2>Crear el Namespace</h2>
+        <div class="step-circle orange">7</div>
+        <div><h2>Crear el Namespace</h2><div class="step-desc">Espacio aislado para todos los recursos del demo</div></div>
       </div>
-      <pre><span class="cmd">kubectl</span> create namespace otel-demo</pre>
-      <p>Verifica que fue creado:</p>
-      <pre><span class="cmd">kubectl</span> get namespace otel-demo</pre>
+      <pre><span class="cmd">kubectl</span> create namespace otel-demo
+<span class="cmd">kubectl</span> get namespace otel-demo</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 8 -->
-    <div class="step" id="oci-step8">
+    <!-- OCI 8 -->
+    <div class="step" id="o-8">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">8</div>
-        <h2>Instalar el OTel Demo con ajuste para ARM</h2>
+        <div class="step-circle orange">8</div>
+        <div><h2>Instalar OTel Demo con ajuste para ARM</h2><div class="step-desc">El chart soporta aarch64 nativamente desde v0.28+</div></div>
       </div>
-      <p>
-        Los nodos ARM A1 de OCI son arquitectura <strong>aarch64</strong>. El chart de OTel Demo
-        soporta ARM de forma nativa desde la versión 0.28+. Sin embargo, se recomienda ajustar
-        los recursos al tier gratuito disponible.
-      </p>
       <p>Crea un archivo <code>oci-values.yaml</code> optimizado para los nodos ARM Always Free:</p>
-      <pre><span class="cmt"># oci-values.yaml — ajuste para OCI ARM Always Free (4 OCPUs / 24 GB total)</span>
+      <pre><span class="cmt"># oci-values.yaml — ajustado para 4 OCPUs / 24 GB ARM Always Free</span>
 default:
   resources:
-    requests:
-      cpu: <span class="val">"50m"</span>
-      memory: <span class="val">"64Mi"</span>
-    limits:
-      cpu: <span class="val">"200m"</span>
-      memory: <span class="val">"256Mi"</span>
+    requests: { cpu: <span class="str">"50m"</span>, memory: <span class="str">"64Mi"</span> }
+    limits:   { cpu: <span class="str">"200m"</span>, memory: <span class="str">"256Mi"</span> }
 
 components:
   frontend:
     resources:
-      requests: { cpu: <span class="val">"200m"</span>, memory: <span class="val">"256Mi"</span> }
-      limits:   { cpu: <span class="val">"500m"</span>, memory: <span class="val">"512Mi"</span> }
+      requests: { cpu: <span class="str">"200m"</span>, memory: <span class="str">"256Mi"</span> }
+      limits:   { cpu: <span class="str">"500m"</span>, memory: <span class="str">"512Mi"</span> }
   checkoutservice:
     resources:
-      requests: { cpu: <span class="val">"100m"</span>, memory: <span class="val">"128Mi"</span> }
+      requests: { cpu: <span class="str">"100m"</span>, memory: <span class="str">"128Mi"</span> }
   cartservice:
     resources:
-      requests: { cpu: <span class="val">"100m"</span>, memory: <span class="val">"128Mi"</span> }
-  productcatalogservice:
-    resources:
-      requests: { cpu: <span class="val">"100m"</span>, memory: <span class="val">"128Mi"</span> }
+      requests: { cpu: <span class="str">"100m"</span>, memory: <span class="str">"128Mi"</span> }
 
 opentelemetry-collector:
   resources:
-    requests: { cpu: <span class="val">"200m"</span>, memory: <span class="val">"256Mi"</span> }
-    limits:   { cpu: <span class="val">"500m"</span>, memory: <span class="val">"512Mi"</span> }
+    requests: { cpu: <span class="str">"200m"</span>, memory: <span class="str">"256Mi"</span> }
+    limits:   { cpu: <span class="str">"500m"</span>, memory: <span class="str">"512Mi"</span> }
 
 prometheus:
   server:
     resources:
-      requests: { cpu: <span class="val">"200m"</span>, memory: <span class="val">"512Mi"</span> }
+      requests: { cpu: <span class="str">"200m"</span>, memory: <span class="str">"512Mi"</span> }
 
 grafana:
   resources:
-    requests: { cpu: <span class="val">"100m"</span>, memory: <span class="val">"256Mi"</span> }</pre>
-
-      <p><strong>Instalar el chart:</strong></p>
+    requests: { cpu: <span class="str">"100m"</span>, memory: <span class="str">"256Mi"</span> }</pre>
+      <p>Instalar el chart:</p>
       <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
   --namespace otel-demo \
   --values oci-values.yaml \
   --wait \
   --timeout 15m</pre>
-
-      <div class="callout info">
-        <strong>¿Por qué <code>--timeout 15m</code>?</strong><br />
-        En los nodos ARM Always Free la descarga de las imágenes de contenedor puede tardar
-        más que en nodos de mayor capacidad. El timeout extendido evita que Helm cancele
-        el despliegue prematuramente.
-      </div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>¿Por qué <code>--timeout 15m</code>?</strong> En nodos ARM Always Free la descarga de imágenes puede tardar más. El timeout extendido evita que Helm cancele el despliegue antes de que termine.</div></div>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 9 -->
-    <div class="step" id="oci-step9">
+    <!-- OCI 9 -->
+    <div class="step" id="o-9">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">9</div>
-        <h2>Verificar y acceder a los servicios</h2>
+        <div class="step-circle orange">9</div>
+        <div><h2>Verificar y acceder a los servicios</h2><div class="step-desc">Port-forward y exposición pública con Load Balancer OCI</div></div>
       </div>
-      <p><strong>Verificar que todos los Pods están corriendo:</strong></p>
-      <pre><span class="cmd">kubectl</span> get pods -n otel-demo -w</pre>
-      <div class="callout success">
-        <strong>Estado esperado:</strong> Todos los Pods en <code>Running</code> y
-        <code>READY</code> en 5–15 minutos.
-      </div>
-      <p><strong>Acceder via Port-Forward:</strong></p>
-      <pre><span class="cmt"># Frontend</span>
+      <pre><span class="cmt"># Esperar a que todos los Pods estén Running</span>
+<span class="cmd">kubectl</span> get pods -n otel-demo -w
+
+<span class="cmt"># Frontend — http://localhost:8080</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-frontend 8080:8080
 
-<span class="cmt"># Jaeger</span>
+<span class="cmt"># Jaeger — http://localhost:16686</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-jaeger-query 16686:16686
 
-<span class="cmt"># Grafana</span>
-<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-grafana 3000:80
-
-<span class="cmt"># Prometheus</span>
-<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-prometheus 9090:9090</pre>
-
-      <div class="callout oci">
-        <strong>Exponer el frontend con un Load Balancer de OCI (opcional):</strong><br />
-        OCI incluye 1 Load Balancer de 10 Mbps en el Always Free. Puedes exponer el frontend
-        públicamente editando el Service:
-      </div>
+<span class="cmt"># Grafana — http://localhost:3000  (admin/admin)</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-grafana 3000:80</pre>
+      <div class="callout oci"><span class="ci">☁</span><div><strong>Exponer el frontend públicamente con OCI Load Balancer (gratis):</strong> OCI incluye 1 Load Balancer Always Free de 10 Mbps.</div></div>
       <pre><span class="cmd">kubectl</span> patch svc my-otel-demo-frontend -n otel-demo \
   -p '{"spec":{"type":"LoadBalancer"}}'
 
-<span class="cmt"># Obtener la IP pública asignada</span>
+<span class="cmt"># Ver la IP pública asignada (~2-3 minutos)</span>
 <span class="cmd">kubectl</span> get svc my-otel-demo-frontend -n otel-demo</pre>
     </div>
 
-    <hr />
+    <hr/>
 
-    <!-- OCI STEP 10 -->
-    <div class="step" id="oci-step10">
+    <!-- OCI 10 -->
+    <div class="step" id="o-10">
       <div class="step-header">
-        <div class="step-num" style="background:#f97316;">10</div>
-        <h2>Explorar la observabilidad en OCI</h2>
+        <div class="step-circle orange">10</div>
+        <div><h2>Explorar observabilidad + integración con OCI APM</h2><div class="step-desc">Trazas nativas de OCI además de Jaeger, Prometheus y Grafana</div></div>
       </div>
-      <p>
-        Además de Jaeger, Prometheus y Grafana incluidos en el demo, OCI ofrece servicios nativos
-        de observabilidad que puedes integrar con el OTel Collector.
-      </p>
-      <table>
+      <div class="table-wrap"><table>
         <thead><tr><th>Servicio OCI</th><th>Equivalente OTel</th><th>Integración</th></tr></thead>
         <tbody>
-          <tr><td><strong>OCI Application Performance Monitoring (APM)</strong></td><td>Trazas (Jaeger)</td><td>Exportar trazas via OTLP al APM de OCI</td></tr>
-          <tr><td><strong>OCI Logging</strong></td><td>Logs</td><td>Exportar logs via OCI Logging exporter</td></tr>
-          <tr><td><strong>OCI Monitoring</strong></td><td>Métricas (Prometheus)</td><td>Exportar métricas via remote_write</td></tr>
+          <tr><td><strong>OCI APM</strong></td><td>Jaeger (trazas)</td><td>Exportar trazas via OTLP al APM de OCI</td></tr>
+          <tr><td><strong>OCI Logging</strong></td><td>Logs del Collector</td><td>Exportar logs via OCI Logging exporter</td></tr>
+          <tr><td><strong>OCI Monitoring</strong></td><td>Prometheus (métricas)</td><td>Exportar métricas via remote_write</td></tr>
         </tbody>
-      </table>
-      <div class="callout info">
-        <strong>Integrar OTel Collector con OCI APM:</strong><br />
-        El OTel Collector incluye un exporter nativo para OCI APM. Añade en el
-        <code>values.yaml</code> dentro de <code>opentelemetry-collector.config.exporters</code>:
-      </div>
-      <pre>exporters:
-  otlp/oci-apm:
-    endpoint: <span class="val">"https://&lt;APM_DOMAIN&gt;.apm-agt.&lt;region&gt;.oci.oraclecloud.com/20200101/opentelemetry"</span>
-    headers:
-      Authorization: <span class="val">"dataKey &lt;OCI_APM_PRIVATE_DATA_KEY&gt;"</span></pre>
-
-      <div class="callout success">
-        <strong>¡Despliegue completo en OCI Always Free!</strong> Tienes el OTel Demo corriendo
-        en Kubernetes gestionado (OKE) con nodos ARM sin costo, con observabilidad completa
-        en Jaeger, Prometheus y Grafana, y la opción de integrar los servicios nativos de OCI.
-      </div>
-
-      <hr />
+      </table></div>
+      <p>Añadir el exporter de OCI APM al <code>oci-values.yaml</code>:</p>
+      <pre>opentelemetry-collector:
+  config:
+    exporters:
+      otlp/oci-apm:
+        endpoint: <span class="str">"https://&lt;APM_DOMAIN&gt;.apm-agt.&lt;region&gt;.oci.oraclecloud.com/20200101/opentelemetry"</span>
+        headers:
+          Authorization: <span class="str">"dataKey &lt;OCI_APM_PRIVATE_DATA_KEY&gt;"</span></pre>
+      <div class="callout success"><span class="ci">✅</span><div><strong>¡Despliegue completo en OCI Always Free!</strong> OTel Demo corriendo en OKE con nodos ARM, observabilidad completa y opción de integrar OCI APM, Logging y Monitoring nativos.</div></div>
+      <hr/>
       <p><strong>Limpieza del entorno OCI:</strong></p>
-      <pre><span class="cmt"># Desinstalar Helm release</span>
-<span class="cmd">helm</span> uninstall my-otel-demo -n otel-demo
-
-<span class="cmt"># Eliminar namespace</span>
+      <pre><span class="cmd">helm</span> uninstall my-otel-demo -n otel-demo
 <span class="cmd">kubectl</span> delete namespace otel-demo
-
-<span class="cmt"># Eliminar clúster OKE (desde la CLI)</span>
-<span class="cmd">oci</span> ce cluster delete \
-  --cluster-id &lt;CLUSTER_OCID&gt; \
-  --force</pre>
+<span class="cmt"># Eliminar clúster OKE</span>
+<span class="cmd">oci</span> ce cluster delete --cluster-id &lt;CLUSTER_OCID&gt; --force</pre>
     </div>
 
-    <!-- Referencias OCI -->
-    <hr />
-    <div class="step">
-      <div class="step-header">
-        <div class="step-num" style="background:#f97316;">📎</div>
-        <h2>Referencias OCI</h2>
-      </div>
+    <div class="refs">
+      <hr/>
+      <p><strong>Referencias OCI</strong></p>
       <ul>
         <li><a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Always Free — Descripción oficial</a></li>
         <li><a href="https://docs.oracle.com/en-us/iaas/Content/ContEng/Concepts/contengoverview.htm" target="_blank">OKE — Oracle Kubernetes Engine Overview</a></li>
         <li><a href="https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm" target="_blank">OKE — Configurar kubeconfig</a></li>
         <li><a href="https://docs.oracle.com/en-us/iaas/tools/oci-cli/latest/oci_cli_docs/" target="_blank">OCI CLI — Documentación completa</a></li>
         <li><a href="https://docs.oracle.com/en-us/iaas/application-performance-monitoring/doc/configure-open-telemetry.html" target="_blank">OCI APM — Integración con OpenTelemetry</a></li>
-        <li><a href="https://opentelemetry.io/docs/demo/kubernetes-deployment/" target="_blank">OTel Demo — Kubernetes Deployment Guide</a></li>
       </ul>
     </div>
 
   </div><!-- /tab-oci -->
+
+  <!-- ════════════════════ TAB LAPTOP ════════════════════ -->
+  <div id="tab-laptop" class="tab-panel">
+
+    <div class="callout laptop">
+      <span class="ci">💻</span>
+      <div><strong>Despliegue 100% local — sin cuenta cloud, sin internet durante la ejecución</strong><br />
+      Instala Docker, kind y Helm en tu laptop y ejecuta el OTel Demo completo directamente en tu máquina. Todo el software es gratuito y open-source.</div>
+    </div>
+
+    <div class="step-nav">
+      <a href="#l-1"><span class="sn">1</span>Requisitos</a>
+      <a href="#l-2"><span class="sn">2</span>Docker</a>
+      <a href="#l-3"><span class="sn">3</span>kubectl</a>
+      <a href="#l-4"><span class="sn">4</span>Helm</a>
+      <a href="#l-5"><span class="sn">5</span>kind</a>
+      <a href="#l-6"><span class="sn">6</span>Clúster</a>
+      <a href="#l-7"><span class="sn">7</span>Helm Repo</a>
+      <a href="#l-8"><span class="sn">8</span>Instalar</a>
+      <a href="#l-9"><span class="sn">9</span>Acceder</a>
+    </div>
+
+    <!-- LAPTOP 1 -->
+    <div class="step" id="l-1">
+      <div class="step-header">
+        <div class="step-circle purple">1</div>
+        <div><h2>Requisitos del sistema</h2><div class="step-desc">Hardware mínimo recomendado para correr el demo localmente</div></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Recurso</th><th>Mínimo</th><th>Recomendado</th></tr></thead>
+        <tbody>
+          <tr><td><strong>RAM</strong></td><td>8 GB</td><td>16 GB</td></tr>
+          <tr><td><strong>CPU</strong></td><td>4 núcleos</td><td>6–8 núcleos</td></tr>
+          <tr><td><strong>Disco libre</strong></td><td>20 GB</td><td>40 GB</td></tr>
+          <tr><td><strong>Sistema operativo</strong></td><td>macOS 12+, Ubuntu 20.04+, Windows 11 (WSL2)</td><td>macOS / Linux</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Windows:</strong> Se requiere <strong>WSL2</strong> (Windows Subsystem for Linux 2) con Docker Desktop. Los comandos de esta guía aplican directamente en macOS y Linux; en Windows ejecútalos dentro de la terminal WSL2.</div></div>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 2 -->
+    <div class="step" id="l-2">
+      <div class="step-header">
+        <div class="step-circle purple">2</div>
+        <div><h2>Instalar Docker Desktop</h2><div class="step-desc">Motor de contenedores — base de todo el stack local</div></div>
+      </div>
+      <div class="sw-grid">
+        <div class="sw-card">
+          <div class="sw-badge">Gratuito</div>
+          <h4>Docker Desktop — macOS</h4>
+          <p>Descarga el instalador .dmg desde docker.com/products/docker-desktop</p>
+        </div>
+        <div class="sw-card">
+          <div class="sw-badge">Gratuito</div>
+          <h4>Docker Desktop — Windows</h4>
+          <p>Requiere WSL2 habilitado. Descarga desde docker.com/products/docker-desktop</p>
+        </div>
+      </div>
+      <p><strong>Linux (Ubuntu/Debian):</strong></p>
+      <pre><span class="cmt"># Instalar Docker Engine (sin Docker Desktop)</span>
+<span class="cmd">sudo</span> apt-get update
+<span class="cmd">sudo</span> apt-get install -y ca-certificates curl
+<span class="cmd">sudo</span> install -m 0755 -d /etc/apt/keyrings
+<span class="cmd">curl</span> -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/keyrings/docker.asc
+<span class="cmd">sudo</span> apt-get install -y docker-ce docker-ce-cli containerd.io
+
+<span class="cmt"># Agregar tu usuario al grupo docker (para no usar sudo)</span>
+<span class="cmd">sudo</span> usermod -aG docker $USER
+<span class="cmd">newgrp</span> docker</pre>
+      <p>Configura los recursos de Docker Desktop — este paso es <strong>crítico</strong>:</p>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Docker Desktop → Settings → Resources:</strong> Asigna mínimo <strong>6 GB de RAM</strong> y <strong>4 CPUs</strong>. Sin este ajuste el demo no arrancará correctamente.</div></div>
+      <pre><span class="cmt"># Verificar que Docker está corriendo</span>
+<span class="cmd">docker</span> version
+<span class="cmd">docker</span> info</pre>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 3 -->
+    <div class="step" id="l-3">
+      <div class="step-header">
+        <div class="step-circle purple">3</div>
+        <div><h2>Instalar kubectl</h2><div class="step-desc">Cliente de línea de comandos para Kubernetes</div></div>
+      </div>
+      <p><strong>macOS:</strong></p>
+      <pre><span class="cmd">brew</span> install kubectl
+<span class="cmd">kubectl</span> version --client</pre>
+      <p><strong>Linux:</strong></p>
+      <pre><span class="cmd">curl</span> -LO "https://dl.k8s.io/release/$(curl -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+<span class="cmd">sudo</span> install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+<span class="cmd">kubectl</span> version --client</pre>
+      <p><strong>Windows (PowerShell):</strong></p>
+      <pre>winget install Kubernetes.kubectl</pre>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 4 -->
+    <div class="step" id="l-4">
+      <div class="step-header">
+        <div class="step-circle purple">4</div>
+        <div><h2>Instalar Helm</h2><div class="step-desc">Gestor de paquetes para Kubernetes</div></div>
+      </div>
+      <p><strong>macOS / Linux:</strong></p>
+      <pre><span class="cmd">brew</span> install helm
+<span class="cmt"># o sin Homebrew:</span>
+<span class="cmd">curl</span> https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</pre>
+      <p><strong>Windows:</strong></p>
+      <pre>winget install Helm.Helm</pre>
+      <pre><span class="cmt"># Verificar</span>
+<span class="cmd">helm</span> version</pre>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 5 -->
+    <div class="step" id="l-5">
+      <div class="step-header">
+        <div class="step-circle purple">5</div>
+        <div><h2>Instalar kind</h2><div class="step-desc">Kubernetes IN Docker — clúster K8s local usando contenedores</div></div>
+      </div>
+      <div class="callout laptop"><span class="ci">ℹ</span><div><strong>¿Qué es kind?</strong> <strong>k</strong>ubernetes <strong>IN</strong> <strong>D</strong>ocker crea un clúster Kubernetes completo usando contenedores Docker como nodos. Es la herramienta estándar para desarrollo local con K8s. Es gratuito, open-source y no requiere VM separada.</div></div>
+      <p><strong>macOS / Linux:</strong></p>
+      <pre><span class="cmd">brew</span> install kind
+<span class="cmt"># o sin Homebrew:</span>
+<span class="cmd">curl</span> -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-amd64
+<span class="cmd">chmod</span> +x ./kind
+<span class="cmd">sudo</span> mv ./kind /usr/local/bin/kind</pre>
+      <p><strong>Windows:</strong></p>
+      <pre>winget install Kubernetes.kind</pre>
+      <pre><span class="cmt"># Verificar</span>
+<span class="cmd">kind</span> version</pre>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 6 -->
+    <div class="step" id="l-6">
+      <div class="step-header">
+        <div class="step-circle purple">6</div>
+        <div><h2>Crear el clúster kind</h2><div class="step-desc">Clúster Kubernetes local listo en ~60 segundos</div></div>
+      </div>
+      <p>Crea un archivo de configuración <code>kind-config.yaml</code> para ajustar los recursos:</p>
+      <pre><span class="cmt"># kind-config.yaml</span>
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: <span class="str">"ingress-ready=true"</span>
+    extraPortMappings:
+      - containerPort: 80
+        hostPort: 80
+        protocol: TCP
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+  - role: worker
+  - role: worker</pre>
+      <p>Crear el clúster con esa configuración:</p>
+      <pre><span class="cmt"># Crear clúster (tarda ~60 segundos)</span>
+<span class="cmd">kind</span> create cluster \
+  --name otel-demo \
+  --config kind-config.yaml
+
+<span class="cmt"># Verificar que el clúster está corriendo</span>
+<span class="cmd">kubectl</span> cluster-info --context kind-otel-demo
+<span class="cmd">kubectl</span> get nodes</pre>
+      <div class="callout success"><span class="ci">✅</span><div>Deberías ver 3 nodos (<code>control-plane</code> + 2 <code>worker</code>) en estado <code>Ready</code>.</div></div>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>Tip — múltiples contextos:</strong> Si tienes otros clústeres configurados, asegúrate de usar el contexto correcto: <code>kubectl config use-context kind-otel-demo</code></div></div>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 7 -->
+    <div class="step" id="l-7">
+      <div class="step-header">
+        <div class="step-circle purple">7</div>
+        <div><h2>Agregar repositorio Helm y crear Namespace</h2><div class="step-desc">Configurar Helm y preparar el espacio en el clúster local</div></div>
+      </div>
+      <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+<span class="cmd">helm</span> repo update
+<span class="cmd">kubectl</span> create namespace otel-demo</pre>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 8 -->
+    <div class="step" id="l-8">
+      <div class="step-header">
+        <div class="step-circle purple">8</div>
+        <div><h2>Instalar el OTel Demo localmente</h2><div class="step-desc">Ajustando recursos para el entorno local</div></div>
+      </div>
+      <p>Crea <code>local-values.yaml</code> para reducir el consumo de recursos en tu laptop:</p>
+      <pre><span class="cmt"># local-values.yaml — optimizado para laptop (8–16 GB RAM)</span>
+default:
+  resources:
+    requests: { cpu: <span class="str">"50m"</span>, memory: <span class="str">"64Mi"</span> }
+    limits:   { cpu: <span class="str">"300m"</span>, memory: <span class="str">"256Mi"</span> }
+
+components:
+  frontend:
+    resources:
+      requests: { cpu: <span class="str">"150m"</span>, memory: <span class="str">"200Mi"</span> }
+      limits:   { cpu: <span class="str">"400m"</span>, memory: <span class="str">"400Mi"</span> }
+  checkoutservice:
+    resources:
+      requests: { cpu: <span class="str">"80m"</span>, memory: <span class="str">"100Mi"</span> }
+  cartservice:
+    resources:
+      requests: { cpu: <span class="str">"80m"</span>, memory: <span class="str">"100Mi"</span> }
+  adservice:
+    resources:
+      requests: { cpu: <span class="str">"100m"</span>, memory: <span class="str">"200Mi"</span> }
+      limits:   { cpu: <span class="str">"300m"</span>, memory: <span class="str">"400Mi"</span> }
+
+opentelemetry-collector:
+  resources:
+    requests: { cpu: <span class="str">"150m"</span>, memory: <span class="str">"200Mi"</span> }
+    limits:   { cpu: <span class="str">"400m"</span>, memory: <span class="str">"400Mi"</span> }
+
+prometheus:
+  server:
+    resources:
+      requests: { cpu: <span class="str">"150m"</span>, memory: <span class="str">"400Mi"</span> }
+
+grafana:
+  resources:
+    requests: { cpu: <span class="str">"80m"</span>, memory: <span class="str">"150Mi"</span> }</pre>
+      <p>Instalar el chart:</p>
+      <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
+  --namespace otel-demo \
+  --values local-values.yaml \
+  --wait \
+  --timeout 20m</pre>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Primera instalación:</strong> Docker descargará ~5–8 GB de imágenes. Asegúrate de tener buena conexión a internet y al menos 20 GB libres. El flag <code>--timeout 20m</code> da tiempo suficiente para la descarga.</div></div>
+    </div>
+
+    <hr/>
+
+    <!-- LAPTOP 9 -->
+    <div class="step" id="l-9">
+      <div class="step-header">
+        <div class="step-circle purple">9</div>
+        <div><h2>Verificar y acceder al demo</h2><div class="step-desc">Confirmar el estado y abrir los servicios en el navegador</div></div>
+      </div>
+      <pre><span class="cmt"># Ver todos los Pods — espera hasta que todos sean Running</span>
+<span class="cmd">kubectl</span> get pods -n otel-demo -w
+
+<span class="cmt"># Ver el uso de recursos del clúster</span>
+<span class="cmd">kubectl</span> top nodes
+<span class="cmd">kubectl</span> top pods -n otel-demo</pre>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Estado esperado:</strong> 20–25 Pods en <code>Running</code> en 5–15 minutos. La primera vez puede tardar más por la descarga de imágenes.</div></div>
+      <pre><span class="cmt"># Abrir en el navegador — ejecuta cada línea en una terminal separada</span>
+
+<span class="cmt"># Tienda web → http://localhost:8080</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-frontend 8080:8080 &amp;
+
+<span class="cmt"># Trazas en Jaeger → http://localhost:16686</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-jaeger-query 16686:16686 &amp;
+
+<span class="cmt"># Dashboards en Grafana → http://localhost:3000 (admin/admin)</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-grafana 3000:80 &amp;
+
+<span class="cmt"># Métricas en Prometheus → http://localhost:9090</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-prometheus 9090:9090 &amp;
+
+<span class="cmt"># Generador de carga Locust → http://localhost:8089</span>
+<span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-loadgenerator 8089:8089 &amp;</pre>
+      <div class="callout laptop"><span class="ci">💻</span><div><strong>Resumen de URLs locales:</strong><br/>
+        <ul style="margin-top:6px;padding-left:18px;">
+          <li>Tienda web: <strong>http://localhost:8080</strong></li>
+          <li>Jaeger (trazas): <strong>http://localhost:16686</strong></li>
+          <li>Grafana (dashboards): <strong>http://localhost:3000</strong> — usuario: <code>admin</code> / contraseña: <code>admin</code></li>
+          <li>Prometheus (métricas): <strong>http://localhost:9090</strong></li>
+          <li>Locust (carga): <strong>http://localhost:8089</strong></li>
+        </ul>
+      </div></div>
+      <hr/>
+      <p><strong>Limpieza del entorno local:</strong></p>
+      <pre><span class="cmt"># Desinstalar el demo</span>
+<span class="cmd">helm</span> uninstall my-otel-demo -n otel-demo
+<span class="cmd">kubectl</span> delete namespace otel-demo
+
+<span class="cmt"># Eliminar el clúster kind completo</span>
+<span class="cmd">kind</span> delete cluster --name otel-demo</pre>
+    </div>
+
+    <div class="refs">
+      <hr/>
+      <p><strong>Referencias — Software gratuito utilizado</strong></p>
+      <ul>
+        <li><a href="https://docs.docker.com/desktop/" target="_blank">Docker Desktop — Documentación oficial</a></li>
+        <li><a href="https://kind.sigs.k8s.io/" target="_blank">kind — Kubernetes IN Docker</a></li>
+        <li><a href="https://helm.sh/docs/" target="_blank">Helm — Documentación oficial</a></li>
+        <li><a href="https://kubernetes.io/docs/tasks/tools/" target="_blank">kubectl — Guía de instalación oficial</a></li>
+        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
+      </ul>
+    </div>
+
+  </div><!-- /tab-laptop -->
 
 </div><!-- /container -->
 
@@ -934,11 +1185,12 @@ grafana:
 </footer>
 
 <script>
-  function switchTab(tab, btn) {
+  function switchTab(tab, card) {
     document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
-    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.option-card').forEach(function(c){ c.classList.remove('active'); });
     document.getElementById('tab-' + tab).classList.add('active');
-    btn.classList.add('active');
+    card.classList.add('active');
+    window.scrollTo({ top: card.closest('.container') ? card.closest('.container').offsetTop - 20 : 0, behavior: 'smooth' });
   }
 </script>
 
