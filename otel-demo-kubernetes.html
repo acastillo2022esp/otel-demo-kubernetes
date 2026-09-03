@@ -83,10 +83,11 @@
     /* ── OPTION CARDS (above tabs) ── */
     .option-cards {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
       margin-bottom: 40px;
     }
+    @media (max-width: 900px) { .option-cards { grid-template-columns: repeat(2, 1fr); } }
     .option-card {
       border: 2px solid var(--border);
       border-radius: 12px;
@@ -107,6 +108,7 @@
     .option-card .card-icon.k8s    { background: #eff6ff; }
     .option-card .card-icon.oci    { background: #fff7ed; }
     .option-card .card-icon.laptop { background: #f0fdf4; }
+    .option-card .card-icon.cxp    { background: #fdf2ff; }
     .option-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
     .option-card p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
     .option-card .card-tag {
@@ -116,6 +118,7 @@
     .tag-free   { background: #dcfce7; color: #166534; }
     .tag-cloud  { background: #fff7ed; color: #9a3412; }
     .tag-local  { background: #f3e8ff; color: #6b21a8; }
+    .tag-cxp    { background: #fdf2ff; color: #7e22ce; }
     .option-card.active::after {
       content: '✓';
       position: absolute; top: 12px; right: 12px;
@@ -202,6 +205,7 @@
     .callout.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
     .callout.oci     { background: #fff7ed; border: 1px solid #fed7aa; color: #7c2d12; }
     .callout.laptop  { background: #faf5ff; border: 1px solid #e9d5ff; color: #4c1d95; }
+    .callout.cxp     { background: #fdf2ff; border: 1px solid #e9d5ff; color: #581c87; }
     .callout strong  { font-weight: 700; }
 
     /* ── TABLES ── */
@@ -271,7 +275,7 @@
 <div class="stats">
   <div class="stat"><div class="val">20+</div><div class="lbl">Microservicios</div></div>
   <div class="stat"><div class="val">11</div><div class="lbl">Lenguajes de programación</div></div>
-  <div class="stat"><div class="val">3</div><div class="lbl">Entornos de despliegue</div></div>
+  <div class="stat"><div class="val">4</div><div class="lbl">Entornos de despliegue</div></div>
   <div class="stat"><div class="val">100%</div><div class="lbl">Gratuito</div></div>
 </div>
 
@@ -300,6 +304,12 @@
       <div class="card-icon laptop">💻</div>
       <h3>Laptop / PC Local</h3>
       <p>Instala todo el software gratuito necesario y ejecuta el demo sin internet ni cuenta cloud.</p>
+    </div>
+    <div class="option-card" onclick="switchTab('cxp', this)">
+      <div class="card-tag tag-cxp">Observabilidad</div>
+      <div class="card-icon cxp">📡</div>
+      <h3>Coralogix Integration</h3>
+      <p>Envía Logs, Métricas, Trazas e Infrastructure Metrics al backend de Coralogix.</p>
     </div>
   </div>
 
@@ -1177,6 +1187,481 @@ grafana:
     </div>
 
   </div><!-- /tab-laptop -->
+
+  <!-- ════════════════════ TAB CORALOGIX ════════════════════ -->
+  <div id="tab-cxp" class="tab-panel">
+
+    <div class="callout cxp">
+      <span class="ci">📡</span>
+      <div><strong>Coralogix — Observabilidad completa: Logs · Metrics · Traces · Infrastructure</strong><br />
+      Integra el OTel Demo con Coralogix para centralizar toda la telemetría en una plataforma: analiza logs con parsing avanzado, crea métricas desde eventos, construye dashboards y configura alertas proactivas.</div>
+    </div>
+
+    <div class="step-nav">
+      <a href="#cx-1"><span class="sn">1</span>Login Coralogix</a>
+      <a href="#cx-2"><span class="sn">2</span>Deploy OTel Demo</a>
+      <a href="#cx-3"><span class="sn">3</span>Configurar Telemetría</a>
+      <a href="#cx-4"><span class="sn">4</span>Parsing de Logs</a>
+      <a href="#cx-5"><span class="sn">5</span>Enrichments</a>
+      <a href="#cx-6"><span class="sn">6</span>Events2Metrics</a>
+      <a href="#cx-7"><span class="sn">7</span>Dashboard</a>
+      <a href="#cx-8"><span class="sn">8</span>Alertas</a>
+    </div>
+
+    <!-- CXP 1 -->
+    <div class="step" id="cx-1">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">1</div>
+        <div><h2>Acceder a tu cuenta Coralogix</h2><div class="step-desc">Login y verificación del entorno asignado</div></div>
+      </div>
+      <ol>
+        <li>Accede a la URL de tu cuenta Coralogix asignada (ej. <code>https://&lt;tu-equipo&gt;.coralogix.com</code>).</li>
+        <li>Inicia sesión con tus credenciales.</li>
+        <li>Una vez dentro, navega a <strong>Settings → API Keys</strong> y copia tu <strong>Send-Your-Data API Key</strong> — la necesitarás para el Paso 3.</li>
+        <li>Anota también el <strong>Endpoint de ingesta</strong> correspondiente a tu región:</li>
+      </ol>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Región Coralogix</th><th>Endpoint OTLP (gRPC)</th><th>Endpoint OTLP (HTTP)</th></tr></thead>
+        <tbody>
+          <tr><td>US1 (us-east-1)</td><td><code>otel-traces.coralogix.us:443</code></td><td><code>https://ingress.coralogix.us/</code></td></tr>
+          <tr><td>EU1 (eu-west-1)</td><td><code>otel-traces.coralogix.com:443</code></td><td><code>https://ingress.coralogix.com/</code></td></tr>
+          <tr><td>EU2 (eu-north-1)</td><td><code>otel-traces.eu2.coralogix.com:443</code></td><td><code>https://ingress.eu2.coralogix.com/</code></td></tr>
+          <tr><td>AP1 (ap-south-1)</td><td><code>otel-traces.coralogix.in:443</code></td><td><code>https://ingress.coralogix.in/</code></td></tr>
+          <tr><td>AP2 (ap-southeast-1)</td><td><code>otel-traces.coralogixsg.com:443</code></td><td><code>https://ingress.coralogixsg.com/</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Cómo saber mi región?</strong> En la consola de Coralogix, la URL del navegador indica tu dominio (ej. <code>.coralogix.com</code> = EU1, <code>.coralogix.us</code> = US1). Puedes confirmarlo en <strong>Settings → Account → Region</strong>.</div></div>
+    </div>
+
+    <hr/>
+
+    <!-- CXP 2 -->
+    <div class="step" id="cx-2">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">2</div>
+        <div><h2>Desplegar el OTel Demo en Kubernetes</h2><div class="step-desc">Clúster listo como base para la integración con Coralogix</div></div>
+      </div>
+      <div class="callout info"><span class="ci">ℹ</span><div>Si ya tienes el OTel Demo desplegado (siguiendo cualquiera de los otros tabs), puedes saltar directamente al <a href="#cx-3">Paso 3</a>. Este paso asume que partes de cero.</div></div>
+      <p>Agrega el Helm repo y crea el namespace:</p>
+      <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+<span class="cmd">helm</span> repo update
+<span class="cmd">kubectl</span> create namespace otel-demo</pre>
+      <p>Instala el demo <strong>sin</strong> el Collector interno (lo reemplazaremos con uno configurado para Coralogix):</p>
+      <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
+  --namespace otel-demo \
+  --set opentelemetry-collector.enabled=false \
+  --wait</pre>
+      <div class="callout warn"><span class="ci">⚠</span><div>Al deshabilitar el Collector interno, los servicios enviarán telemetría al puerto 4317 del Collector que instalaremos a continuación. Verifica que todos los Pods están en <code>Running</code> antes de continuar.</div></div>
+      <pre><span class="cmd">kubectl</span> get pods -n otel-demo</pre>
+    </div>
+
+    <hr/>
+
+    <!-- CXP 3 -->
+    <div class="step" id="cx-3">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">3</div>
+        <div><h2>Configurar el OTel Collector para enviar a Coralogix</h2><div class="step-desc">Logs · Métricas · Trazas · Infrastructure Metrics</div></div>
+      </div>
+      <p>Crea un Secret de Kubernetes con tu API Key de Coralogix:</p>
+      <pre><span class="cmd">kubectl</span> create secret generic coralogix-keys \
+  --namespace otel-demo \
+  --from-literal=PRIVATE_KEY=<span class="val">&lt;TU_SEND_YOUR_DATA_API_KEY&gt;</span></pre>
+      <p>Crea el archivo <code>otel-collector-coralogix.yaml</code>:</p>
+      <pre><span class="cmt"># otel-collector-coralogix.yaml</span>
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+  namespace: otel-demo
+data:
+  config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      <span class="cmt"># Infrastructure Metrics — scraping de nodos y pods</span>
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: <span class="str">'kubernetes-nodes'</span>
+              kubernetes_sd_configs:
+                - role: node
+            - job_name: <span class="str">'kubernetes-pods'</span>
+              kubernetes_sd_configs:
+                - role: pod
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+                  action: keep
+                  regex: <span class="str">'true'</span>
+      k8s_cluster:
+        auth_type: serviceAccount
+        collection_interval: 30s
+
+    processors:
+      batch:
+        timeout: 5s
+        send_batch_size: 1000
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+      <span class="cmt"># Enriquece con metadata de Kubernetes</span>
+      k8sattributes:
+        auth_type: serviceAccount
+        passthrough: false
+        extract:
+          metadata:
+            - k8s.pod.name
+            - k8s.deployment.name
+            - k8s.namespace.name
+            - k8s.node.name
+            - k8s.pod.uid
+        pod_association:
+          - sources:
+              - from: resource_attribute
+                name: k8s.pod.ip
+      resource:
+        attributes:
+          - key: cx.application.name
+            value: <span class="str">"otel-demo"</span>
+            action: upsert
+          - key: cx.subsystem.name
+            from_attribute: k8s.deployment.name
+            action: upsert
+
+    exporters:
+      coralogix:
+        timeout: 30s
+        private_key: <span class="str">"${PRIVATE_KEY}"</span>
+        application_name: <span class="str">"otel-demo"</span>
+        subsystem_name_attributes:
+          - k8s.deployment.name
+          - service.name
+        domain: <span class="str">"&lt;TU_DOMINIO&gt;"</span>  <span class="cmt"># ej: coralogix.com, coralogix.us</span>
+        logs:
+          headers:
+            X-Coralogix-Application-Name: <span class="str">"otel-demo"</span>
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, resource, batch]
+          exporters: [coralogix]
+        metrics:
+          receivers: [otlp, prometheus, k8s_cluster]
+          processors: [memory_limiter, k8sattributes, resource, batch]
+          exporters: [coralogix]
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, resource, batch]
+          exporters: [coralogix]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: otel-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      serviceAccountName: otel-collector-sa
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:0.104.0
+          args: ["--config=/conf/config.yaml"]
+          env:
+            - name: PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: coralogix-keys
+                  key: PRIVATE_KEY
+          ports:
+            - containerPort: 4317
+            - containerPort: 4318
+          volumeMounts:
+            - name: config
+              mountPath: /conf
+      volumes:
+        - name: config
+          configMap:
+            name: otel-collector-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  namespace: otel-demo
+spec:
+  selector:
+    app: otel-collector
+  ports:
+    - name: grpc
+      port: 4317
+      targetPort: 4317
+    - name: http
+      port: 4318
+      targetPort: 4318
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: otel-collector-sa
+  namespace: otel-demo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: otel-collector-role
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "pods", "services", "endpoints", "namespaces"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["replicasets", "deployments"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: otel-collector-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: otel-collector-role
+subjects:
+  - kind: ServiceAccount
+    name: otel-collector-sa
+    namespace: otel-demo</pre>
+      <p>Aplica el manifiesto:</p>
+      <pre><span class="cmd">kubectl</span> apply -f otel-collector-coralogix.yaml
+
+<span class="cmt"># Verificar que el Collector arrancó correctamente</span>
+<span class="cmd">kubectl</span> get pods -n otel-demo -l app=otel-collector
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector --follow</pre>
+      <div class="callout success"><span class="ci">✅</span><div>En los logs deberías ver <strong>sin errores de conexión</strong> y líneas como <code>Everything is ready. Begin running and processing data.</code>. En Coralogix, tras 1–2 minutos aparecerán los primeros datos en <strong>Explore → Logs</strong>.</div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tipo de telemetría</th><th>Receiver en Collector</th><th>Dónde verlo en Coralogix</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Logs</strong></td><td><code>otlp</code></td><td>Explore → Logs</td></tr>
+          <tr><td><strong>Traces</strong></td><td><code>otlp</code></td><td>Explore → Tracing</td></tr>
+          <tr><td><strong>Metrics (app)</strong></td><td><code>otlp</code></td><td>Explore → Metrics → PromQL</td></tr>
+          <tr><td><strong>Infrastructure Metrics</strong></td><td><code>prometheus</code> + <code>k8s_cluster</code></td><td>Explore → Metrics → Kubernetes</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <hr/>
+
+    <!-- CXP 4 -->
+    <div class="step" id="cx-4">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">4</div>
+        <div><h2>Parsear información útil de los Logs</h2><div class="step-desc">Extraer campos estructurados con Parsing Rules en Coralogix</div></div>
+      </div>
+      <p>Los logs del OTel Demo llegan en formato JSON. Coralogix permite extraer campos específicos mediante <strong>Parsing Rules</strong> para convertir texto en campos consultables y filtrables.</p>
+      <p><strong>Configurar una Parsing Rule en Coralogix:</strong></p>
+      <ol>
+        <li>En la consola, ve a <strong>Data Flow → Parsing Rules</strong>.</li>
+        <li>Haz clic en <strong>"New Rule Group"</strong>.</li>
+        <li>Configura el scope: Application = <code>otel-demo</code>, Subsystem = <code>*</code>.</li>
+        <li>Agrega una regla de tipo <strong>JSON Extract</strong> para el campo <code>text</code> y mapea los campos extraídos.</li>
+        <li>Guarda y verifica en <strong>Explore → Logs</strong> que los campos aparecen como columnas.</li>
+      </ol>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>Ejemplo — Regex Parsing Rule</strong> para extraer el <code>http.method</code>, <code>http.status_code</code> y <code>service.name</code> del body del log:</div></div>
+      <pre><span class="cmt"># Expresión regular de ejemplo para logs de frontend</span>
+(?P&lt;http_method&gt;GET|POST|PUT|DELETE|PATCH)\s(?P&lt;http_path&gt;\/[^\s]*)\s.*?status=(?P&lt;http_status&gt;\d{3})</pre>
+      <div class="callout cxp"><span class="ci">💡</span><div>
+        <strong>Campos recomendados a parsear del OTel Demo:</strong>
+        <ul style="margin-top:6px;padding-left:18px;">
+          <li><code>service.name</code> — nombre del microservicio origen</li>
+          <li><code>http.method</code> + <code>http.route</code> + <code>http.status_code</code> — peticiones HTTP</li>
+          <li><code>span_id</code> + <code>trace_id</code> — correlación entre logs y trazas</li>
+          <li><code>exception.type</code> + <code>exception.message</code> — errores de aplicación</li>
+          <li><code>k8s.pod.name</code> + <code>k8s.namespace.name</code> — contexto de infraestructura</li>
+        </ul>
+      </div></div>
+      <p>Verifica el resultado en Explore → Logs usando el campo extraído:</p>
+      <pre><span class="cmt"># Query de ejemplo en Lucene (DataPrime también disponible)</span>
+http_status:5* AND service_name:checkoutservice</pre>
+    </div>
+
+    <hr/>
+
+    <!-- CXP 5 -->
+    <div class="step" id="cx-5">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">5</div>
+        <div><h2>Aplicar Enrichments</h2><div class="step-desc">Agregar contexto adicional a la telemetría ingresada</div></div>
+      </div>
+      <p>Los <strong>Enrichments</strong> en Coralogix añaden campos contextuales a logs y trazas en tiempo real, basándose en valores existentes o en lookup tables externas.</p>
+      <p><strong>Tipos de enrichment aplicables al OTel Demo:</strong></p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tipo de Enrichment</th><th>Campo fuente</th><th>Dato añadido</th><th>Utilidad</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Geo-enrichment</strong></td><td><code>http.client_ip</code></td><td>País, ciudad, ASN</td><td>Ver distribución geográfica de usuarios</td></tr>
+          <tr><td><strong>Custom Lookup Table</strong></td><td><code>service.name</code></td><td>Equipo dueño, tier, SLA</td><td>Atribuir incidentes a equipos rápidamente</td></tr>
+          <tr><td><strong>AWS enrichment</strong></td><td><code>k8s.node.name</code></td><td>Tipo de instancia, AZ, región</td><td>Correlacionar fallos con infraestructura AWS</td></tr>
+          <tr><td><strong>Security enrichment</strong></td><td><code>http.client_ip</code></td><td>Reputación IP, threat score</td><td>Detectar IPs maliciosas en el tráfico del demo</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Configurar un Custom Lookup Table enrichment:</strong></p>
+      <ol>
+        <li>Ve a <strong>Data Flow → Enrichments → Custom Enrichment</strong>.</li>
+        <li>Sube un CSV con la estructura: <code>service_name,team,tier,sla_minutes</code>.</li>
+        <li>Configura el campo de join: <code>service.name</code>.</li>
+        <li>Activa el enrichment y aplícalo a la aplicación <code>otel-demo</code>.</li>
+      </ol>
+      <pre><span class="cmt"># Ejemplo de CSV para Custom Enrichment</span>
+service_name,team,tier,sla_minutes
+frontend,platform-team,tier-1,5
+checkoutservice,commerce-team,tier-1,5
+cartservice,commerce-team,tier-2,15
+recommendationservice,ml-team,tier-3,60
+emailservice,notifications-team,tier-3,60</pre>
+      <div class="callout cxp"><span class="ci">💡</span><div>Una vez activo el enrichment, los logs de <code>checkoutservice</code> tendrán automáticamente los campos <code>team=commerce-team</code> y <code>sla_minutes=5</code>, permitiendo filtrar y alertar por equipo directamente.</div></div>
+    </div>
+
+    <hr/>
+
+    <!-- CXP 6 -->
+    <div class="step" id="cx-6">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">6</div>
+        <div><h2>Crear una métrica con Events2Metrics</h2><div class="step-desc">Convertir logs y trazas en métricas de largo plazo para retención y alertas</div></div>
+      </div>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué es Events2Metrics?</strong> Events2Metrics convierte logs o spans individuales en métricas agregadas (counter, gauge, histogram) que se almacenan de forma permanente con bajo costo. Ideal para retención de KPIs más allá de la ventana de logs.</div></div>
+      <p><strong>Ejemplo: Métrica de tasa de errores HTTP por servicio</strong></p>
+      <ol>
+        <li>Ve a <strong>Data Flow → Events2Metrics</strong> y haz clic en <strong>"Add Metric"</strong>.</li>
+        <li>Selecciona fuente <strong>Spans</strong> (trazas).</li>
+        <li>Configura los campos:</li>
+      </ol>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Metric name</td><td><code>otel_demo_http_errors_total</code></td></tr>
+          <tr><td>Metric type</td><td>Counter</td></tr>
+          <tr><td>Filter</td><td><code>http.status_code >= 400</code></td></tr>
+          <tr><td>Dimensions (labels)</td><td><code>service.name</code>, <code>http.route</code>, <code>http.status_code</code></td></tr>
+          <tr><td>Application</td><td><code>otel-demo</code></td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Segundo ejemplo: Latencia P95 del checkout</strong></p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Metric name</td><td><code>otel_demo_checkout_duration_ms</code></td></tr>
+          <tr><td>Metric type</td><td>Histogram</td></tr>
+          <tr><td>Value field</td><td><code>duration_ms</code></td></tr>
+          <tr><td>Filter</td><td><code>service.name:checkoutservice</code></td></tr>
+          <tr><td>Dimensions</td><td><code>service.name</code>, <code>span.name</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout success"><span class="ci">✅</span><div>Tras 2–5 minutos, las métricas aparecerán en <strong>Explore → Metrics</strong> y podrás consultarlas con PromQL: <code>rate(otel_demo_http_errors_total[5m])</code></div></div>
+    </div>
+
+    <hr/>
+
+    <!-- CXP 7 -->
+    <div class="step" id="cx-7">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">7</div>
+        <div><h2>Construir un Dashboard de salud del entorno</h2><div class="step-desc">Panel unificado con Logs, Métricas, Trazas e Infraestructura</div></div>
+      </div>
+      <p>Ve a <strong>Dashboards → New Dashboard</strong> y crea los siguientes widgets:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Widget</th><th>Tipo</th><th>Query / Fuente</th><th>Propósito</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Tasa de peticiones totales</td><td>Line Chart</td><td><code>rate(http_server_duration_milliseconds_count[5m])</code></td><td>Throughput general</td></tr>
+          <tr><td>2</td><td>Tasa de errores HTTP (4xx/5xx)</td><td>Line Chart</td><td><code>rate(otel_demo_http_errors_total[5m])</code></td><td>Detectar degradación</td></tr>
+          <tr><td>3</td><td>Latencia P95 por servicio</td><td>Bar Chart</td><td><code>histogram_quantile(0.95, rate(http_server_duration_milliseconds_bucket[5m]))</code></td><td>Identificar servicios lentos</td></tr>
+          <tr><td>4</td><td>Logs de errores recientes</td><td>Log Grid</td><td>Filtro: <code>severity:ERROR OR severity:CRITICAL</code></td><td>Visibilidad operacional</td></tr>
+          <tr><td>5</td><td>Pods en estado Running vs Not Ready</td><td>Gauge</td><td>Metric: <code>kube_pod_status_phase</code></td><td>Salud de infraestructura</td></tr>
+          <tr><td>6</td><td>Top 5 servicios por volumen de errores</td><td>Data Table</td><td><code>topk(5, sum by(service_name) (otel_demo_http_errors_total))</code></td><td>Priorización de incidentes</td></tr>
+          <tr><td>7</td><td>Trazas con duración > 1s</td><td>Log Grid (Spans)</td><td>Filtro: <code>duration_ms > 1000</code></td><td>Identificar transacciones lentas</td></tr>
+          <tr><td>8</td><td>Uso de CPU/RAM por nodo</td><td>Line Chart</td><td><code>node_cpu_seconds_total</code> / <code>node_memory_MemAvailable_bytes</code></td><td>Capacidad de infraestructura</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout cxp"><span class="ci">💡</span><div>
+        <strong>Organización recomendada del dashboard en secciones:</strong>
+        <ul style="margin-top:6px;padding-left:18px;">
+          <li><strong>Sección 1 — Disponibilidad:</strong> Tasa de peticiones + Tasa de errores + Pods status</li>
+          <li><strong>Sección 2 — Rendimiento:</strong> Latencias P50/P95/P99 + Trazas lentas</li>
+          <li><strong>Sección 3 — Infraestructura:</strong> CPU, RAM, red por nodo</li>
+          <li><strong>Sección 4 — Logs recientes:</strong> Grid de errores en tiempo real</li>
+        </ul>
+      </div></div>
+      <p>Guarda el dashboard y compártelo con tu equipo desde <strong>Dashboard → Share → Copy Link</strong>.</p>
+    </div>
+
+    <hr/>
+
+    <!-- CXP 8 -->
+    <div class="step" id="cx-8">
+      <div class="step-header">
+        <div class="step-circle" style="background:#7e22ce;">8</div>
+        <div><h2>Configurar Alertas proactivas</h2><div class="step-desc">Detección temprana de problemas antes de que impacten a los usuarios</div></div>
+      </div>
+      <p>Ve a <strong>Alerts → New Alert</strong> y crea las siguientes alertas para monitorear el OTel Demo:</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Alerta</th><th>Tipo</th><th>Condición</th><th>Severidad</th><th>Propósito</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Alta tasa de errores 5xx</strong></td><td>Metric Alert</td><td><code>rate(otel_demo_http_errors_total{status_code=~"5.."}[5m]) &gt; 0.1</code></td><td>Critical</td><td>Detectar fallos del servidor</td></tr>
+          <tr><td><strong>Latencia P95 elevada</strong></td><td>Metric Alert</td><td><code>histogram_quantile(0.95, rate(http_server_duration_milliseconds_bucket[5m])) &gt; 2000</code></td><td>High</td><td>Degradación de rendimiento</td></tr>
+          <tr><td><strong>Pod en CrashLoopBackOff</strong></td><td>Log Alert</td><td>Log text contains <code>CrashLoopBackOff</code></td><td>Critical</td><td>Fallo de aplicación</td></tr>
+          <tr><td><strong>Excepción no controlada</strong></td><td>Log Alert</td><td>Severity = <code>ERROR</code> AND <code>exception.type</code> exists — más de 10 en 5 min</td><td>High</td><td>Errores de aplicación frecuentes</td></tr>
+          <tr><td><strong>Checkoutservice sin tráfico</strong></td><td>Metric Alert (absence)</td><td><code>rate(http_server_duration_milliseconds_count{service="checkoutservice"}[10m]) == 0</code></td><td>High</td><td>Servicio crítico caído</td></tr>
+          <tr><td><strong>Uso de memoria > 85%</strong></td><td>Metric Alert</td><td><code>(1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) &gt; 0.85</code></td><td>Medium</td><td>Riesgo de OOM en nodos</td></tr>
+          <tr><td><strong>OTel Collector sin datos</strong></td><td>Metric Alert (absence)</td><td>No hay datos en el exporter en 10 min</td><td>Critical</td><td>Pipeline de telemetría roto</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>Configurar notificaciones para las alertas:</strong></p>
+      <ol>
+        <li>En cada alerta, ve a la sección <strong>Notify</strong>.</li>
+        <li>Elige el canal: <strong>Email</strong>, <strong>Slack</strong>, <strong>PagerDuty</strong>, <strong>Webhook</strong>, etc.</li>
+        <li>Configura el <strong>Notification Group</strong> (quién recibe qué severidad).</li>
+        <li>Activa el <strong>Alert Suppression</strong> para evitar flapping en alertas ruidosas.</li>
+      </ol>
+      <div class="callout success"><span class="ci">✅</span><div><strong>¡Integración completa con Coralogix!</strong> El OTel Demo envía Logs, Métricas, Trazas e Infrastructure Metrics. Los logs están parseados y enriquecidos, tienes métricas persistentes vía Events2Metrics, un dashboard de salud completo y alertas proactivas configuradas.</div></div>
+      <hr/>
+      <p><strong>Verificación final del flujo completo:</strong></p>
+      <pre><span class="cmt"># Confirmar que el Collector está enviando datos</span>
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector | grep -i "exporter"
+
+<span class="cmt"># Ver número de spans exportados</span>
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector | grep "TracesExporter"
+
+<span class="cmt"># Ver número de logs exportados</span>
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector | grep "LogsExporter"</pre>
+    </div>
+
+    <div class="refs">
+      <hr/>
+      <p><strong>Referencias Coralogix</strong></p>
+      <ul>
+        <li><a href="https://coralogix.com/docs/opentelemetry/" target="_blank">Coralogix — Integración con OpenTelemetry</a></li>
+        <li><a href="https://coralogix.com/docs/opentelemetry-collector-coralogix-exporter/" target="_blank">Coralogix Exporter para OTel Collector</a></li>
+        <li><a href="https://coralogix.com/docs/events-to-metrics/" target="_blank">Events2Metrics — Documentación oficial</a></li>
+        <li><a href="https://coralogix.com/docs/parsing-rules/" target="_blank">Parsing Rules en Coralogix</a></li>
+        <li><a href="https://coralogix.com/docs/custom-enrichment/" target="_blank">Custom Enrichment — Lookup Tables</a></li>
+        <li><a href="https://coralogix.com/docs/alerts/" target="_blank">Alertas en Coralogix</a></li>
+        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
+      </ul>
+    </div>
+
+  </div><!-- /tab-cxp -->
 
 </div><!-- /container -->
 
