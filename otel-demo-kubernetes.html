@@ -245,6 +245,7 @@
     <a href="#step6"><span class="num">6</span>Verificar</a>
     <a href="#step7"><span class="num">7</span>Acceder</a>
     <a href="#step8"><span class="num">8</span>Explorar</a>
+    <a href="#recomendacion"><span class="num">★</span>Recomendación</a>
   </nav>
 
   <!-- ── STEP 1 ── -->
@@ -598,6 +599,120 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
 
 <span class="cmt"># Eliminar el namespace (borra todos los recursos)</span>
 <span class="cmd">kubectl</span> delete namespace otel-demo</pre>
+  </div>
+
+  <hr />
+
+  <!-- ── RECOMENDACIÓN ── -->
+  <div class="step" id="recomendacion">
+    <div class="step-header">
+      <div class="step-num" style="background:#10b981;">★</div>
+      <h2>Recomendación: ¿Dónde desplegarlo de forma innovadora y gratuita?</h2>
+    </div>
+    <p>
+      Si buscas un entorno <strong>real en la nube, sin costo y con Kubernetes gestionado</strong>,
+      la mejor combinación en 2024-2025 es usar <strong>Civo Cloud</strong> como clúster +
+      <strong>GitHub Actions</strong> como pipeline CI/CD. Aquí está el porqué y cómo:
+    </p>
+
+    <div class="callout success">
+      <strong>Recomendación principal: Civo Cloud + GitHub Actions</strong><br />
+      Civo ofrece <strong>$250 USD de crédito gratuito</strong> al registrarte, clústeres K3s
+      que arrancan en &lt;90 segundos y son los más económicos del mercado cloud. Con GitHub
+      Actions (gratis para repos públicos) puedes automatizar el deploy completo con un solo
+      <code>git push</code>.
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Plataforma</th><th>Tier gratuito</th><th>Kubernetes</th><th>Por qué usarlo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Civo Cloud</strong></td>
+          <td>$250 USD crédito inicial</td>
+          <td>K3s gestionado</td>
+          <td>El más rápido y económico. Clúster listo en 90s. Perfecto para demos.</td>
+        </tr>
+        <tr>
+          <td><strong>Oracle Cloud (OCI)</strong></td>
+          <td>Always Free: 4 ARM CPUs + 24 GB RAM</td>
+          <td>OKE gestionado</td>
+          <td>El tier gratuito <em>permanente</em> más generoso del mercado. Ideal para labs.</td>
+        </tr>
+        <tr>
+          <td><strong>Google Cloud (GKE)</strong></td>
+          <td>$300 USD crédito 90 días + Autopilot</td>
+          <td>GKE Autopilot</td>
+          <td>Sin gestión de nodos, paga solo por Pods. Integración nativa con Cloud Trace.</td>
+        </tr>
+        <tr>
+          <td><strong>GitHub Codespaces</strong></td>
+          <td>60 horas/mes gratis</td>
+          <td>kind en contenedor</td>
+          <td>Sin instalar nada local. Abre el repo y ejecuta el demo en el navegador.</td>
+        </tr>
+        <tr>
+          <td><strong>Killercoda / Play-with-K8s</strong></td>
+          <td>100% gratuito, sin registro</td>
+          <td>Playground efímero</td>
+          <td>Ideal para pruebas rápidas de 1-2 horas sin costo ni cuenta.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout info">
+      <strong>Opción innovadora: GitHub Codespaces (cero fricción)</strong><br />
+      Agrega un archivo <code>.devcontainer/devcontainer.json</code> a tu repositorio con
+      la imagen <code>mcr.microsoft.com/devcontainers/universal</code> y un
+      <code>postCreateCommand</code> que instale kind + Helm y despliegue el demo
+      automáticamente. Cualquier persona que abra el repo en Codespaces tendrá el OTel Demo
+      corriendo en menos de 5 minutos, <strong>directamente desde el navegador</strong>,
+      sin instalar nada.
+    </div>
+
+    <p><strong>Ejemplo de .devcontainer/devcontainer.json para Codespaces:</strong></p>
+    <pre>{
+  <span class="val">"name"</span>: <span class="val">"OTel Demo"</span>,
+  <span class="val">"image"</span>: <span class="val">"mcr.microsoft.com/devcontainers/universal:2"</span>,
+  <span class="val">"features"</span>: {
+    <span class="val">"ghcr.io/devcontainers/features/kubectl-helm-minikube:1"</span>: {
+      <span class="val">"version"</span>: <span class="val">"latest"</span>,
+      <span class="val">"helm"</span>: <span class="val">"latest"</span>,
+      <span class="val">"minikube"</span>: <span class="val">"latest"</span>
+    }
+  },
+  <span class="val">"postCreateCommand"</span>: <span class="val">"minikube start --memory=6144 --cpus=4 && helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts && helm repo update && kubectl create namespace otel-demo && helm install my-otel-demo open-telemetry/opentelemetry-demo --namespace otel-demo --wait"</span>,
+  <span class="val">"forwardPorts"</span>: [8080, 16686, 3000, 9090]
+}</pre>
+
+    <p><strong>Pasos para usar Civo Cloud (recomendación principal):</strong></p>
+    <ol>
+      <li>Regístrate en <a href="https://www.civo.com/" target="_blank">civo.com</a> y obtén los $250 USD de crédito.</li>
+      <li>Instala la CLI de Civo: <code>brew install civo</code></li>
+      <li>Crea un clúster K3s:</li>
+    </ol>
+    <pre><span class="cmt"># Autenticarse con Civo</span>
+<span class="cmd">civo</span> apikey save my-key &lt;TU_API_KEY&gt;
+
+<span class="cmt"># Crear clúster K3s (listo en ~90 segundos)</span>
+<span class="cmd">civo</span> kubernetes create otel-cluster \
+  --size g4s.kube.medium \
+  --nodes 3 \
+  --wait
+
+<span class="cmt"># Obtener kubeconfig</span>
+<span class="cmd">civo</span> kubernetes config otel-cluster --save --merge</pre>
+    <ol start="4">
+      <li>Continúa desde el <a href="#step2">Paso 2</a> de esta guía (Helm repo, namespace, install).</li>
+    </ol>
+
+    <div class="callout warn">
+      <strong>Costo estimado en Civo:</strong> Un clúster de 3 nodos <code>g4s.kube.medium</code>
+      (2 vCPU / 4 GB RAM cada uno) cuesta aprox. <strong>$0.018/hora</strong> por nodo.
+      Con el crédito de $250 USD puedes tener el demo corriendo
+      <strong>más de 4,600 horas</strong> antes de gastar un centavo propio.
+    </div>
   </div>
 
   <hr />
