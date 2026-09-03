@@ -83,11 +83,12 @@
     /* ── OPTION CARDS (above tabs) ── */
     .option-cards {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
       margin-bottom: 40px;
     }
-    @media (max-width: 900px) { .option-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 1100px) { .option-cards { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 700px)  { .option-cards { grid-template-columns: repeat(2, 1fr); } }
     .option-card {
       border: 2px solid var(--border);
       border-radius: 12px;
@@ -109,6 +110,7 @@
     .option-card .card-icon.oci    { background: #fff7ed; }
     .option-card .card-icon.laptop { background: #f0fdf4; }
     .option-card .card-icon.cxp    { background: #fdf2ff; }
+    .option-card .card-icon.demo   { background: #fef9c3; }
     .option-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
     .option-card p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
     .option-card .card-tag {
@@ -119,6 +121,7 @@
     .tag-cloud  { background: #fff7ed; color: #9a3412; }
     .tag-local  { background: #f3e8ff; color: #6b21a8; }
     .tag-cxp    { background: #fdf2ff; color: #7e22ce; }
+    .tag-demo   { background: #fef9c3; color: #854d0e; }
     .option-card.active::after {
       content: '✓';
       position: absolute; top: 12px; right: 12px;
@@ -206,6 +209,42 @@
     .callout.oci     { background: #fff7ed; border: 1px solid #fed7aa; color: #7c2d12; }
     .callout.laptop  { background: #faf5ff; border: 1px solid #e9d5ff; color: #4c1d95; }
     .callout.cxp     { background: #fdf2ff; border: 1px solid #e9d5ff; color: #581c87; }
+    .callout.demo    { background: #fefce8; border: 1px solid #fde68a; color: #78350f; }
+
+    /* ── DEMO TIMELINE ── */
+    .timeline { list-style: none; padding: 0; margin: 0 0 28px; position: relative; }
+    .timeline::before { content:''; position:absolute; left:18px; top:0; bottom:0; width:2px; background:var(--border); }
+    .timeline li { display:flex; gap:16px; margin-bottom:0; padding-bottom:28px; position:relative; }
+    .timeline li:last-child { padding-bottom:0; }
+    .tl-dot {
+      flex-shrink:0; width:36px; height:36px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:12px; font-weight:800; color:#fff; z-index:1;
+      border:3px solid var(--white);
+    }
+    .tl-dot.prep  { background:#64748b; }
+    .tl-dot.live  { background:#3b82f6; }
+    .tl-dot.wow   { background:#7e22ce; }
+    .tl-dot.close { background:#10b981; }
+    .tl-body { flex:1; padding-top:6px; }
+    .tl-body h3 { font-size:15px; font-weight:700; margin-bottom:4px; }
+    .tl-body p  { font-size:13px; color:var(--muted); margin:0 0 6px; }
+    .tl-time {
+      display:inline-block; font-size:11px; font-weight:700;
+      padding:2px 10px; border-radius:20px; margin-bottom:8px;
+      background:#1e293b; color:#e2e8f0;
+    }
+    .tl-tips { list-style:none; padding:0; }
+    .tl-tips li { font-size:13px; color:#334155; padding:4px 0; border-bottom:1px solid var(--border); }
+    .tl-tips li:last-child { border-bottom:none; }
+    .tl-tips li::before { content:'→ '; color:var(--blue); font-weight:700; }
+    .tip-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0 20px; }
+    .tip-card { border:1px solid var(--border); border-radius:10px; padding:14px 16px; background:var(--white); }
+    .tip-card h4 { font-size:13px; font-weight:700; margin-bottom:6px; }
+    .tip-card ul { list-style:none; padding:0; margin:0; }
+    .tip-card ul li { font-size:12px; color:var(--muted); padding:2px 0; }
+    .tip-card ul li::before { content:'• '; color:var(--blue); }
+    @media(max-width:700px){ .tip-row { grid-template-columns:1fr; } }
     .callout strong  { font-weight: 700; }
 
     /* ── TABLES ── */
@@ -310,6 +349,12 @@
       <div class="card-icon cxp">📡</div>
       <h3>Coralogix Integration</h3>
       <p>Envía Logs, Métricas, Trazas e Infrastructure Metrics al backend de Coralogix.</p>
+    </div>
+    <div class="option-card" onclick="switchTab('demo20', this)">
+      <div class="card-tag tag-demo">20 min</div>
+      <div class="card-icon demo">🎬</div>
+      <h3>Demo 20 min — Cliente</h3>
+      <p>Guión completo para demostrar el valor de Coralogix + OTel al cliente en 20 minutos.</p>
     </div>
   </div>
 
@@ -1662,6 +1707,307 @@ emailservice,notifications-team,tier-3,60</pre>
     </div>
 
   </div><!-- /tab-cxp -->
+
+
+  <!-- ════════════════════ TAB DEMO 20 MIN ════════════════════ -->
+  <div id="tab-demo20" class="tab-panel">
+
+    <div class="callout demo">
+      <span class="ci">🎬</span>
+      <div><strong>Guión de Demo — 20 minutos para impactar al cliente</strong><br/>
+      Esta guía te lleva paso a paso por una demo estructurada que muestra el valor real de Coralogix como plataforma de observabilidad sobre el OTel Demo. Todo debe estar preparado <strong>antes</strong> de la llamada. La demo en vivo son solo los últimos 15 minutos.</div>
+    </div>
+
+    <!-- PREP CHECKLIST -->
+    <div class="step" id="d-prep">
+      <div class="step-header">
+        <div class="step-circle" style="background:#1e293b;">✓</div>
+        <div><h2>Preparación previa (antes de la llamada)</h2><div class="step-desc">Todo debe estar desplegado y con datos antes de que el cliente entre</div></div>
+      </div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Regla de oro:</strong> Nunca despliegues en vivo frente al cliente. El OTel Demo tarda 5–10 min en arrancar y 2–3 min en generar tráfico. Prepara el entorno al menos <strong>30 minutos antes</strong> de la demo.</div></div>
+      <div class="tip-row">
+        <div class="tip-card">
+          <h4>Clúster y Demo</h4>
+          <ul>
+            <li>Clúster K8s activo (OCI, GKE, kind…)</li>
+            <li>OTel Demo desplegado y todos los Pods en Running</li>
+            <li>Load generator activo generando tráfico</li>
+            <li>Port-forward del frontend en http://localhost:8080</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h4>Coralogix pre-configurado</h4>
+          <ul>
+            <li>Collector configurado y enviando datos a Coralogix</li>
+            <li>Logs, Métricas y Trazas ya visibles en Explore</li>
+            <li>Dashboard de salud creado y con datos</li>
+            <li>Al menos 1 alerta configurada</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h4>Tabs del navegador abiertos</h4>
+          <ul>
+            <li>Tab 1: OTel Demo frontend (tienda web)</li>
+            <li>Tab 2: Coralogix → Explore → Logs</li>
+            <li>Tab 3: Coralogix → APM (Traces)</li>
+            <li>Tab 4: Coralogix → Dashboard de salud</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h4>Datos de conexión a mano</h4>
+          <ul>
+            <li>URL de la cuenta Coralogix asignada</li>
+            <li>Región y dominio correcto (ej. coralogix.com)</li>
+            <li>Endpoint: <code>ingress.&lt;domain&gt;:443</code></li>
+            <li>Send-Your-Data API Key lista</li>
+          </ul>
+        </div>
+      </div>
+      <p><strong>Comando rápido para verificar que todo está listo:</strong></p>
+      <pre><span class="cmt"># Todo en Running?</span>
+<span class="cmd">kubectl</span> get pods -n otel-demo | grep -v Running
+<span class="cmt"># Si no devuelve nada: perfecto, todos están Running</span>
+
+<span class="cmt"># Collector enviando datos?</span>
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector --tail=20 | grep -i export</pre>
+    </div>
+
+    <hr/>
+
+    <!-- TIMELINE -->
+    <div class="step" id="d-timeline">
+      <div class="step-header">
+        <div class="step-circle" style="background:#1e293b;">⏱</div>
+        <div><h2>Timeline de la demo — 20 minutos</h2><div class="step-desc">Distribución exacta del tiempo para mantener el ritmo y el impacto</div></div>
+      </div>
+
+      <ul class="timeline">
+
+        <!-- BLOQUE 1 -->
+        <li>
+          <div class="tl-dot prep">1</div>
+          <div class="tl-body">
+            <span class="tl-time">Min 0–2 · Contexto</span>
+            <h3>Contexto: ¿Qué es el OTel Demo y por qué importa?</h3>
+            <p>Establece el escenario antes de mostrar cualquier herramienta.</p>
+            <ul class="tl-tips">
+              <li>Presenta el OTel Demo como una tienda online de microservicios reales: <em>"20+ servicios, 11 lenguajes, tráfico real generado automáticamente — igual que su entorno de producción."</em></li>
+              <li>Abre el frontend en <strong>http://localhost:8080</strong> y haz una compra rápida para que el cliente vea la aplicación en vivo.</li>
+              <li>Mensaje clave: <em>"Cada acción que ves aquí genera trazas, métricas y logs. Vamos a ver cómo Coralogix los centraliza en tiempo real."</em></li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- BLOQUE 2 -->
+        <li>
+          <div class="tl-dot live">2</div>
+          <div class="tl-body">
+            <span class="tl-time">Min 2–5 · Logs en tiempo real</span>
+            <h3>Live Tail — Los datos llegan en tiempo real</h3>
+            <p>El primer momento WOW: el cliente ve datos fluyendo al instante.</p>
+            <ul class="tl-tips">
+              <li>Abre Coralogix → <strong>Explore → Live Tail</strong>.</li>
+              <li>Filtra por <code>Application: otel-demo</code>. Muestra el flujo de logs en tiempo real.</li>
+              <li>Haz otra compra en el frontend y muestra cómo los logs del <code>checkoutservice</code> aparecen en segundos.</li>
+              <li>Mensaje clave: <em>"No hay delay, no hay batch de 5 minutos — el dato está aquí en el segundo en que ocurre."</em></li>
+              <li>Cambia a <strong>Explore → Logs</strong> y muestra el filtrado por severidad: filtra <code>severity: ERROR</code>. Si hay errores, úsalos. Si no, usa <code>severity: WARN</code>.</li>
+              <li>Muestra que puedes hacer click en cualquier log y ver el JSON completo con todos los atributos OTel enriquecidos.</li>
+            </ul>
+            <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/coralogix-live-tail/" target="_blank">Live Tail</a> · <a href="https://coralogix.com/docs/explore-screen/" target="_blank">Explore Screen</a></div></div>
+          </div>
+        </li>
+
+        <!-- BLOQUE 3 -->
+        <li>
+          <div class="tl-dot live">3</div>
+          <div class="tl-body">
+            <span class="tl-time">Min 5–8 · Trazas distribuidas</span>
+            <h3>APM — Sigue una petición a través de 10 microservicios</h3>
+            <p>El momento más visualmente impresionante de la demo.</p>
+            <ul class="tl-tips">
+              <li>Ve a Coralogix → <strong>APM → Tracing</strong>.</li>
+              <li>Busca trazas del servicio <code>frontend</code>. Filtra por las de mayor duración (ordenar por <code>duration DESC</code>).</li>
+              <li>Abre una traza de checkout y expande el gráfico de Gantt con todos los spans.</li>
+              <li>Señala: <em>"Aquí ves la petición entrando al frontend, pasando por el cartservice, el checkoutservice, el paymentservice, el emailservice... todo en una sola vista."</em></li>
+              <li>Muestra el span de un servicio lento y el atributo <code>http.status_code</code>, <code>db.statement</code> o similar.</li>
+              <li>Usa <strong>Correlate to Logs</strong> para saltar del span al log correspondiente — este es un momento WOW muy fuerte.</li>
+              <li>Mensaje clave: <em>"En vez de buscar en 20 dashboards de 20 servicios, en un click ves exactamente dónde falló y por qué."</em></li>
+            </ul>
+            <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/opentelemetry/" target="_blank">Coralogix OTel Overview</a> · <a href="https://coralogix.com/docs/opentelemetry/kubernetes-observability/kubernetes-complete-observability-basic-configuration/" target="_blank">K8s Observability config</a></div></div>
+          </div>
+        </li>
+
+        <!-- BLOQUE 4 -->
+        <li>
+          <div class="tl-dot wow">4</div>
+          <div class="tl-body">
+            <span class="tl-time">Min 8–12 · Dashboard + Parsing + Enrichment</span>
+            <h3>Dashboard de salud + Parsing + Enrichment</h3>
+            <p>Muestra que Coralogix no solo almacena datos — los enriquece y los hace accionables.</p>
+            <ul class="tl-tips">
+              <li><strong>Dashboard (2 min):</strong> Abre el dashboard pre-construido. Señala: tasa de peticiones, tasa de errores, latencia P95 por servicio y pods Running. Mensaje: <em>"Esto es el estado de salud de todo el entorno en una pantalla."</em></li>
+              <li><strong>Parsing (1 min):</strong> Ve a <strong>Data Flow → Parsing Rules</strong>. Muestra la regla JSON Extract activa sobre los logs del OTel Demo. Luego filtra en Explore por el campo parseado (ej. <code>http_status:500</code>) — muestra que el campo extraído es consultable.</li>
+              <li><strong>Enrichment (1 min):</strong> Muestra el Custom Enrichment con el CSV de <code>service_name → team → tier → sla_minutes</code>. Abre un log y señala los campos enriquecidos (<code>team</code>, <code>sla_minutes</code>). Mensaje: <em>"Saben inmediatamente qué equipo es responsable sin abrir Confluence."</em></li>
+            </ul>
+            <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/user-guides/custom-dashboards/getting-started/" target="_blank">Custom Dashboards</a> · <a href="https://coralogix.com/docs/user-guides/data-transformation/parsing-rules/" target="_blank">Parsing Rules</a> · <a href="https://coralogix.com/docs/user-guides/enrichment_rules/" target="_blank">Enrichment</a></div></div>
+          </div>
+        </li>
+
+        <!-- BLOQUE 5 -->
+        <li>
+          <div class="tl-dot wow">5</div>
+          <div class="tl-body">
+            <span class="tl-time">Min 12–16 · Alertas proactivas</span>
+            <h3>Alertas — De reactivo a proactivo</h3>
+            <p>Cierra el argumento del valor: Coralogix te avisa antes de que el cliente lo note.</p>
+            <ul class="tl-tips">
+              <li>Ve a <strong>Alerts</strong> y muestra las alertas configuradas.</li>
+              <li>Abre la alerta de <em>"Alta tasa de errores 5xx"</em> y muestra su condición PromQL, severidad y canal de notificación (Slack/email).</li>
+              <li>Si tienes historial de triggered alerts, muéstralo. Si no, muestra el panel de <strong>Alert History</strong> vacío y explica la lógica.</li>
+              <li>Muestra la alerta de <em>"Pod en CrashLoopBackOff"</em> (Log Alert). Explica: <em>"Esta alerta mira los logs, no las métricas — porque algunos problemas no generan métricas hasta que ya es tarde."</em></li>
+              <li>Muestra la alerta de <em>"ausencia de datos"</em> del Checkoutservice: <em>"Si el servicio deja de emitir datos, la alerta se dispara. Es la diferencia entre saber que algo falló y asumir que todo está bien."</em></li>
+              <li>Mensaje clave: <em>"Sus equipos duermen mejor sabiendo que Coralogix los avisa antes de que el cliente abra un ticket."</em></li>
+            </ul>
+            <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/getting-started-with-coralogix-alerts/" target="_blank">Getting started with alerts</a> · <a href="https://coralogix.com/docs/coralogix-user-defined-alerts/" target="_blank">Alert types reference</a></div></div>
+          </div>
+        </li>
+
+        <!-- BLOQUE 6 -->
+        <li>
+          <div class="tl-dot close">6</div>
+          <div class="tl-body">
+            <span class="tl-time">Min 16–18 · Events2Metrics</span>
+            <h3>Events2Metrics — KPIs de negocio desde logs</h3>
+            <p>Diferenciador clave frente a competidores: métricas a largo plazo sin código.</p>
+            <ul class="tl-tips">
+              <li>Ve a <strong>Data Flow → Events2Metrics</strong>.</li>
+              <li>Muestra la métrica <code>otel_demo_http_errors_total</code> (counter desde spans).</li>
+              <li>Abre Explore → Metrics y ejecuta: <code>rate(otel_demo_http_errors_total[5m])</code></li>
+              <li>Mensaje clave: <em>"Sin un solo cambio en el código de la aplicación, están midiendo la tasa de errores HTTP por servicio con retención de meses, no de horas."</em></li>
+              <li>Si el cliente usa Prometheus: <em>"Es compatible con PromQL. Sus dashboards de Grafana existentes funcionarían sin tocarlos."</em></li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- BLOQUE 7 -->
+        <li>
+          <div class="tl-dot close">7</div>
+          <div class="tl-body">
+            <span class="tl-time">Min 18–20 · Cierre y preguntas</span>
+            <h3>Cierre — Resumen de valor y próximos pasos</h3>
+            <p>Termina con claridad sobre lo que vio y cuál es el siguiente paso.</p>
+            <ul class="tl-tips">
+              <li>Resume en 3 frases: <em>"Vieron datos fluyendo en tiempo real, trazas distribuidas correlacionadas con logs, y alertas proactivas. Todo sin modificar el código de la aplicación, solo configurando el OTel Collector."</em></li>
+              <li>Pregunta abierta: <em>"¿Qué parte les pareció más relevante para su entorno actual?"</em></li>
+              <li>Próximo paso concreto: propón un <strong>PoC de 2 semanas</strong> con su propia aplicación conectada a una cuenta trial de Coralogix.</li>
+              <li>Deja abierta la página con el dashboard visible — impacto visual mientras hablan.</li>
+            </ul>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+    <hr/>
+
+    <!-- CHEAT SHEET -->
+    <div class="step" id="d-cheat">
+      <div class="step-header">
+        <div class="step-circle" style="background:#1e293b;">📋</div>
+        <div><h2>Cheat Sheet — Comandos y URLs rápidas</h2><div class="step-desc">Ten esto en otra pantalla o impreso durante la demo</div></div>
+      </div>
+      <div class="tip-row">
+        <div class="tip-card">
+          <h4>URLs locales del demo</h4>
+          <ul>
+            <li>Tienda web: <strong>localhost:8080</strong></li>
+            <li>Jaeger: <strong>localhost:16686</strong></li>
+            <li>Grafana: <strong>localhost:3000</strong></li>
+            <li>Prometheus: <strong>localhost:9090</strong></li>
+            <li>Locust: <strong>localhost:8089</strong></li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h4>URLs en Coralogix</h4>
+          <ul>
+            <li>Explore → Logs: filtrar por <code>otel-demo</code></li>
+            <li>Live Tail: filtrar por Application</li>
+            <li>APM → Tracing: servicio <code>frontend</code></li>
+            <li>Dashboards → OTel Demo Health</li>
+            <li>Alerts → lista de alertas activas</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h4>Queries PromQL listas</h4>
+          <ul>
+            <li><code>rate(http_server_duration_milliseconds_count[5m])</code></li>
+            <li><code>rate(otel_demo_http_errors_total[5m])</code></li>
+            <li><code>histogram_quantile(0.95, rate(http_server_duration_milliseconds_bucket[5m]))</code></li>
+            <li><code>kube_pod_status_phase{phase="Running"}</code></li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h4>Mensajes clave de venta</h4>
+          <ul>
+            <li>"Datos en tiempo real, no en batch"</li>
+            <li>"De 20 dashboards a 1 vista unificada"</li>
+            <li>"Sin cambiar código — solo el Collector"</li>
+            <li>"De reactivo a proactivo con alertas"</li>
+            <li>"PromQL compatible con sus dashboards actuales"</li>
+          </ul>
+        </div>
+      </div>
+      <pre><span class="cmt"># Verificación de último minuto antes de la demo (ejecutar 5 min antes)</span>
+<span class="cmd">kubectl</span> get pods -n otel-demo | grep -v Running  <span class="cmt"># debe estar vacío</span>
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector --tail=5 | grep -i export  <span class="cmt"># debe mostrar exports</span>
+<span class="cmd">curl</span> -s http://localhost:8080 | grep -o "&lt;title&gt;.*&lt;/title&gt;"  <span class="cmt"># frontend responde?</span></pre>
+    </div>
+
+    <hr/>
+
+    <!-- TIPS DE IMPACTO -->
+    <div class="step" id="d-tips">
+      <div class="step-header">
+        <div class="step-circle" style="background:#10b981;">💡</div>
+        <div><h2>Tips para maximizar el impacto</h2><div class="step-desc">Pequeños detalles que hacen la diferencia en una demo</div></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Situación</th><th>Qué hacer</th></tr></thead>
+        <tbody>
+          <tr><td>No hay errores visibles en logs</td><td>Fuerza un error: <code>kubectl delete pod -n otel-demo -l app=cartservice</code> — genera CrashLoopBackOff visible en logs y alerta</td></tr>
+          <tr><td>El cliente dice "usamos Grafana"</td><td>Muestra la métrica en PromQL: "Coralogix es compatible — sus dashboards actuales funcionan aquí sin cambios"</td></tr>
+          <tr><td>El cliente dice "usamos Datadog/Splunk"</td><td>Enfócate en el costo: "¿Cuánto pagan por ingestar estos logs? Coralogix tiene TCO hasta 70% menor con la misma visibilidad"</td></tr>
+          <tr><td>La demo tarda en cargar</td><td>Mantén el ritmo hablando del arquitectura mientras carga — nunca silencio incómodo</td></tr>
+          <tr><td>Un Pod está en Error durante la demo</td><td>Úsalo a tu favor: "Miren — tenemos un pod fallando ahora mismo. Veamos cómo Coralogix lo detecta..."</td></tr>
+          <tr><td>El cliente tiene muchos servicios</td><td>"El OTel Demo tiene 20 servicios — imaginen esto con sus 200 servicios. El Collector se escala horizontalmente sin cambiar nada"</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout success"><span class="ci">✅</span><div><strong>El objetivo final de la demo:</strong> Que el cliente salga con una respuesta clara a <em>"¿Qué hace Coralogix que no puedo hacer hoy?"</em> — y con ganas de hacer un PoC con su propia aplicación.</div></div>
+    </div>
+
+    <div class="refs">
+      <hr/>
+      <p><strong>Referencias de la demo</strong></p>
+      <ul>
+        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
+        <li><a href="https://opentelemetry.io/docs/demo/kubernetes-deployment/" target="_blank">OTel Demo — Kubernetes Deployment Guide</a></li>
+        <li><a href="https://coralogix.com/docs/opentelemetry/" target="_blank">Coralogix OTel — Overview y Getting Started</a></li>
+        <li><a href="https://coralogix.com/docs/opentelemetry/kubernetes-observability/kubernetes-complete-observability-basic-configuration/" target="_blank">K8s Observability — Basic Configuration</a></li>
+        <li><a href="https://coralogix.com/docs/coralogix-domain/" target="_blank">Coralogix Domain y Endpoint Reference</a></li>
+        <li><a href="https://coralogix.com/docs/user-guides/account-management/api-keys/send-your-data-api-key/" target="_blank">Send-Your-Data API Key</a></li>
+        <li><a href="https://coralogix.com/docs/explore-screen/" target="_blank">Explore Screen</a></li>
+        <li><a href="https://coralogix.com/docs/coralogix-live-tail/" target="_blank">Live Tail</a></li>
+        <li><a href="https://coralogix.com/docs/user-guides/custom-dashboards/getting-started/" target="_blank">Custom Dashboards — Getting Started</a></li>
+        <li><a href="https://coralogix.com/docs/dashboard-widgets/" target="_blank">Dashboard Widgets Overview</a></li>
+        <li><a href="https://coralogix.com/docs/getting-started-with-coralogix-alerts/" target="_blank">Getting Started with Coralogix Alerts</a></li>
+        <li><a href="https://coralogix.com/docs/coralogix-user-defined-alerts/" target="_blank">Alert Types Reference</a></li>
+        <li><a href="https://coralogix.com/docs/user-guides/data-transformation/parsing-rules/" target="_blank">Parsing Rules Overview</a></li>
+        <li><a href="https://coralogix.com/docs/user-guides/enrichment_rules/" target="_blank">Data Enrichment Overview</a></li>
+      </ul>
+    </div>
+
+  </div><!-- /tab-demo20 -->
+
 
 </div><!-- /container -->
 
