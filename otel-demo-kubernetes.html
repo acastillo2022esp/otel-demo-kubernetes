@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OTel Demo — Guía de Despliegue Kubernetes</title>
+  <title>OTel Demo — Kubernetes Deployment Guide</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -301,60 +301,60 @@
 <!-- ══════════ HERO ══════════ -->
 <div class="hero">
   <div class="hero-badge">OpenTelemetry · CNCF Demo</div>
-  <h1>Despliega el <span>OTel Demo</span><br>en Kubernetes</h1>
-  <p>Guía paso a paso y completamente documentada para desplegar la aplicación de microservicios de referencia de OpenTelemetry. Elige tu entorno y sigue cada paso.</p>
+  <h1>Deploy the <span>OTel Demo</span><br>on Kubernetes</h1>
+  <p>A fully documented step-by-step guide to deploying the OpenTelemetry reference microservices application. Choose your environment and follow each step.</p>
   <div class="hero-links">
-    <a href="https://opentelemetry.io/docs/demo/" target="_blank" class="primary">Documentación oficial</a>
-    <a href="https://github.com/open-telemetry/opentelemetry-demo" target="_blank" class="secondary">GitHub del Demo</a>
+    <a href="https://opentelemetry.io/docs/demo/" target="_blank" class="primary">Official Docs</a>
+    <a href="https://github.com/open-telemetry/opentelemetry-demo" target="_blank" class="secondary">GitHub Repo</a>
     <a href="https://opentelemetry.io/docs/demo/kubernetes-deployment/" target="_blank" class="secondary">K8s Deployment Guide</a>
   </div>
 </div>
 
 <!-- ══════════ STATS ══════════ -->
 <div class="stats">
-  <div class="stat"><div class="val">20+</div><div class="lbl">Microservicios</div></div>
-  <div class="stat"><div class="val">11</div><div class="lbl">Lenguajes de programación</div></div>
-  <div class="stat"><div class="val">4</div><div class="lbl">Entornos de despliegue</div></div>
-  <div class="stat"><div class="val">100%</div><div class="lbl">Gratuito</div></div>
+  <div class="stat"><div class="val">20+</div><div class="lbl">Microservices</div></div>
+  <div class="stat"><div class="val">11</div><div class="lbl">Programming Languages</div></div>
+  <div class="stat"><div class="val">4</div><div class="lbl">Deployment Environments</div></div>
+  <div class="stat"><div class="val">100%</div><div class="lbl">Free</div></div>
 </div>
 
 <!-- ══════════ MAIN CONTENT ══════════ -->
 <div class="container">
 
-  <div class="section-title">Elige tu entorno de despliegue</div>
-  <div class="section-sub">Selecciona la opción que mejor se adapte a tus necesidades. Cada tab contiene la guía completa paso a paso.</div>
+  <div class="section-title">Choose your deployment environment</div>
+  <div class="section-sub">Select the option that best fits your needs. Each tab contains the complete step-by-step guide.</div>
 
   <!-- OPTION CARDS -->
   <div class="option-cards">
     <div class="option-card active" onclick="switchTab('k8s', this)">
-      <div class="card-tag tag-free">Cualquier K8s</div>
+      <div class="card-tag tag-free">Any K8s</div>
       <div class="card-icon k8s">☸</div>
       <h3>Kubernetes General</h3>
-      <p>kind, minikube, EKS, GKE, AKS o cualquier clúster Kubernetes existente.</p>
+      <p>kind, minikube, EKS, GKE, AKS or any existing Kubernetes cluster.</p>
     </div>
     <div class="option-card" onclick="switchTab('oci', this)">
       <div class="card-tag tag-cloud">Always Free</div>
       <div class="card-icon oci">☁</div>
       <h3>Oracle Cloud (OCI)</h3>
-      <p>4 ARM CPUs + 24 GB RAM gratis para siempre. OKE con control plane sin costo.</p>
+      <p>4 ARM CPUs + 24 GB RAM free forever. OKE with no-cost control plane.</p>
     </div>
     <div class="option-card" onclick="switchTab('laptop', this)">
       <div class="card-tag tag-local">100% Local</div>
       <div class="card-icon laptop">💻</div>
-      <h3>Laptop / PC Local</h3>
-      <p>Instala todo el software gratuito necesario y ejecuta el demo sin internet ni cuenta cloud.</p>
+      <h3>Laptop / Local PC</h3>
+      <p>Install all required free software and run the demo with no cloud account needed.</p>
     </div>
     <div class="option-card" onclick="switchTab('cxp', this)">
-      <div class="card-tag tag-cxp">Observabilidad</div>
+      <div class="card-tag tag-cxp">Observability</div>
       <div class="card-icon cxp">📡</div>
       <h3>Coralogix Integration</h3>
-      <p>Envía Logs, Métricas, Trazas e Infrastructure Metrics al backend de Coralogix.</p>
+      <p>Send Logs, Metrics, Traces and Infrastructure Metrics to Coralogix.</p>
     </div>
     <div class="option-card" onclick="switchTab('demo20', this)">
       <div class="card-tag tag-demo">20 min</div>
       <div class="card-icon demo">🎬</div>
-      <h3>Demo 20 min — Cliente</h3>
-      <p>Guión completo para demostrar el valor de Coralogix + OTel al cliente en 20 minutos.</p>
+      <h3>20-min Customer Demo</h3>
+      <p>Full script to demonstrate the value of Coralogix + OTel to a customer in 20 minutes.</p>
     </div>
   </div>
 
@@ -362,33 +362,33 @@
   <div id="tab-k8s" class="tab-panel active">
 
     <div class="step-nav">
-      <a href="#k-1"><span class="sn">1</span>Prerequisitos</a>
+      <a href="#k-1"><span class="sn">1</span>Prerequisites</a>
       <a href="#k-2"><span class="sn">2</span>Helm Repo</a>
       <a href="#k-3"><span class="sn">3</span>Namespace</a>
-      <a href="#k-4"><span class="sn">4</span>Valores</a>
-      <a href="#k-5"><span class="sn">5</span>Instalar</a>
-      <a href="#k-6"><span class="sn">6</span>Verificar</a>
-      <a href="#k-7"><span class="sn">7</span>Acceder</a>
-      <a href="#k-8"><span class="sn">8</span>Explorar</a>
+      <a href="#k-4"><span class="sn">4</span>Values</a>
+      <a href="#k-5"><span class="sn">5</span>Install</a>
+      <a href="#k-6"><span class="sn">6</span>Verify</a>
+      <a href="#k-7"><span class="sn">7</span>Access</a>
+      <a href="#k-8"><span class="sn">8</span>Explore</a>
     </div>
 
     <!-- K8S STEP 1 -->
     <div class="step" id="k-1">
       <div class="step-header">
         <div class="step-circle blue">1</div>
-        <div><h2>Prerequisitos</h2><div class="step-desc">Herramientas necesarias antes de comenzar</div></div>
+        <div><h2>Prerequisites</h2><div class="step-desc">Required tools before you begin</div></div>
       </div>
-      <p>Asegúrate de tener instaladas y configuradas las siguientes herramientas en tu máquina:</p>
+      <p>Make sure the following tools are installed and configured on your machine:</p>
       <div class="table-wrap"><table>
-        <thead><tr><th>Herramienta</th><th>Versión mínima</th><th>Propósito</th><th>Instalación</th></tr></thead>
+        <thead><tr><th>Tool</th><th>Min version</th><th>Purpose</th><th>Install</th></tr></thead>
         <tbody>
-          <tr><td><strong>kubectl</strong></td><td>v1.24+</td><td>Gestión del clúster Kubernetes</td><td><code>brew install kubectl</code></td></tr>
-          <tr><td><strong>Helm</strong></td><td>v3.9+</td><td>Gestor de paquetes para Kubernetes</td><td><code>brew install helm</code></td></tr>
-          <tr><td><strong>Clúster K8s</strong></td><td>v1.24+</td><td>kind, minikube, EKS, GKE, AKS…</td><td>Ver pestaña Laptop para local</td></tr>
+          <tr><td><strong>kubectl</strong></td><td>v1.24+</td><td>Kubernetes cluster management</td><td><code>brew install kubectl</code></td></tr>
+          <tr><td><strong>Helm</strong></td><td>v3.9+</td><td>Kubernetes package manager</td><td><code>brew install helm</code></td></tr>
+          <tr><td><strong>K8s Cluster</strong></td><td>v1.24+</td><td>kind, minikube, EKS, GKE, AKS…</td><td>See Laptop tab for local setup</td></tr>
         </tbody>
       </table></div>
-      <div class="callout warn"><span class="ci">⚠</span><div><strong>Recursos mínimos:</strong> El demo necesita al menos <strong>6 GB de RAM</strong> y <strong>4 vCPUs</strong> disponibles en el clúster. En entornos locales (kind/minikube) configura estos límites primero.</div></div>
-      <p>Verifica acceso al clúster y versión de Helm:</p>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Minimum resources:</strong> The demo requires at least <strong>6 GB RAM</strong> and <strong>4 vCPUs</strong> available in the cluster. For local environments (kind/minikube) configure these limits first.</div></div>
+      <p>Verify cluster access and Helm version:</p>
       <pre><span class="cmd">kubectl</span> cluster-info
 <span class="cmd">kubectl</span> get nodes
 <span class="cmd">helm</span> version</pre>
@@ -400,12 +400,12 @@
     <div class="step" id="k-2">
       <div class="step-header">
         <div class="step-circle blue">2</div>
-        <div><h2>Agregar repositorio Helm de OTel</h2><div class="step-desc">Registrar el chart oficial de CNCF OpenTelemetry</div></div>
+        <div><h2>Add OTel Helm Repository</h2><div class="step-desc">Register the official CNCF OpenTelemetry chart</div></div>
       </div>
       <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 <span class="cmd">helm</span> repo update</pre>
-      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué hace esto?</strong> <code>helm repo add</code> registra la URL bajo el alias <em>open-telemetry</em>. <code>helm repo update</code> descarga el índice actualizado con todos los charts disponibles y sus versiones.</div></div>
-      <p>Confirma que el chart está disponible:</p>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>What does this do?</strong> <code>helm repo add</code> registers the URL under the alias <em>open-telemetry</em>. <code>helm repo update</code> downloads the updated index with all available charts and versions.</div></div>
+      <p>Confirm the chart is available:</p>
       <pre><span class="cmd">helm</span> search repo open-telemetry/opentelemetry-demo</pre>
     </div>
 
@@ -415,11 +415,11 @@
     <div class="step" id="k-3">
       <div class="step-header">
         <div class="step-circle blue">3</div>
-        <div><h2>Crear el Namespace</h2><div class="step-desc">Aislar el demo en su propio espacio lógico</div></div>
+        <div><h2>Create the Namespace</h2><div class="step-desc">Isolate the demo in its own logical space</div></div>
       </div>
       <pre><span class="cmd">kubectl</span> create namespace otel-demo</pre>
-      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué es un Namespace?</strong> Un Namespace en Kubernetes es un mecanismo de aislamiento lógico. Permite organizar recursos (Pods, Services, ConfigMaps) en grupos independientes, aplicar políticas de acceso separadas y facilitar la limpieza posterior.</div></div>
-      <pre><span class="cmt"># Verificar creación</span>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>What is a Namespace?</strong> A Kubernetes Namespace is a logical isolation mechanism. It lets you organize resources (Pods, Services, ConfigMaps) into independent groups, apply separate access policies and simplify cleanup.</div></div>
+      <pre><span class="cmt"># Verify creation</span>
 <span class="cmd">kubectl</span> get namespace otel-demo</pre>
     </div>
 
@@ -429,20 +429,20 @@
     <div class="step" id="k-4">
       <div class="step-header">
         <div class="step-circle blue">4</div>
-        <div><h2>Personalizar valores <em style="font-size:12px;font-weight:400;color:var(--muted)">(opcional)</em></h2><div class="step-desc">Ajustar recursos, habilitar/deshabilitar componentes</div></div>
+        <div><h2>Customize values <em style="font-size:12px;font-weight:400;color:var(--muted)">(optional)</em></h2><div class="step-desc">Adjust resources, enable/disable components</div></div>
       </div>
-      <p>El chart acepta un archivo <code>values.yaml</code> para sobrescribir la configuración por defecto. Descárgalo para inspeccionarlo:</p>
+      <p>The chart accepts a <code>values.yaml</code> file to override the default configuration. Download it to inspect it:</p>
       <pre><span class="cmd">helm</span> show values open-telemetry/opentelemetry-demo &gt; my-values.yaml</pre>
       <div class="table-wrap"><table>
-        <thead><tr><th>Sección en values.yaml</th><th>Descripción</th></tr></thead>
+        <thead><tr><th>Section in values.yaml</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td><code>components.&lt;service&gt;.resources</code></td><td>CPU / Memory requests y limits por servicio</td></tr>
-          <tr><td><code>components.&lt;service&gt;.enabled</code></td><td>Habilitar o deshabilitar servicios individualmente</td></tr>
-          <tr><td><code>opentelemetry-collector.config</code></td><td>Pipelines del OTel Collector (receivers, processors, exporters)</td></tr>
-          <tr><td><code>jaeger.enabled</code></td><td>Backend de trazas distribuidas (default: true)</td></tr>
-          <tr><td><code>prometheus.enabled</code></td><td>Backend de métricas (default: true)</td></tr>
-          <tr><td><code>grafana.enabled</code></td><td>Dashboards de observabilidad (default: true)</td></tr>
-          <tr><td><code>loadgenerator.enabled</code></td><td>Generador de carga sintética Locust (default: true)</td></tr>
+          <tr><td><code>components.&lt;service&gt;.resources</code></td><td>CPU / Memory requests and limits per service</td></tr>
+          <tr><td><code>components.&lt;service&gt;.enabled</code></td><td>Enable or disable services individually</td></tr>
+          <tr><td><code>opentelemetry-collector.config</code></td><td>OTel Collector pipelines (receivers, processors, exporters)</td></tr>
+          <tr><td><code>jaeger.enabled</code></td><td>Distributed tracing backend (default: true)</td></tr>
+          <tr><td><code>prometheus.enabled</code></td><td>Metrics backend (default: true)</td></tr>
+          <tr><td><code>grafana.enabled</code></td><td>Observability dashboards (default: true)</td></tr>
+          <tr><td><code>loadgenerator.enabled</code></td><td>Locust synthetic load generator (default: true)</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -453,27 +453,27 @@
     <div class="step" id="k-5">
       <div class="step-header">
         <div class="step-circle blue">5</div>
-        <div><h2>Instalar el chart con Helm</h2><div class="step-desc">Desplegar todos los microservicios en el clúster</div></div>
+        <div><h2>Install the Helm chart</h2><div class="step-desc">Deploy all microservices to the cluster</div></div>
       </div>
-      <p><strong>Instalación estándar:</strong></p>
+      <p><strong>Standard install:</strong></p>
       <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
   --namespace otel-demo \
   --wait</pre>
-      <p><strong>Con valores personalizados:</strong></p>
+      <p><strong>With custom values:</strong></p>
       <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
   --namespace otel-demo \
   --values my-values.yaml \
   --wait</pre>
       <div class="callout info"><span class="ci">ℹ</span><div>
-        <strong>Desglose del comando:</strong>
+        <strong>Command breakdown:</strong>
         <ul style="margin-top:6px;padding-left:18px;">
-          <li><code>my-otel-demo</code> — nombre del release (puede ser cualquier nombre)</li>
-          <li><code>open-telemetry/opentelemetry-demo</code> — chart a instalar</li>
-          <li><code>--namespace otel-demo</code> — despliega en el namespace creado</li>
-          <li><code>--wait</code> — bloquea hasta que todos los Pods estén Ready</li>
+          <li><code>my-otel-demo</code> — release name (can be anything)</li>
+          <li><code>open-telemetry/opentelemetry-demo</code> — chart to install</li>
+          <li><code>--namespace otel-demo</code> — deploys into the created namespace</li>
+          <li><code>--wait</code> — blocks until all Pods are Ready</li>
         </ul>
       </div></div>
-      <div class="callout warn"><span class="ci">⚠</span><div><strong>Tiempo de instalación:</strong> La primera vez puede tardar <strong>5–10 minutos</strong> por descarga de imágenes de contenedor.</div></div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Install time:</strong> The first run may take <strong>5–10 minutes</strong> while container images are pulled.</div></div>
     </div>
 
     <hr/>
@@ -482,42 +482,42 @@
     <div class="step" id="k-6">
       <div class="step-header">
         <div class="step-circle blue">6</div>
-        <div><h2>Verificar el despliegue</h2><div class="step-desc">Confirmar que todos los Pods y Services están operativos</div></div>
+        <div><h2>Verify the deployment</h2><div class="step-desc">Confirm all Pods and Services are up and running</div></div>
       </div>
-      <pre><span class="cmt"># Ver todos los Pods</span>
+      <pre><span class="cmt"># List all Pods</span>
 <span class="cmd">kubectl</span> get pods -n otel-demo
 
-<span class="cmt"># Ver todos los Services</span>
+<span class="cmt"># List all Services</span>
 <span class="cmd">kubectl</span> get services -n otel-demo
 
-<span class="cmt"># Ver el release de Helm</span>
+<span class="cmt"># Check the Helm release</span>
 <span class="cmd">helm</span> list -n otel-demo
 
-<span class="cmt"># Ver eventos (útil para diagnosticar problemas)</span>
+<span class="cmt"># View events (useful for troubleshooting)</span>
 <span class="cmd">kubectl</span> get events -n otel-demo --sort-by=.lastTimestamp
 
-<span class="cmt"># Ver logs de un Pod específico</span>
+<span class="cmt"># Stream logs from a specific Pod</span>
 <span class="cmd">kubectl</span> logs -n otel-demo deployment/my-otel-demo-frontend --follow</pre>
-      <div class="callout success"><span class="ci">✅</span><div><strong>Estado saludable esperado:</strong> 20–25 Pods en estado <code>Running</code>. Si alguno está en <code>CrashLoopBackOff</code>, ejecuta <code>kubectl describe pod &lt;nombre&gt; -n otel-demo</code> para ver el detalle.</div></div>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Expected healthy state:</strong> 20–25 Pods in <code>Running</code> state. If any Pod is in <code>CrashLoopBackOff</code>, run <code>kubectl describe pod &lt;name&gt; -n otel-demo</code> for details.</div></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Componente</th><th>Lenguaje</th><th>Función</th></tr></thead>
+        <thead><tr><th>Component</th><th>Language</th><th>Function</th></tr></thead>
         <tbody>
-          <tr><td>frontend</td><td>TypeScript / Next.js</td><td>Tienda web principal</td></tr>
-          <tr><td>cartservice</td><td>C# / .NET</td><td>Carrito de compras (Redis)</td></tr>
-          <tr><td>checkoutservice</td><td>Go</td><td>Procesamiento de pedidos</td></tr>
-          <tr><td>productcatalogservice</td><td>Go</td><td>Catálogo de productos</td></tr>
-          <tr><td>currencyservice</td><td>C++</td><td>Conversión de divisas</td></tr>
-          <tr><td>emailservice</td><td>Ruby</td><td>Envío de emails</td></tr>
-          <tr><td>paymentservice</td><td>JavaScript / Node</td><td>Procesamiento de pagos</td></tr>
-          <tr><td>shippingservice</td><td>Rust</td><td>Cálculo de envíos</td></tr>
-          <tr><td>recommendationservice</td><td>Python</td><td>Recomendaciones de productos</td></tr>
-          <tr><td>adservice</td><td>Java</td><td>Publicidad contextual</td></tr>
-          <tr><td>frauddetectionservice</td><td>Kotlin</td><td>Detección de fraude</td></tr>
-          <tr><td>otelcol</td><td>—</td><td>OTel Collector: recolecta y reenvía telemetría</td></tr>
-          <tr><td>jaeger</td><td>—</td><td>Backend de trazas distribuidas</td></tr>
-          <tr><td>prometheus</td><td>—</td><td>Backend de métricas</td></tr>
-          <tr><td>grafana</td><td>—</td><td>Dashboards de observabilidad</td></tr>
-          <tr><td>loadgenerator</td><td>Python / Locust</td><td>Generador de carga sintética</td></tr>
+          <tr><td>frontend</td><td>TypeScript / Next.js</td><td>Main web storefront</td></tr>
+          <tr><td>cartservice</td><td>C# / .NET</td><td>Shopping cart (Redis)</td></tr>
+          <tr><td>checkoutservice</td><td>Go</td><td>Order processing</td></tr>
+          <tr><td>productcatalogservice</td><td>Go</td><td>Product catalog</td></tr>
+          <tr><td>currencyservice</td><td>C++</td><td>Currency conversion</td></tr>
+          <tr><td>emailservice</td><td>Ruby</td><td>Email sending</td></tr>
+          <tr><td>paymentservice</td><td>JavaScript / Node</td><td>Payment processing</td></tr>
+          <tr><td>shippingservice</td><td>Rust</td><td>Shipping calculation</td></tr>
+          <tr><td>recommendationservice</td><td>Python</td><td>Product recommendations</td></tr>
+          <tr><td>adservice</td><td>Java</td><td>Contextual advertising</td></tr>
+          <tr><td>frauddetectionservice</td><td>Kotlin</td><td>Fraud detection</td></tr>
+          <tr><td>otelcol</td><td>—</td><td>OTel Collector: collects and forwards telemetry</td></tr>
+          <tr><td>jaeger</td><td>—</td><td>Distributed tracing backend</td></tr>
+          <tr><td>prometheus</td><td>—</td><td>Metrics backend</td></tr>
+          <tr><td>grafana</td><td>—</td><td>Observability dashboards</td></tr>
+          <tr><td>loadgenerator</td><td>Python / Locust</td><td>Synthetic load generator</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -528,13 +528,13 @@
     <div class="step" id="k-7">
       <div class="step-header">
         <div class="step-circle blue">7</div>
-        <div><h2>Acceder a los servicios</h2><div class="step-desc">Port-forward para acceder desde tu máquina local</div></div>
+        <div><h2>Access the services</h2><div class="step-desc">Port-forward to reach services from your local machine</div></div>
       </div>
-      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué es port-forward?</strong> <code>kubectl port-forward</code> crea un túnel TCP entre tu máquina local y un Service del clúster. El tráfico al puerto local se redirige al Pod. Ideal para desarrollo y debugging, no para producción.</div></div>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>What is port-forward?</strong> <code>kubectl port-forward</code> creates a TCP tunnel between your local machine and a cluster Service. Traffic to the local port is forwarded to the Pod. Ideal for development and debugging, not for production.</div></div>
       <pre><span class="cmt"># Frontend — http://localhost:8080</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-frontend 8080:8080
 
-<span class="cmt"># Jaeger (Trazas) — http://localhost:16686</span>
+<span class="cmt"># Jaeger (Traces) — http://localhost:16686</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-jaeger-query 16686:16686
 
 <span class="cmt"># Grafana (Dashboards) — http://localhost:3000  (admin/admin)</span>
@@ -543,9 +543,9 @@
 <span class="cmt"># Prometheus — http://localhost:9090</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-prometheus 9090:9090
 
-<span class="cmt"># Locust (Carga) — http://localhost:8089</span>
+<span class="cmt"># Locust (Load) — http://localhost:8089</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-loadgenerator 8089:8089</pre>
-      <div class="callout warn"><span class="ci">⚠</span><div>Abre una terminal separada por cada port-forward, o añade <code>&amp;</code> al final para ejecutar en background.</div></div>
+      <div class="callout warn"><span class="ci">⚠</span><div>Open a separate terminal for each port-forward, or append <code>&amp;</code> to run them in the background.</div></div>
     </div>
 
     <hr/>
@@ -554,36 +554,36 @@
     <div class="step" id="k-8">
       <div class="step-header">
         <div class="step-circle blue">8</div>
-        <div><h2>Explorar la observabilidad</h2><div class="step-desc">Trazas en Jaeger · Métricas en Grafana · Queries en Prometheus</div></div>
+        <div><h2>Explore observability</h2><div class="step-desc">Traces in Jaeger · Metrics in Grafana · Queries in Prometheus</div></div>
       </div>
-      <p><strong>Trazas en Jaeger (http://localhost:16686)</strong></p>
+      <p><strong>Traces in Jaeger (http://localhost:16686)</strong></p>
       <ol>
-        <li>Selecciona un servicio en el menú <em>Service</em> (ej. <code>frontend</code>).</li>
-        <li>Haz clic en <em>Find Traces</em>.</li>
-        <li>Abre una traza para ver el recorrido completo a través de todos los microservicios, latencias span a span y atributos OTel.</li>
+        <li>Select a service in the <em>Service</em> dropdown (e.g. <code>frontend</code>).</li>
+        <li>Click <em>Find Traces</em>.</li>
+        <li>Open a trace to see the full request journey across all microservices, span-level latencies and OTel attributes.</li>
       </ol>
-      <p><strong>Métricas en Grafana (http://localhost:3000)</strong></p>
+      <p><strong>Metrics in Grafana (http://localhost:3000)</strong></p>
       <ol>
-        <li>Ve a <em>Dashboards → OpenTelemetry Demo</em>.</li>
-        <li>Explora los dashboards precargados: latencias p50/p95/p99, tasas de error, throughput y recursos.</li>
+        <li>Go to <em>Dashboards → OpenTelemetry Demo</em>.</li>
+        <li>Explore the pre-built dashboards: p50/p95/p99 latencies, error rates, throughput and resources.</li>
       </ol>
-      <p><strong>Query de ejemplo en Prometheus:</strong></p>
-      <pre><span class="cmt"># Tasa de peticiones HTTP en los últimos 5 minutos</span>
+      <p><strong>Example Prometheus query:</strong></p>
+      <pre><span class="cmt"># HTTP request rate over the last 5 minutes</span>
 rate(http_server_duration_milliseconds_count[5m])</pre>
-      <div class="callout success"><span class="ci">✅</span><div><strong>¡Listo!</strong> Tienes trazas, métricas y logs fluyendo desde 20+ microservicios a través del OTel Collector hacia Jaeger, Prometheus y Grafana.</div></div>
+      <div class="callout success"><span class="ci">✅</span><div><strong>All done!</strong> Traces, metrics and logs are flowing from 20+ microservices through the OTel Collector to Jaeger, Prometheus and Grafana.</div></div>
       <hr/>
-      <p><strong>Limpieza del entorno:</strong></p>
+      <p><strong>Cleanup:</strong></p>
       <pre><span class="cmd">helm</span> uninstall my-otel-demo -n otel-demo
 <span class="cmd">kubectl</span> delete namespace otel-demo</pre>
     </div>
 
     <div class="refs">
       <hr/>
-      <p><strong>Referencias</strong></p>
+      <p><strong>References</strong></p>
       <ul>
-        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
+        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Official Documentation</a></li>
         <li><a href="https://opentelemetry.io/docs/demo/kubernetes-deployment/" target="_blank">OTel Demo — Kubernetes Deployment Guide</a></li>
-        <li><a href="https://github.com/open-telemetry/opentelemetry-demo" target="_blank">Repositorio GitHub del Demo</a></li>
+        <li><a href="https://github.com/open-telemetry/opentelemetry-demo" target="_blank">GitHub Repository</a></li>
         <li><a href="https://github.com/open-telemetry/opentelemetry-helm-charts" target="_blank">opentelemetry-helm-charts</a></li>
       </ul>
     </div>
@@ -596,45 +596,45 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
 
     <div class="callout oci">
       <span class="ci">☁</span>
-      <div><strong>Oracle Cloud Infrastructure (OCI) — Always Free permanente</strong><br />
-      4 ARM Ampere A1 CPUs + 24 GB RAM gratis para siempre, OKE con control plane sin costo, 200 GB de almacenamiento y 10 TB de egress de red al mes. Sin fecha de vencimiento.</div>
+      <div><strong>Oracle Cloud Infrastructure (OCI) — Permanently Always Free</strong><br />
+      4 ARM Ampere A1 CPUs + 24 GB RAM free forever, OKE with no-cost control plane, 200 GB block storage and 10 TB network egress per month. No expiration date.</div>
     </div>
 
     <div class="step-nav">
-      <a href="#o-1"><span class="sn">1</span>Cuenta OCI</a>
+      <a href="#o-1"><span class="sn">1</span>OCI Account</a>
       <a href="#o-2"><span class="sn">2</span>OCI CLI</a>
-      <a href="#o-3"><span class="sn">3</span>VCN / Red</a>
-      <a href="#o-4"><span class="sn">4</span>Clúster OKE</a>
+      <a href="#o-3"><span class="sn">3</span>VCN / Network</a>
+      <a href="#o-4"><span class="sn">4</span>OKE Cluster</a>
       <a href="#o-5"><span class="sn">5</span>kubeconfig</a>
       <a href="#o-6"><span class="sn">6</span>Helm Repo</a>
       <a href="#o-7"><span class="sn">7</span>Namespace</a>
-      <a href="#o-8"><span class="sn">8</span>Instalar</a>
-      <a href="#o-9"><span class="sn">9</span>Acceder</a>
-      <a href="#o-10"><span class="sn">10</span>Observar</a>
+      <a href="#o-8"><span class="sn">8</span>Install</a>
+      <a href="#o-9"><span class="sn">9</span>Access</a>
+      <a href="#o-10"><span class="sn">10</span>Observe</a>
     </div>
 
     <!-- OCI 1 -->
     <div class="step" id="o-1">
       <div class="step-header">
         <div class="step-circle orange">1</div>
-        <div><h2>Crear cuenta en Oracle Cloud (Always Free)</h2><div class="step-desc">Registro gratuito — no se cobra el tier Always Free</div></div>
+        <div><h2>Create an Oracle Cloud account (Always Free)</h2><div class="step-desc">Free signup — Always Free tier is never charged</div></div>
       </div>
       <ol>
-        <li>Ve a <a href="https://signup.cloud.oracle.com/" target="_blank">signup.cloud.oracle.com</a> y haz clic en <strong>"Start for free"</strong>.</li>
-        <li>Completa el formulario con nombre, email y país.</li>
-        <li>Elige como región Home <strong>us-ashburn-1</strong> o <strong>us-phoenix-1</strong> — tienen mayor disponibilidad de instancias ARM.</li>
-        <li>Verifica tu email y completa la verificación de identidad (solicita tarjeta como verificación, no se cobra).</li>
-        <li>Una vez activada, accede a la <strong>OCI Console</strong> en <a href="https://cloud.oracle.com/" target="_blank">cloud.oracle.com</a>.</li>
+        <li>Go to <a href="https://signup.cloud.oracle.com/" target="_blank">signup.cloud.oracle.com</a> and click <strong>"Start for free"</strong>.</li>
+        <li>Fill in the form with your name, email and country.</li>
+        <li>Choose <strong>us-ashburn-1</strong> or <strong>us-phoenix-1</strong> as your Home region — they have the highest ARM instance availability.</li>
+        <li>Verify your email and complete identity verification (a credit card is requested for verification only — it will not be charged).</li>
+        <li>Once activated, log in to the <strong>OCI Console</strong> at <a href="https://cloud.oracle.com/" target="_blank">cloud.oracle.com</a>.</li>
       </ol>
       <div class="callout info"><span class="ci">ℹ</span><div>
-        <strong>Recursos Always Free incluidos:</strong>
+        <strong>Always Free resources included:</strong>
         <ul style="margin-top:6px;padding-left:18px;">
-          <li>4 OCPUs ARM Ampere A1 + 24 GB RAM (distribuibles entre VMs)</li>
-          <li>2 VMs AMD (1 OCPU / 1 GB RAM cada una)</li>
-          <li>200 GB almacenamiento en bloque</li>
-          <li>OKE Control Plane — <strong>sin costo</strong></li>
-          <li>10 TB egress de red al mes</li>
-          <li>1 Load Balancer de 10 Mbps</li>
+          <li>4 ARM Ampere A1 OCPUs + 24 GB RAM (shareable across VMs)</li>
+          <li>2 AMD VMs (1 OCPU / 1 GB RAM each)</li>
+          <li>200 GB block storage</li>
+          <li>OKE Control Plane — <strong>no cost</strong></li>
+          <li>10 TB network egress per month</li>
+          <li>1 × 10 Mbps Load Balancer</li>
         </ul>
       </div></div>
     </div>
@@ -645,26 +645,26 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
     <div class="step" id="o-2">
       <div class="step-header">
         <div class="step-circle orange">2</div>
-        <div><h2>Instalar y configurar la OCI CLI</h2><div class="step-desc">Herramienta de línea de comandos para gestionar Oracle Cloud</div></div>
+        <div><h2>Install and configure the OCI CLI</h2><div class="step-desc">Command-line tool for managing Oracle Cloud resources</div></div>
       </div>
       <p><strong>macOS:</strong></p>
       <pre><span class="cmd">brew</span> install oci-cli
 <span class="cmd">oci</span> --version</pre>
       <p><strong>Linux:</strong></p>
       <pre><span class="cmd">bash</span> -c "$(curl -fsSL https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"</pre>
-      <p><strong>Configuración inicial interactiva:</strong></p>
+      <p><strong>Interactive initial setup:</strong></p>
       <pre><span class="cmd">oci</span> setup config</pre>
       <div class="callout info"><span class="ci">ℹ</span><div>
-        <strong>El asistente te pedirá:</strong>
+        <strong>The wizard will prompt for:</strong>
         <ol style="margin-top:6px;padding-left:18px;">
-          <li><strong>User OCID</strong> — OCI Console → Profile (esquina superior derecha) → tu usuario → OCID</li>
+          <li><strong>User OCID</strong> — OCI Console → Profile (top-right) → your user → OCID</li>
           <li><strong>Tenancy OCID</strong> — OCI Console → Administration → Tenancy Details → OCID</li>
-          <li><strong>Region</strong> — la región Home elegida al registrarte (ej. <code>us-ashburn-1</code>)</li>
-          <li><strong>Generate new API key pair</strong> — selecciona <code>Y</code></li>
+          <li><strong>Region</strong> — the Home region chosen during signup (e.g. <code>us-ashburn-1</code>)</li>
+          <li><strong>Generate new API key pair</strong> — select <code>Y</code></li>
         </ol>
-        Toma la clave pública generada (<code>~/.oci/oci_api_key_public.pem</code>) y súbela en OCI Console → Profile → API Keys → Add API Key.
+        Copy the generated public key (<code>~/.oci/oci_api_key_public.pem</code>) and upload it in OCI Console → Profile → API Keys → Add API Key.
       </div></div>
-      <p>Verifica que la CLI tiene acceso:</p>
+      <p>Verify the CLI has access:</p>
       <pre><span class="cmd">oci</span> iam region list --output table</pre>
     </div>
 
@@ -674,15 +674,15 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
     <div class="step" id="o-3">
       <div class="step-header">
         <div class="step-circle orange">3</div>
-        <div><h2>Red virtual (VCN)</h2><div class="step-desc">OKE necesita una Virtual Cloud Network con subnets</div></div>
+        <div><h2>Virtual Network (VCN)</h2><div class="step-desc">OKE requires a Virtual Cloud Network with subnets</div></div>
       </div>
-      <div class="callout success"><span class="ci">✅</span><div><strong>Recomendado — Quick Create:</strong> Al crear el clúster en el Paso 4, selecciona <em>"Quick Create"</em>. OCI genera automáticamente la VCN con todas las subnets y security lists. No necesitas hacer este paso manualmente.</div></div>
-      <p>Si prefieres crear la VCN manualmente:</p>
-      <pre><span class="cmt"># Obtener OCID del compartment raíz</span>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Recommended — Quick Create:</strong> When creating the cluster in Step 4, select <em>"Quick Create"</em>. OCI will automatically generate the VCN with all required subnets and security lists. You do not need to do this step manually.</div></div>
+      <p>To create the VCN manually via CLI:</p>
+      <pre><span class="cmt"># Get root compartment OCID</span>
 <span class="cmd">oci</span> iam compartment list --all \
   --query "data[?\"lifecycle-state\"=='ACTIVE'].id | [0]"
 
-<span class="cmt"># Crear VCN</span>
+<span class="cmt"># Create VCN</span>
 <span class="cmd">oci</span> network vcn create \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
   --display-name otel-demo-vcn \
@@ -696,32 +696,32 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
     <div class="step" id="o-4">
       <div class="step-header">
         <div class="step-circle orange">4</div>
-        <div><h2>Crear el clúster OKE</h2><div class="step-desc">Oracle Kubernetes Engine — control plane gratuito, nodos ARM Always Free</div></div>
+        <div><h2>Create the OKE cluster</h2><div class="step-desc">Oracle Kubernetes Engine — free control plane, ARM Always Free nodes</div></div>
       </div>
-      <p><strong>Opción A — Desde la OCI Console (recomendado):</strong></p>
+      <p><strong>Option A — From the OCI Console (recommended):</strong></p>
       <ol>
-        <li>Menú hamburguesa → <strong>Developer Services → Kubernetes Clusters (OKE)</strong>.</li>
-        <li>Clic en <strong>"Create cluster"</strong> → selecciona <strong>"Quick create"</strong> → <em>Launch workflow</em>.</li>
-        <li>Configura los siguientes valores:
+        <li>Hamburger menu → <strong>Developer Services → Kubernetes Clusters (OKE)</strong>.</li>
+        <li>Click <strong>"Create cluster"</strong> → select <strong>"Quick create"</strong> → <em>Launch workflow</em>.</li>
+        <li>Configure the following values:
           <div class="table-wrap" style="margin-top:10px;"><table>
-            <thead><tr><th>Campo</th><th>Valor recomendado</th></tr></thead>
+            <thead><tr><th>Field</th><th>Recommended value</th></tr></thead>
             <tbody>
               <tr><td>Name</td><td><code>otel-demo-cluster</code></td></tr>
-              <tr><td>Kubernetes version</td><td>La más reciente disponible</td></tr>
-              <tr><td>Visibility</td><td>Public endpoint (para acceder con kubectl)</td></tr>
+              <tr><td>Kubernetes version</td><td>Latest available</td></tr>
+              <tr><td>Visibility</td><td>Public endpoint (for kubectl access)</td></tr>
               <tr><td>Shape</td><td><code>VM.Standard.A1.Flex</code> (ARM — Always Free)</td></tr>
-              <tr><td>OCPUs por nodo</td><td><code>2</code></td></tr>
-              <tr><td>Memory por nodo</td><td><code>12 GB</code></td></tr>
-              <tr><td>Number of nodes</td><td><code>2</code> (total: 4 OCPUs / 24 GB = límite Always Free)</td></tr>
+              <tr><td>OCPUs per node</td><td><code>2</code></td></tr>
+              <tr><td>Memory per node</td><td><code>12 GB</code></td></tr>
+              <tr><td>Number of nodes</td><td><code>2</code> (total: 4 OCPUs / 24 GB = Always Free limit)</td></tr>
             </tbody>
           </table></div>
         </li>
-        <li>Clic en <strong>"Next"</strong> → <strong>"Create cluster"</strong>.</li>
-        <li>Espera ~5–10 minutos hasta que el estado sea <code>Active</code>.</li>
+        <li>Click <strong>"Next"</strong> → <strong>"Create cluster"</strong>.</li>
+        <li>Wait ~5–10 minutes until the status shows <code>Active</code>.</li>
       </ol>
-      <div class="callout warn"><span class="ci">⚠</span><div><strong>Límite Always Free ARM:</strong> Son exactamente 4 OCPUs + 24 GB RAM en total. Usa 2 nodos × 2 OCPUs / 12 GB para no salir del tier gratuito.</div></div>
-      <p><strong>Opción B — Desde la CLI:</strong></p>
-      <pre><span class="cmt"># Crear clúster OKE</span>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Always Free ARM limit:</strong> Exactly 4 OCPUs + 24 GB RAM total. Use 2 nodes × 2 OCPUs / 12 GB to stay within the free tier.</div></div>
+      <p><strong>Option B — Via CLI:</strong></p>
+      <pre><span class="cmt"># Create OKE cluster</span>
 <span class="cmd">oci</span> ce cluster create \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
   --name otel-demo-cluster \
@@ -731,7 +731,7 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
   --endpoint-subnet-id &lt;SUBNET_OCID&gt; \
   --endpoint-public-ip-enabled true
 
-<span class="cmt"># Crear node pool ARM Always Free</span>
+<span class="cmt"># Create ARM Always Free node pool</span>
 <span class="cmd">oci</span> ce node-pool create \
   --cluster-id &lt;CLUSTER_OCID&gt; \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
@@ -749,15 +749,15 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
     <div class="step" id="o-5">
       <div class="step-header">
         <div class="step-circle orange">5</div>
-        <div><h2>Obtener kubeconfig del clúster OKE</h2><div class="step-desc">Conectar kubectl al clúster de Oracle Cloud</div></div>
+        <div><h2>Get the OKE cluster kubeconfig</h2><div class="step-desc">Connect kubectl to the Oracle Cloud cluster</div></div>
       </div>
-      <pre><span class="cmt"># Obtener OCID del clúster</span>
+      <pre><span class="cmt"># Get cluster OCID</span>
 <span class="cmd">oci</span> ce cluster list \
   --compartment-id &lt;COMPARTMENT_OCID&gt; \
   --query "data[?name=='otel-demo-cluster'].id | [0]" \
   --raw-output
 
-<span class="cmt"># Generar y fusionar kubeconfig</span>
+<span class="cmt"># Generate and merge kubeconfig</span>
 <span class="cmd">oci</span> ce cluster create-kubeconfig \
   --cluster-id &lt;CLUSTER_OCID&gt; \
   --file $HOME/.kube/config \
@@ -766,12 +766,12 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
   --kube-endpoint PUBLIC_ENDPOINT</pre>
       <div class="callout info"><span class="ci">ℹ</span><div>
         <ul style="padding-left:18px;">
-          <li><code>--file $HOME/.kube/config</code> — fusiona el contexto OKE con el kubeconfig existente</li>
-          <li><code>--token-version 2.0.0</code> — tokens de corta duración, más seguro</li>
-          <li><code>--kube-endpoint PUBLIC_ENDPOINT</code> — conecta al endpoint público</li>
+          <li><code>--file $HOME/.kube/config</code> — merges the OKE context into the existing kubeconfig</li>
+          <li><code>--token-version 2.0.0</code> — short-lived tokens, more secure</li>
+          <li><code>--kube-endpoint PUBLIC_ENDPOINT</code> — connects via the public endpoint</li>
         </ul>
       </div></div>
-      <p>Verifica la conexión — deberías ver los 2 nodos ARM en estado <code>Ready</code>:</p>
+      <p>Verify the connection — you should see the 2 ARM nodes in <code>Ready</code> state:</p>
       <pre><span class="cmd">kubectl</span> get nodes
 <span class="cmt">NAME          STATUS   ROLES    AGE   VERSION
 10.0.xx.xxx   Ready    &lt;none&gt;   5m    v1.30.1
@@ -784,7 +784,7 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
     <div class="step" id="o-6">
       <div class="step-header">
         <div class="step-circle orange">6</div>
-        <div><h2>Agregar repositorio Helm de OTel</h2><div class="step-desc">Desde aquí los comandos son idénticos a cualquier clúster K8s</div></div>
+        <div><h2>Add OTel Helm repository</h2><div class="step-desc">From here the commands are identical to any K8s cluster</div></div>
       </div>
       <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 <span class="cmd">helm</span> repo update
@@ -797,7 +797,7 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
     <div class="step" id="o-7">
       <div class="step-header">
         <div class="step-circle orange">7</div>
-        <div><h2>Crear el Namespace</h2><div class="step-desc">Espacio aislado para todos los recursos del demo</div></div>
+        <div><h2>Create the Namespace</h2><div class="step-desc">Isolated space for all demo resources</div></div>
       </div>
       <pre><span class="cmd">kubectl</span> create namespace otel-demo
 <span class="cmd">kubectl</span> get namespace otel-demo</pre>
@@ -809,10 +809,10 @@ rate(http_server_duration_milliseconds_count[5m])</pre>
     <div class="step" id="o-8">
       <div class="step-header">
         <div class="step-circle orange">8</div>
-        <div><h2>Instalar OTel Demo con ajuste para ARM</h2><div class="step-desc">El chart soporta aarch64 nativamente desde v0.28+</div></div>
+        <div><h2>Install OTel Demo with ARM tuning</h2><div class="step-desc">The chart supports aarch64 natively since v0.28+</div></div>
       </div>
-      <p>Crea un archivo <code>oci-values.yaml</code> optimizado para los nodos ARM Always Free:</p>
-      <pre><span class="cmt"># oci-values.yaml — ajustado para 4 OCPUs / 24 GB ARM Always Free</span>
+      <p>Create <code>oci-values.yaml</code> optimized for ARM Always Free nodes:</p>
+      <pre><span class="cmt"># oci-values.yaml — tuned for 4 OCPUs / 24 GB ARM Always Free</span>
 default:
   resources:
     requests: { cpu: <span class="str">"50m"</span>, memory: <span class="str">"64Mi"</span> }
@@ -843,13 +843,13 @@ prometheus:
 grafana:
   resources:
     requests: { cpu: <span class="str">"100m"</span>, memory: <span class="str">"256Mi"</span> }</pre>
-      <p>Instalar el chart:</p>
+      <p>Install the chart:</p>
       <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
   --namespace otel-demo \
   --values oci-values.yaml \
   --wait \
   --timeout 15m</pre>
-      <div class="callout warn"><span class="ci">⚠</span><div><strong>¿Por qué <code>--timeout 15m</code>?</strong> En nodos ARM Always Free la descarga de imágenes puede tardar más. El timeout extendido evita que Helm cancele el despliegue antes de que termine.</div></div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Why <code>--timeout 15m</code>?</strong> On ARM Always Free nodes image pulls can take longer. The extended timeout prevents Helm from cancelling the deployment prematurely.</div></div>
     </div>
 
     <hr/>
@@ -858,9 +858,9 @@ grafana:
     <div class="step" id="o-9">
       <div class="step-header">
         <div class="step-circle orange">9</div>
-        <div><h2>Verificar y acceder a los servicios</h2><div class="step-desc">Port-forward y exposición pública con Load Balancer OCI</div></div>
+        <div><h2>Verify and access services</h2><div class="step-desc">Port-forward and public exposure with OCI Load Balancer</div></div>
       </div>
-      <pre><span class="cmt"># Esperar a que todos los Pods estén Running</span>
+      <pre><span class="cmt"># Wait for all Pods to be Running</span>
 <span class="cmd">kubectl</span> get pods -n otel-demo -w
 
 <span class="cmt"># Frontend — http://localhost:8080</span>
@@ -871,11 +871,11 @@ grafana:
 
 <span class="cmt"># Grafana — http://localhost:3000  (admin/admin)</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-grafana 3000:80</pre>
-      <div class="callout oci"><span class="ci">☁</span><div><strong>Exponer el frontend públicamente con OCI Load Balancer (gratis):</strong> OCI incluye 1 Load Balancer Always Free de 10 Mbps.</div></div>
+      <div class="callout oci"><span class="ci">☁</span><div><strong>Expose the frontend publicly with OCI Load Balancer (free):</strong> OCI includes 1 Always Free 10 Mbps Load Balancer.</div></div>
       <pre><span class="cmd">kubectl</span> patch svc my-otel-demo-frontend -n otel-demo \
   -p '{"spec":{"type":"LoadBalancer"}}'
 
-<span class="cmt"># Ver la IP pública asignada (~2-3 minutos)</span>
+<span class="cmt"># Get the assigned public IP (~2-3 minutes)</span>
 <span class="cmd">kubectl</span> get svc my-otel-demo-frontend -n otel-demo</pre>
     </div>
 
@@ -885,17 +885,17 @@ grafana:
     <div class="step" id="o-10">
       <div class="step-header">
         <div class="step-circle orange">10</div>
-        <div><h2>Explorar observabilidad + integración con OCI APM</h2><div class="step-desc">Trazas nativas de OCI además de Jaeger, Prometheus y Grafana</div></div>
+        <div><h2>Explore observability + OCI APM integration</h2><div class="step-desc">Native OCI tracing in addition to Jaeger, Prometheus and Grafana</div></div>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Servicio OCI</th><th>Equivalente OTel</th><th>Integración</th></tr></thead>
+        <thead><tr><th>OCI Service</th><th>OTel equivalent</th><th>Integration</th></tr></thead>
         <tbody>
-          <tr><td><strong>OCI APM</strong></td><td>Jaeger (trazas)</td><td>Exportar trazas via OTLP al APM de OCI</td></tr>
-          <tr><td><strong>OCI Logging</strong></td><td>Logs del Collector</td><td>Exportar logs via OCI Logging exporter</td></tr>
-          <tr><td><strong>OCI Monitoring</strong></td><td>Prometheus (métricas)</td><td>Exportar métricas via remote_write</td></tr>
+          <tr><td><strong>OCI APM</strong></td><td>Jaeger (traces)</td><td>Export traces via OTLP to OCI APM</td></tr>
+          <tr><td><strong>OCI Logging</strong></td><td>Collector logs</td><td>Export logs via OCI Logging exporter</td></tr>
+          <tr><td><strong>OCI Monitoring</strong></td><td>Prometheus (metrics)</td><td>Export metrics via remote_write</td></tr>
         </tbody>
       </table></div>
-      <p>Añadir el exporter de OCI APM al <code>oci-values.yaml</code>:</p>
+      <p>Add the OCI APM exporter to <code>oci-values.yaml</code>:</p>
       <pre>opentelemetry-collector:
   config:
     exporters:
@@ -903,24 +903,24 @@ grafana:
         endpoint: <span class="str">"https://&lt;APM_DOMAIN&gt;.apm-agt.&lt;region&gt;.oci.oraclecloud.com/20200101/opentelemetry"</span>
         headers:
           Authorization: <span class="str">"dataKey &lt;OCI_APM_PRIVATE_DATA_KEY&gt;"</span></pre>
-      <div class="callout success"><span class="ci">✅</span><div><strong>¡Despliegue completo en OCI Always Free!</strong> OTel Demo corriendo en OKE con nodos ARM, observabilidad completa y opción de integrar OCI APM, Logging y Monitoring nativos.</div></div>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Full OCI Always Free deployment complete!</strong> OTel Demo running on OKE with ARM nodes, full observability, and the option to integrate native OCI APM, Logging and Monitoring.</div></div>
       <hr/>
-      <p><strong>Limpieza del entorno OCI:</strong></p>
+      <p><strong>OCI environment cleanup:</strong></p>
       <pre><span class="cmd">helm</span> uninstall my-otel-demo -n otel-demo
 <span class="cmd">kubectl</span> delete namespace otel-demo
-<span class="cmt"># Eliminar clúster OKE</span>
+<span class="cmt"># Delete the OKE cluster</span>
 <span class="cmd">oci</span> ce cluster delete --cluster-id &lt;CLUSTER_OCID&gt; --force</pre>
     </div>
 
     <div class="refs">
       <hr/>
-      <p><strong>Referencias OCI</strong></p>
+      <p><strong>OCI References</strong></p>
       <ul>
-        <li><a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Always Free — Descripción oficial</a></li>
+        <li><a href="https://www.oracle.com/cloud/free/" target="_blank">Oracle Cloud Always Free — Official overview</a></li>
         <li><a href="https://docs.oracle.com/en-us/iaas/Content/ContEng/Concepts/contengoverview.htm" target="_blank">OKE — Oracle Kubernetes Engine Overview</a></li>
-        <li><a href="https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm" target="_blank">OKE — Configurar kubeconfig</a></li>
-        <li><a href="https://docs.oracle.com/en-us/iaas/tools/oci-cli/latest/oci_cli_docs/" target="_blank">OCI CLI — Documentación completa</a></li>
-        <li><a href="https://docs.oracle.com/en-us/iaas/application-performance-monitoring/doc/configure-open-telemetry.html" target="_blank">OCI APM — Integración con OpenTelemetry</a></li>
+        <li><a href="https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdownloadkubeconfigfile.htm" target="_blank">OKE — Configure kubeconfig</a></li>
+        <li><a href="https://docs.oracle.com/en-us/iaas/tools/oci-cli/latest/oci_cli_docs/" target="_blank">OCI CLI — Full documentation</a></li>
+        <li><a href="https://docs.oracle.com/en-us/iaas/application-performance-monitoring/doc/configure-open-telemetry.html" target="_blank">OCI APM — OpenTelemetry integration</a></li>
       </ul>
     </div>
 
@@ -931,38 +931,38 @@ grafana:
 
     <div class="callout laptop">
       <span class="ci">💻</span>
-      <div><strong>Despliegue 100% local — sin cuenta cloud, sin internet durante la ejecución</strong><br />
-      Instala Docker, kind y Helm en tu laptop y ejecuta el OTel Demo completo directamente en tu máquina. Todo el software es gratuito y open-source.</div>
+      <div><strong>100% local deployment — no cloud account, no internet needed at runtime</strong><br />
+      Install Docker, kind and Helm on your laptop and run the full OTel Demo directly on your machine. All software is free and open-source.</div>
     </div>
 
     <div class="step-nav">
-      <a href="#l-1"><span class="sn">1</span>Requisitos</a>
+      <a href="#l-1"><span class="sn">1</span>Requirements</a>
       <a href="#l-2"><span class="sn">2</span>Docker</a>
       <a href="#l-3"><span class="sn">3</span>kubectl</a>
       <a href="#l-4"><span class="sn">4</span>Helm</a>
       <a href="#l-5"><span class="sn">5</span>kind</a>
-      <a href="#l-6"><span class="sn">6</span>Clúster</a>
+      <a href="#l-6"><span class="sn">6</span>Cluster</a>
       <a href="#l-7"><span class="sn">7</span>Helm Repo</a>
-      <a href="#l-8"><span class="sn">8</span>Instalar</a>
-      <a href="#l-9"><span class="sn">9</span>Acceder</a>
+      <a href="#l-8"><span class="sn">8</span>Install</a>
+      <a href="#l-9"><span class="sn">9</span>Access</a>
     </div>
 
     <!-- LAPTOP 1 -->
     <div class="step" id="l-1">
       <div class="step-header">
         <div class="step-circle purple">1</div>
-        <div><h2>Requisitos del sistema</h2><div class="step-desc">Hardware mínimo recomendado para correr el demo localmente</div></div>
+        <div><h2>System requirements</h2><div class="step-desc">Minimum recommended hardware to run the demo locally</div></div>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Recurso</th><th>Mínimo</th><th>Recomendado</th></tr></thead>
+        <thead><tr><th>Resource</th><th>Minimum</th><th>Recommended</th></tr></thead>
         <tbody>
           <tr><td><strong>RAM</strong></td><td>8 GB</td><td>16 GB</td></tr>
-          <tr><td><strong>CPU</strong></td><td>4 núcleos</td><td>6–8 núcleos</td></tr>
-          <tr><td><strong>Disco libre</strong></td><td>20 GB</td><td>40 GB</td></tr>
-          <tr><td><strong>Sistema operativo</strong></td><td>macOS 12+, Ubuntu 20.04+, Windows 11 (WSL2)</td><td>macOS / Linux</td></tr>
+          <tr><td><strong>CPU</strong></td><td>4 cores</td><td>6–8 cores</td></tr>
+          <tr><td><strong>Free disk</strong></td><td>20 GB</td><td>40 GB</td></tr>
+          <tr><td><strong>OS</strong></td><td>macOS 12+, Ubuntu 20.04+, Windows 11 (WSL2)</td><td>macOS / Linux</td></tr>
         </tbody>
       </table></div>
-      <div class="callout warn"><span class="ci">⚠</span><div><strong>Windows:</strong> Se requiere <strong>WSL2</strong> (Windows Subsystem for Linux 2) con Docker Desktop. Los comandos de esta guía aplican directamente en macOS y Linux; en Windows ejecútalos dentro de la terminal WSL2.</div></div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Windows:</strong> <strong>WSL2</strong> (Windows Subsystem for Linux 2) with Docker Desktop is required. All commands in this guide run natively on macOS and Linux; on Windows execute them inside a WSL2 terminal.</div></div>
     </div>
 
     <hr/>
@@ -971,34 +971,34 @@ grafana:
     <div class="step" id="l-2">
       <div class="step-header">
         <div class="step-circle purple">2</div>
-        <div><h2>Instalar Docker Desktop</h2><div class="step-desc">Motor de contenedores — base de todo el stack local</div></div>
+        <div><h2>Install Docker Desktop</h2><div class="step-desc">Container engine — foundation of the entire local stack</div></div>
       </div>
       <div class="sw-grid">
         <div class="sw-card">
-          <div class="sw-badge">Gratuito</div>
+          <div class="sw-badge">Free</div>
           <h4>Docker Desktop — macOS</h4>
-          <p>Descarga el instalador .dmg desde docker.com/products/docker-desktop</p>
+          <p>Download the .dmg installer from docker.com/products/docker-desktop</p>
         </div>
         <div class="sw-card">
-          <div class="sw-badge">Gratuito</div>
+          <div class="sw-badge">Free</div>
           <h4>Docker Desktop — Windows</h4>
-          <p>Requiere WSL2 habilitado. Descarga desde docker.com/products/docker-desktop</p>
+          <p>Requires WSL2 enabled. Download from docker.com/products/docker-desktop</p>
         </div>
       </div>
       <p><strong>Linux (Ubuntu/Debian):</strong></p>
-      <pre><span class="cmt"># Instalar Docker Engine (sin Docker Desktop)</span>
+      <pre><span class="cmt"># Install Docker Engine (without Docker Desktop)</span>
 <span class="cmd">sudo</span> apt-get update
 <span class="cmd">sudo</span> apt-get install -y ca-certificates curl
 <span class="cmd">sudo</span> install -m 0755 -d /etc/apt/keyrings
 <span class="cmd">curl</span> -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/keyrings/docker.asc
 <span class="cmd">sudo</span> apt-get install -y docker-ce docker-ce-cli containerd.io
 
-<span class="cmt"># Agregar tu usuario al grupo docker (para no usar sudo)</span>
+<span class="cmt"># Add your user to the docker group (avoids sudo)</span>
 <span class="cmd">sudo</span> usermod -aG docker $USER
 <span class="cmd">newgrp</span> docker</pre>
-      <p>Configura los recursos de Docker Desktop — este paso es <strong>crítico</strong>:</p>
-      <div class="callout warn"><span class="ci">⚠</span><div><strong>Docker Desktop → Settings → Resources:</strong> Asigna mínimo <strong>6 GB de RAM</strong> y <strong>4 CPUs</strong>. Sin este ajuste el demo no arrancará correctamente.</div></div>
-      <pre><span class="cmt"># Verificar que Docker está corriendo</span>
+      <p>Configure Docker Desktop resources — this step is <strong>critical</strong>:</p>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>Docker Desktop → Settings → Resources:</strong> Allocate at least <strong>6 GB RAM</strong> and <strong>4 CPUs</strong>. Without this adjustment the demo will not start correctly.</div></div>
+      <pre><span class="cmt"># Verify Docker is running</span>
 <span class="cmd">docker</span> version
 <span class="cmd">docker</span> info</pre>
     </div>
@@ -1009,7 +1009,7 @@ grafana:
     <div class="step" id="l-3">
       <div class="step-header">
         <div class="step-circle purple">3</div>
-        <div><h2>Instalar kubectl</h2><div class="step-desc">Cliente de línea de comandos para Kubernetes</div></div>
+        <div><h2>Install kubectl</h2><div class="step-desc">Kubernetes command-line client</div></div>
       </div>
       <p><strong>macOS:</strong></p>
       <pre><span class="cmd">brew</span> install kubectl
@@ -1028,15 +1028,15 @@ grafana:
     <div class="step" id="l-4">
       <div class="step-header">
         <div class="step-circle purple">4</div>
-        <div><h2>Instalar Helm</h2><div class="step-desc">Gestor de paquetes para Kubernetes</div></div>
+        <div><h2>Install Helm</h2><div class="step-desc">Kubernetes package manager</div></div>
       </div>
       <p><strong>macOS / Linux:</strong></p>
       <pre><span class="cmd">brew</span> install helm
-<span class="cmt"># o sin Homebrew:</span>
+<span class="cmt"># or without Homebrew:</span>
 <span class="cmd">curl</span> https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</pre>
       <p><strong>Windows:</strong></p>
       <pre>winget install Helm.Helm</pre>
-      <pre><span class="cmt"># Verificar</span>
+      <pre><span class="cmt"># Verify</span>
 <span class="cmd">helm</span> version</pre>
     </div>
 
@@ -1046,18 +1046,18 @@ grafana:
     <div class="step" id="l-5">
       <div class="step-header">
         <div class="step-circle purple">5</div>
-        <div><h2>Instalar kind</h2><div class="step-desc">Kubernetes IN Docker — clúster K8s local usando contenedores</div></div>
+        <div><h2>Install kind</h2><div class="step-desc">Kubernetes IN Docker — local K8s cluster using containers</div></div>
       </div>
-      <div class="callout laptop"><span class="ci">ℹ</span><div><strong>¿Qué es kind?</strong> <strong>k</strong>ubernetes <strong>IN</strong> <strong>D</strong>ocker crea un clúster Kubernetes completo usando contenedores Docker como nodos. Es la herramienta estándar para desarrollo local con K8s. Es gratuito, open-source y no requiere VM separada.</div></div>
+      <div class="callout laptop"><span class="ci">ℹ</span><div><strong>What is kind?</strong> <strong>k</strong>ubernetes <strong>IN</strong> <strong>D</strong>ocker creates a full Kubernetes cluster using Docker containers as nodes. It is the standard tool for local K8s development — free, open-source and requires no separate VM.</div></div>
       <p><strong>macOS / Linux:</strong></p>
       <pre><span class="cmd">brew</span> install kind
-<span class="cmt"># o sin Homebrew:</span>
+<span class="cmt"># or without Homebrew:</span>
 <span class="cmd">curl</span> -Lo ./kind https://kind.sigs.k8s.io/dl/v0.24.0/kind-linux-amd64
 <span class="cmd">chmod</span> +x ./kind
 <span class="cmd">sudo</span> mv ./kind /usr/local/bin/kind</pre>
       <p><strong>Windows:</strong></p>
       <pre>winget install Kubernetes.kind</pre>
-      <pre><span class="cmt"># Verificar</span>
+      <pre><span class="cmt"># Verify</span>
 <span class="cmd">kind</span> version</pre>
     </div>
 
@@ -1067,9 +1067,9 @@ grafana:
     <div class="step" id="l-6">
       <div class="step-header">
         <div class="step-circle purple">6</div>
-        <div><h2>Crear el clúster kind</h2><div class="step-desc">Clúster Kubernetes local listo en ~60 segundos</div></div>
+        <div><h2>Create the kind cluster</h2><div class="step-desc">Local Kubernetes cluster ready in ~60 seconds</div></div>
       </div>
-      <p>Crea un archivo de configuración <code>kind-config.yaml</code> para ajustar los recursos:</p>
+      <p>Create a <code>kind-config.yaml</code> configuration file to tune resources:</p>
       <pre><span class="cmt"># kind-config.yaml</span>
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -1090,17 +1090,17 @@ nodes:
         protocol: TCP
   - role: worker
   - role: worker</pre>
-      <p>Crear el clúster con esa configuración:</p>
-      <pre><span class="cmt"># Crear clúster (tarda ~60 segundos)</span>
+      <p>Create the cluster with that configuration:</p>
+      <pre><span class="cmt"># Create cluster (~60 seconds)</span>
 <span class="cmd">kind</span> create cluster \
   --name otel-demo \
   --config kind-config.yaml
 
-<span class="cmt"># Verificar que el clúster está corriendo</span>
+<span class="cmt"># Verify the cluster is running</span>
 <span class="cmd">kubectl</span> cluster-info --context kind-otel-demo
 <span class="cmd">kubectl</span> get nodes</pre>
-      <div class="callout success"><span class="ci">✅</span><div>Deberías ver 3 nodos (<code>control-plane</code> + 2 <code>worker</code>) en estado <code>Ready</code>.</div></div>
-      <div class="callout info"><span class="ci">ℹ</span><div><strong>Tip — múltiples contextos:</strong> Si tienes otros clústeres configurados, asegúrate de usar el contexto correcto: <code>kubectl config use-context kind-otel-demo</code></div></div>
+      <div class="callout success"><span class="ci">✅</span><div>You should see 3 nodes (<code>control-plane</code> + 2 <code>worker</code>) in <code>Ready</code> state.</div></div>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>Tip — multiple contexts:</strong> If you have other clusters configured, make sure to use the correct context: <code>kubectl config use-context kind-otel-demo</code></div></div>
     </div>
 
     <hr/>
@@ -1109,7 +1109,7 @@ nodes:
     <div class="step" id="l-7">
       <div class="step-header">
         <div class="step-circle purple">7</div>
-        <div><h2>Agregar repositorio Helm y crear Namespace</h2><div class="step-desc">Configurar Helm y preparar el espacio en el clúster local</div></div>
+        <div><h2>Add Helm repository and create Namespace</h2><div class="step-desc">Configure Helm and prepare the local cluster namespace</div></div>
       </div>
       <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 <span class="cmd">helm</span> repo update
@@ -1122,10 +1122,10 @@ nodes:
     <div class="step" id="l-8">
       <div class="step-header">
         <div class="step-circle purple">8</div>
-        <div><h2>Instalar el OTel Demo localmente</h2><div class="step-desc">Ajustando recursos para el entorno local</div></div>
+        <div><h2>Install OTel Demo locally</h2><div class="step-desc">Tuning resources for the local environment</div></div>
       </div>
-      <p>Crea <code>local-values.yaml</code> para reducir el consumo de recursos en tu laptop:</p>
-      <pre><span class="cmt"># local-values.yaml — optimizado para laptop (8–16 GB RAM)</span>
+      <p>Create <code>local-values.yaml</code> to reduce resource consumption on your laptop:</p>
+      <pre><span class="cmt"># local-values.yaml — tuned for laptop (8–16 GB RAM)</span>
 default:
   resources:
     requests: { cpu: <span class="str">"50m"</span>, memory: <span class="str">"64Mi"</span> }
@@ -1160,13 +1160,13 @@ prometheus:
 grafana:
   resources:
     requests: { cpu: <span class="str">"80m"</span>, memory: <span class="str">"150Mi"</span> }</pre>
-      <p>Instalar el chart:</p>
+      <p>Install the chart:</p>
       <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
   --namespace otel-demo \
   --values local-values.yaml \
   --wait \
   --timeout 20m</pre>
-      <div class="callout warn"><span class="ci">⚠</span><div><strong>Primera instalación:</strong> Docker descargará ~5–8 GB de imágenes. Asegúrate de tener buena conexión a internet y al menos 20 GB libres. El flag <code>--timeout 20m</code> da tiempo suficiente para la descarga.</div></div>
+      <div class="callout warn"><span class="ci">⚠</span><div><strong>First install:</strong> Docker will pull ~5–8 GB of images. Make sure you have a good internet connection and at least 20 GB free. The <code>--timeout 20m</code> flag gives enough time for the download.</div></div>
     </div>
 
     <hr/>
@@ -1175,59 +1175,59 @@ grafana:
     <div class="step" id="l-9">
       <div class="step-header">
         <div class="step-circle purple">9</div>
-        <div><h2>Verificar y acceder al demo</h2><div class="step-desc">Confirmar el estado y abrir los servicios en el navegador</div></div>
+        <div><h2>Verify and access the demo</h2><div class="step-desc">Confirm the status and open services in the browser</div></div>
       </div>
-      <pre><span class="cmt"># Ver todos los Pods — espera hasta que todos sean Running</span>
+      <pre><span class="cmt"># Watch all Pods — wait until all are Running</span>
 <span class="cmd">kubectl</span> get pods -n otel-demo -w
 
-<span class="cmt"># Ver el uso de recursos del clúster</span>
+<span class="cmt"># Check cluster resource usage</span>
 <span class="cmd">kubectl</span> top nodes
 <span class="cmd">kubectl</span> top pods -n otel-demo</pre>
-      <div class="callout success"><span class="ci">✅</span><div><strong>Estado esperado:</strong> 20–25 Pods en <code>Running</code> en 5–15 minutos. La primera vez puede tardar más por la descarga de imágenes.</div></div>
-      <pre><span class="cmt"># Abrir en el navegador — ejecuta cada línea en una terminal separada</span>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Expected state:</strong> 20–25 Pods in <code>Running</code> within 5–15 minutes. The first time may take longer due to image pulls.</div></div>
+      <pre><span class="cmt"># Open in browser — run each line in a separate terminal</span>
 
-<span class="cmt"># Tienda web → http://localhost:8080</span>
+<span class="cmt"># Web storefront → http://localhost:8080</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-frontend 8080:8080 &amp;
 
-<span class="cmt"># Trazas en Jaeger → http://localhost:16686</span>
+<span class="cmt"># Traces in Jaeger → http://localhost:16686</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-jaeger-query 16686:16686 &amp;
 
-<span class="cmt"># Dashboards en Grafana → http://localhost:3000 (admin/admin)</span>
+<span class="cmt"># Dashboards in Grafana → http://localhost:3000 (admin/admin)</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-grafana 3000:80 &amp;
 
-<span class="cmt"># Métricas en Prometheus → http://localhost:9090</span>
+<span class="cmt"># Metrics in Prometheus → http://localhost:9090</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-prometheus 9090:9090 &amp;
 
-<span class="cmt"># Generador de carga Locust → http://localhost:8089</span>
+<span class="cmt"># Locust load generator → http://localhost:8089</span>
 <span class="cmd">kubectl</span> port-forward -n otel-demo svc/my-otel-demo-loadgenerator 8089:8089 &amp;</pre>
-      <div class="callout laptop"><span class="ci">💻</span><div><strong>Resumen de URLs locales:</strong><br/>
+      <div class="callout laptop"><span class="ci">💻</span><div><strong>Local URL summary:</strong><br/>
         <ul style="margin-top:6px;padding-left:18px;">
-          <li>Tienda web: <strong>http://localhost:8080</strong></li>
-          <li>Jaeger (trazas): <strong>http://localhost:16686</strong></li>
-          <li>Grafana (dashboards): <strong>http://localhost:3000</strong> — usuario: <code>admin</code> / contraseña: <code>admin</code></li>
-          <li>Prometheus (métricas): <strong>http://localhost:9090</strong></li>
-          <li>Locust (carga): <strong>http://localhost:8089</strong></li>
+          <li>Web storefront: <strong>http://localhost:8080</strong></li>
+          <li>Jaeger (traces): <strong>http://localhost:16686</strong></li>
+          <li>Grafana (dashboards): <strong>http://localhost:3000</strong> — user: <code>admin</code> / password: <code>admin</code></li>
+          <li>Prometheus (metrics): <strong>http://localhost:9090</strong></li>
+          <li>Locust (load): <strong>http://localhost:8089</strong></li>
         </ul>
       </div></div>
       <hr/>
-      <p><strong>Limpieza del entorno local:</strong></p>
-      <pre><span class="cmt"># Desinstalar el demo</span>
+      <p><strong>Local environment cleanup:</strong></p>
+      <pre><span class="cmt"># Uninstall the demo</span>
 <span class="cmd">helm</span> uninstall my-otel-demo -n otel-demo
 <span class="cmd">kubectl</span> delete namespace otel-demo
 
-<span class="cmt"># Eliminar el clúster kind completo</span>
+<span class="cmt"># Delete the entire kind cluster</span>
 <span class="cmd">kind</span> delete cluster --name otel-demo</pre>
     </div>
 
     <div class="refs">
       <hr/>
-      <p><strong>Referencias — Software gratuito utilizado</strong></p>
+      <p><strong>References — Free software used</strong></p>
       <ul>
-        <li><a href="https://docs.docker.com/desktop/" target="_blank">Docker Desktop — Documentación oficial</a></li>
+        <li><a href="https://docs.docker.com/desktop/" target="_blank">Docker Desktop — Official documentation</a></li>
         <li><a href="https://kind.sigs.k8s.io/" target="_blank">kind — Kubernetes IN Docker</a></li>
-        <li><a href="https://helm.sh/docs/" target="_blank">Helm — Documentación oficial</a></li>
-        <li><a href="https://kubernetes.io/docs/tasks/tools/" target="_blank">kubectl — Guía de instalación oficial</a></li>
-        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
+        <li><a href="https://helm.sh/docs/" target="_blank">Helm — Official documentation</a></li>
+        <li><a href="https://kubernetes.io/docs/tasks/tools/" target="_blank">kubectl — Official install guide</a></li>
+        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Official documentation</a></li>
       </ul>
     </div>
 
@@ -1238,35 +1238,35 @@ grafana:
 
     <div class="callout cxp">
       <span class="ci">📡</span>
-      <div><strong>Coralogix — Observabilidad completa: Logs · Metrics · Traces · Infrastructure</strong><br />
-      Integra el OTel Demo con Coralogix para centralizar toda la telemetría en una plataforma: analiza logs con parsing avanzado, crea métricas desde eventos, construye dashboards y configura alertas proactivas.</div>
+      <div><strong>Coralogix — Full observability: Logs · Metrics · Traces · Infrastructure</strong><br />
+      Integrate OTel Demo with Coralogix to centralise all telemetry in one platform: analyse logs with advanced parsing, create metrics from events, build dashboards and configure proactive alerts.</div>
     </div>
 
     <div class="step-nav">
-      <a href="#cx-1"><span class="sn">1</span>Login Coralogix</a>
+      <a href="#cx-1"><span class="sn">1</span>Login</a>
       <a href="#cx-2"><span class="sn">2</span>Deploy OTel Demo</a>
-      <a href="#cx-3"><span class="sn">3</span>Configurar Telemetría</a>
-      <a href="#cx-4"><span class="sn">4</span>Parsing de Logs</a>
+      <a href="#cx-3"><span class="sn">3</span>Configure Telemetry</a>
+      <a href="#cx-4"><span class="sn">4</span>Log Parsing</a>
       <a href="#cx-5"><span class="sn">5</span>Enrichments</a>
       <a href="#cx-6"><span class="sn">6</span>Events2Metrics</a>
       <a href="#cx-7"><span class="sn">7</span>Dashboard</a>
-      <a href="#cx-8"><span class="sn">8</span>Alertas</a>
+      <a href="#cx-8"><span class="sn">8</span>Alerts</a>
     </div>
 
     <!-- CXP 1 -->
     <div class="step" id="cx-1">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">1</div>
-        <div><h2>Acceder a tu cuenta Coralogix</h2><div class="step-desc">Login y verificación del entorno asignado</div></div>
+        <div><h2>Log in to your Coralogix account</h2><div class="step-desc">Login and verify your assigned environment</div></div>
       </div>
       <ol>
-        <li>Accede a la URL de tu cuenta Coralogix asignada (ej. <code>https://&lt;tu-equipo&gt;.coralogix.com</code>).</li>
-        <li>Inicia sesión con tus credenciales.</li>
-        <li>Una vez dentro, navega a <strong>Settings → API Keys</strong> y copia tu <strong>Send-Your-Data API Key</strong> — la necesitarás para el Paso 3.</li>
-        <li>Anota también el <strong>Endpoint de ingesta</strong> correspondiente a tu región:</li>
+        <li>Go to your assigned Coralogix account URL (e.g. <code>https://&lt;your-team&gt;.coralogix.com</code>).</li>
+        <li>Sign in with your credentials.</li>
+        <li>Once in, navigate to <strong>Settings → API Keys</strong> and copy your <strong>Send-Your-Data API Key</strong> — you will need it in Step 3.</li>
+        <li>Also note the <strong>ingestion endpoint</strong> for your region:</li>
       </ol>
       <div class="table-wrap"><table>
-        <thead><tr><th>Región Coralogix</th><th>Endpoint OTLP (gRPC)</th><th>Endpoint OTLP (HTTP)</th></tr></thead>
+        <thead><tr><th>Coralogix Region</th><th>OTLP Endpoint (gRPC)</th><th>OTLP Endpoint (HTTP)</th></tr></thead>
         <tbody>
           <tr><td>US1 (us-east-1)</td><td><code>otel-traces.coralogix.us:443</code></td><td><code>https://ingress.coralogix.us/</code></td></tr>
           <tr><td>EU1 (eu-west-1)</td><td><code>otel-traces.coralogix.com:443</code></td><td><code>https://ingress.coralogix.com/</code></td></tr>
@@ -1275,7 +1275,7 @@ grafana:
           <tr><td>AP2 (ap-southeast-1)</td><td><code>otel-traces.coralogixsg.com:443</code></td><td><code>https://ingress.coralogixsg.com/</code></td></tr>
         </tbody>
       </table></div>
-      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Cómo saber mi región?</strong> En la consola de Coralogix, la URL del navegador indica tu dominio (ej. <code>.coralogix.com</code> = EU1, <code>.coralogix.us</code> = US1). Puedes confirmarlo en <strong>Settings → Account → Region</strong>.</div></div>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>How to find your region?</strong> In the Coralogix console, the browser URL shows your domain (e.g. <code>.coralogix.com</code> = EU1, <code>.coralogix.us</code> = US1). You can confirm it in <strong>Settings → Account → Region</strong>.</div></div>
     </div>
 
     <hr/>
@@ -1284,19 +1284,19 @@ grafana:
     <div class="step" id="cx-2">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">2</div>
-        <div><h2>Desplegar el OTel Demo en Kubernetes</h2><div class="step-desc">Clúster listo como base para la integración con Coralogix</div></div>
+        <div><h2>Deploy the OTel Demo on Kubernetes</h2><div class="step-desc">Cluster ready as the base for the Coralogix integration</div></div>
       </div>
-      <div class="callout info"><span class="ci">ℹ</span><div>Si ya tienes el OTel Demo desplegado (siguiendo cualquiera de los otros tabs), puedes saltar directamente al <a href="#cx-3">Paso 3</a>. Este paso asume que partes de cero.</div></div>
-      <p>Agrega el Helm repo y crea el namespace:</p>
+      <div class="callout info"><span class="ci">ℹ</span><div>If you already have the OTel Demo deployed (following any of the other tabs), skip directly to <a href="#cx-3">Step 3</a>. This step assumes a fresh start.</div></div>
+      <p>Add the Helm repo and create the namespace:</p>
       <pre><span class="cmd">helm</span> repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 <span class="cmd">helm</span> repo update
 <span class="cmd">kubectl</span> create namespace otel-demo</pre>
-      <p>Instala el demo <strong>sin</strong> el Collector interno (lo reemplazaremos con uno configurado para Coralogix):</p>
+      <p>Install the demo <strong>without</strong> the built-in Collector (we will replace it with one configured for Coralogix):</p>
       <pre><span class="cmd">helm</span> install my-otel-demo open-telemetry/opentelemetry-demo \
   --namespace otel-demo \
   --set opentelemetry-collector.enabled=false \
   --wait</pre>
-      <div class="callout warn"><span class="ci">⚠</span><div>Al deshabilitar el Collector interno, los servicios enviarán telemetría al puerto 4317 del Collector que instalaremos a continuación. Verifica que todos los Pods están en <code>Running</code> antes de continuar.</div></div>
+      <div class="callout warn"><span class="ci">⚠</span><div>Disabling the built-in Collector means services will send telemetry to port 4317 of the Collector we install next. Verify all Pods are <code>Running</code> before continuing.</div></div>
       <pre><span class="cmd">kubectl</span> get pods -n otel-demo</pre>
     </div>
 
@@ -1306,13 +1306,13 @@ grafana:
     <div class="step" id="cx-3">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">3</div>
-        <div><h2>Configurar el OTel Collector para enviar a Coralogix</h2><div class="step-desc">Logs · Métricas · Trazas · Infrastructure Metrics</div></div>
+        <div><h2>Configure the OTel Collector to send to Coralogix</h2><div class="step-desc">Logs · Metrics · Traces · Infrastructure Metrics</div></div>
       </div>
-      <p>Crea un Secret de Kubernetes con tu API Key de Coralogix:</p>
+      <p>Create a Kubernetes Secret with your Coralogix API Key:</p>
       <pre><span class="cmd">kubectl</span> create secret generic coralogix-keys \
   --namespace otel-demo \
-  --from-literal=PRIVATE_KEY=<span class="val">&lt;TU_SEND_YOUR_DATA_API_KEY&gt;</span></pre>
-      <p>Crea el archivo <code>otel-collector-coralogix.yaml</code>:</p>
+  --from-literal=PRIVATE_KEY=<span class="val">&lt;YOUR_SEND_YOUR_DATA_API_KEY&gt;</span></pre>
+      <p>Create the file <code>otel-collector-coralogix.yaml</code>:</p>
       <pre><span class="cmt"># otel-collector-coralogix.yaml</span>
 apiVersion: v1
 kind: ConfigMap
@@ -1328,7 +1328,7 @@ data:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
-      <span class="cmt"># Infrastructure Metrics — scraping de nodos y pods</span>
+      <span class="cmt"># Infrastructure Metrics — scrape nodes and pods</span>
       prometheus:
         config:
           scrape_configs:
@@ -1354,7 +1354,7 @@ data:
         check_interval: 5s
         limit_percentage: 80
         spike_limit_percentage: 25
-      <span class="cmt"># Enriquece con metadata de Kubernetes</span>
+      <span class="cmt"># Enrich with Kubernetes metadata</span>
       k8sattributes:
         auth_type: serviceAccount
         passthrough: false
@@ -1386,7 +1386,7 @@ data:
         subsystem_name_attributes:
           - k8s.deployment.name
           - service.name
-        domain: <span class="str">"&lt;TU_DOMINIO&gt;"</span>  <span class="cmt"># ej: coralogix.com, coralogix.us</span>
+        domain: <span class="str">"&lt;YOUR_DOMAIN&gt;"</span>  <span class="cmt"># e.g. coralogix.com, coralogix.us</span>
         logs:
           headers:
             X-Coralogix-Application-Name: <span class="str">"otel-demo"</span>
@@ -1489,15 +1489,15 @@ subjects:
   - kind: ServiceAccount
     name: otel-collector-sa
     namespace: otel-demo</pre>
-      <p>Aplica el manifiesto:</p>
+      <p>Apply the manifest:</p>
       <pre><span class="cmd">kubectl</span> apply -f otel-collector-coralogix.yaml
 
-<span class="cmt"># Verificar que el Collector arrancó correctamente</span>
+<span class="cmt"># Verify the Collector started correctly</span>
 <span class="cmd">kubectl</span> get pods -n otel-demo -l app=otel-collector
 <span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector --follow</pre>
-      <div class="callout success"><span class="ci">✅</span><div>En los logs deberías ver <strong>sin errores de conexión</strong> y líneas como <code>Everything is ready. Begin running and processing data.</code>. En Coralogix, tras 1–2 minutos aparecerán los primeros datos en <strong>Explore → Logs</strong>.</div></div>
+      <div class="callout success"><span class="ci">✅</span><div>In the logs you should see <strong>no connection errors</strong> and lines like <code>Everything is ready. Begin running and processing data.</code>. In Coralogix, after 1–2 minutes the first data will appear in <strong>Explore → Logs</strong>.</div></div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Tipo de telemetría</th><th>Receiver en Collector</th><th>Dónde verlo en Coralogix</th></tr></thead>
+        <thead><tr><th>Telemetry type</th><th>Receiver in Collector</th><th>Where to see it in Coralogix</th></tr></thead>
         <tbody>
           <tr><td><strong>Logs</strong></td><td><code>otlp</code></td><td>Explore → Logs</td></tr>
           <tr><td><strong>Traces</strong></td><td><code>otlp</code></td><td>Explore → Tracing</td></tr>
@@ -1513,32 +1513,32 @@ subjects:
     <div class="step" id="cx-4">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">4</div>
-        <div><h2>Parsear información útil de los Logs</h2><div class="step-desc">Extraer campos estructurados con Parsing Rules en Coralogix</div></div>
+        <div><h2>Parse useful information from Logs</h2><div class="step-desc">Extract structured fields with Parsing Rules in Coralogix</div></div>
       </div>
-      <p>Los logs del OTel Demo llegan en formato JSON. Coralogix permite extraer campos específicos mediante <strong>Parsing Rules</strong> para convertir texto en campos consultables y filtrables.</p>
-      <p><strong>Configurar una Parsing Rule en Coralogix:</strong></p>
+      <p>OTel Demo logs arrive in JSON format. Coralogix allows extracting specific fields via <strong>Parsing Rules</strong> to turn text into queryable, filterable fields.</p>
+      <p><strong>Configure a Parsing Rule in Coralogix:</strong></p>
       <ol>
-        <li>En la consola, ve a <strong>Data Flow → Parsing Rules</strong>.</li>
-        <li>Haz clic en <strong>"New Rule Group"</strong>.</li>
-        <li>Configura el scope: Application = <code>otel-demo</code>, Subsystem = <code>*</code>.</li>
-        <li>Agrega una regla de tipo <strong>JSON Extract</strong> para el campo <code>text</code> y mapea los campos extraídos.</li>
-        <li>Guarda y verifica en <strong>Explore → Logs</strong> que los campos aparecen como columnas.</li>
+        <li>In the console, go to <strong>Data Flow → Parsing Rules</strong>.</li>
+        <li>Click <strong>"New Rule Group"</strong>.</li>
+        <li>Set the scope: Application = <code>otel-demo</code>, Subsystem = <code>*</code>.</li>
+        <li>Add a rule of type <strong>JSON Extract</strong> for the <code>text</code> field and map the extracted fields.</li>
+        <li>Save and verify in <strong>Explore → Logs</strong> that the fields appear as columns.</li>
       </ol>
-      <div class="callout info"><span class="ci">ℹ</span><div><strong>Ejemplo — Regex Parsing Rule</strong> para extraer el <code>http.method</code>, <code>http.status_code</code> y <code>service.name</code> del body del log:</div></div>
-      <pre><span class="cmt"># Expresión regular de ejemplo para logs de frontend</span>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>Example — Regex Parsing Rule</strong> to extract <code>http.method</code>, <code>http.status_code</code> and <code>service.name</code> from the log body:</div></div>
+      <pre><span class="cmt"># Example regular expression for frontend logs</span>
 (?P&lt;http_method&gt;GET|POST|PUT|DELETE|PATCH)\s(?P&lt;http_path&gt;\/[^\s]*)\s.*?status=(?P&lt;http_status&gt;\d{3})</pre>
       <div class="callout cxp"><span class="ci">💡</span><div>
-        <strong>Campos recomendados a parsear del OTel Demo:</strong>
+        <strong>Recommended fields to parse from the OTel Demo:</strong>
         <ul style="margin-top:6px;padding-left:18px;">
-          <li><code>service.name</code> — nombre del microservicio origen</li>
-          <li><code>http.method</code> + <code>http.route</code> + <code>http.status_code</code> — peticiones HTTP</li>
-          <li><code>span_id</code> + <code>trace_id</code> — correlación entre logs y trazas</li>
-          <li><code>exception.type</code> + <code>exception.message</code> — errores de aplicación</li>
-          <li><code>k8s.pod.name</code> + <code>k8s.namespace.name</code> — contexto de infraestructura</li>
+          <li><code>service.name</code> — name of the originating microservice</li>
+          <li><code>http.method</code> + <code>http.route</code> + <code>http.status_code</code> — HTTP requests</li>
+          <li><code>span_id</code> + <code>trace_id</code> — correlation between logs and traces</li>
+          <li><code>exception.type</code> + <code>exception.message</code> — application errors</li>
+          <li><code>k8s.pod.name</code> + <code>k8s.namespace.name</code> — infrastructure context</li>
         </ul>
       </div></div>
-      <p>Verifica el resultado en Explore → Logs usando el campo extraído:</p>
-      <pre><span class="cmt"># Query de ejemplo en Lucene (DataPrime también disponible)</span>
+      <p>Verify the result in Explore → Logs using the extracted field:</p>
+      <pre><span class="cmt"># Example query in Lucene (DataPrime also available)</span>
 http_status:5* AND service_name:checkoutservice</pre>
     </div>
 
@@ -1548,34 +1548,34 @@ http_status:5* AND service_name:checkoutservice</pre>
     <div class="step" id="cx-5">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">5</div>
-        <div><h2>Aplicar Enrichments</h2><div class="step-desc">Agregar contexto adicional a la telemetría ingresada</div></div>
+        <div><h2>Apply Enrichments</h2><div class="step-desc">Add additional context to ingested telemetry</div></div>
       </div>
-      <p>Los <strong>Enrichments</strong> en Coralogix añaden campos contextuales a logs y trazas en tiempo real, basándose en valores existentes o en lookup tables externas.</p>
-      <p><strong>Tipos de enrichment aplicables al OTel Demo:</strong></p>
+      <p><strong>Enrichments</strong> in Coralogix add contextual fields to logs and traces in real time, based on existing values or external lookup tables.</p>
+      <p><strong>Enrichment types applicable to the OTel Demo:</strong></p>
       <div class="table-wrap"><table>
-        <thead><tr><th>Tipo de Enrichment</th><th>Campo fuente</th><th>Dato añadido</th><th>Utilidad</th></tr></thead>
+        <thead><tr><th>Enrichment Type</th><th>Source field</th><th>Added data</th><th>Use case</th></tr></thead>
         <tbody>
-          <tr><td><strong>Geo-enrichment</strong></td><td><code>http.client_ip</code></td><td>País, ciudad, ASN</td><td>Ver distribución geográfica de usuarios</td></tr>
-          <tr><td><strong>Custom Lookup Table</strong></td><td><code>service.name</code></td><td>Equipo dueño, tier, SLA</td><td>Atribuir incidentes a equipos rápidamente</td></tr>
-          <tr><td><strong>AWS enrichment</strong></td><td><code>k8s.node.name</code></td><td>Tipo de instancia, AZ, región</td><td>Correlacionar fallos con infraestructura AWS</td></tr>
-          <tr><td><strong>Security enrichment</strong></td><td><code>http.client_ip</code></td><td>Reputación IP, threat score</td><td>Detectar IPs maliciosas en el tráfico del demo</td></tr>
+          <tr><td><strong>Geo-enrichment</strong></td><td><code>http.client_ip</code></td><td>Country, city, ASN</td><td>View geographic distribution of users</td></tr>
+          <tr><td><strong>Custom Lookup Table</strong></td><td><code>service.name</code></td><td>Owner team, tier, SLA</td><td>Attribute incidents to teams quickly</td></tr>
+          <tr><td><strong>AWS enrichment</strong></td><td><code>k8s.node.name</code></td><td>Instance type, AZ, region</td><td>Correlate failures with AWS infrastructure</td></tr>
+          <tr><td><strong>Security enrichment</strong></td><td><code>http.client_ip</code></td><td>IP reputation, threat score</td><td>Detect malicious IPs in demo traffic</td></tr>
         </tbody>
       </table></div>
-      <p><strong>Configurar un Custom Lookup Table enrichment:</strong></p>
+      <p><strong>Configure a Custom Lookup Table enrichment:</strong></p>
       <ol>
-        <li>Ve a <strong>Data Flow → Enrichments → Custom Enrichment</strong>.</li>
-        <li>Sube un CSV con la estructura: <code>service_name,team,tier,sla_minutes</code>.</li>
-        <li>Configura el campo de join: <code>service.name</code>.</li>
-        <li>Activa el enrichment y aplícalo a la aplicación <code>otel-demo</code>.</li>
+        <li>Go to <strong>Data Flow → Enrichments → Custom Enrichment</strong>.</li>
+        <li>Upload a CSV with the structure: <code>service_name,team,tier,sla_minutes</code>.</li>
+        <li>Configure the join field: <code>service.name</code>.</li>
+        <li>Enable the enrichment and apply it to the <code>otel-demo</code> application.</li>
       </ol>
-      <pre><span class="cmt"># Ejemplo de CSV para Custom Enrichment</span>
+      <pre><span class="cmt"># Example CSV for Custom Enrichment</span>
 service_name,team,tier,sla_minutes
 frontend,platform-team,tier-1,5
 checkoutservice,commerce-team,tier-1,5
 cartservice,commerce-team,tier-2,15
 recommendationservice,ml-team,tier-3,60
 emailservice,notifications-team,tier-3,60</pre>
-      <div class="callout cxp"><span class="ci">💡</span><div>Una vez activo el enrichment, los logs de <code>checkoutservice</code> tendrán automáticamente los campos <code>team=commerce-team</code> y <code>sla_minutes=5</code>, permitiendo filtrar y alertar por equipo directamente.</div></div>
+      <div class="callout cxp"><span class="ci">💡</span><div>Once the enrichment is active, logs from <code>checkoutservice</code> will automatically have the fields <code>team=commerce-team</code> and <code>sla_minutes=5</code>, allowing you to filter and alert by team directly.</div></div>
     </div>
 
     <hr/>
@@ -1584,17 +1584,17 @@ emailservice,notifications-team,tier-3,60</pre>
     <div class="step" id="cx-6">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">6</div>
-        <div><h2>Crear una métrica con Events2Metrics</h2><div class="step-desc">Convertir logs y trazas en métricas de largo plazo para retención y alertas</div></div>
+        <div><h2>Create a metric with Events2Metrics</h2><div class="step-desc">Convert logs and traces into long-term metrics for retention and alerting</div></div>
       </div>
-      <div class="callout info"><span class="ci">ℹ</span><div><strong>¿Qué es Events2Metrics?</strong> Events2Metrics convierte logs o spans individuales en métricas agregadas (counter, gauge, histogram) que se almacenan de forma permanente con bajo costo. Ideal para retención de KPIs más allá de la ventana de logs.</div></div>
-      <p><strong>Ejemplo: Métrica de tasa de errores HTTP por servicio</strong></p>
+      <div class="callout info"><span class="ci">ℹ</span><div><strong>What is Events2Metrics?</strong> Events2Metrics converts individual logs or spans into aggregated metrics (counter, gauge, histogram) stored permanently at low cost. Ideal for retaining KPIs beyond the log retention window.</div></div>
+      <p><strong>Example: HTTP error rate metric per service</strong></p>
       <ol>
-        <li>Ve a <strong>Data Flow → Events2Metrics</strong> y haz clic en <strong>"Add Metric"</strong>.</li>
-        <li>Selecciona fuente <strong>Spans</strong> (trazas).</li>
-        <li>Configura los campos:</li>
+        <li>Go to <strong>Data Flow → Events2Metrics</strong> and click <strong>"Add Metric"</strong>.</li>
+        <li>Select source <strong>Spans</strong> (traces).</li>
+        <li>Configure the fields:</li>
       </ol>
       <div class="table-wrap"><table>
-        <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
         <tbody>
           <tr><td>Metric name</td><td><code>otel_demo_http_errors_total</code></td></tr>
           <tr><td>Metric type</td><td>Counter</td></tr>
@@ -1603,9 +1603,9 @@ emailservice,notifications-team,tier-3,60</pre>
           <tr><td>Application</td><td><code>otel-demo</code></td></tr>
         </tbody>
       </table></div>
-      <p><strong>Segundo ejemplo: Latencia P95 del checkout</strong></p>
+      <p><strong>Second example: Checkout P95 latency</strong></p>
       <div class="table-wrap"><table>
-        <thead><tr><th>Campo</th><th>Valor</th></tr></thead>
+        <thead><tr><th>Field</th><th>Value</th></tr></thead>
         <tbody>
           <tr><td>Metric name</td><td><code>otel_demo_checkout_duration_ms</code></td></tr>
           <tr><td>Metric type</td><td>Histogram</td></tr>
@@ -1614,7 +1614,7 @@ emailservice,notifications-team,tier-3,60</pre>
           <tr><td>Dimensions</td><td><code>service.name</code>, <code>span.name</code></td></tr>
         </tbody>
       </table></div>
-      <div class="callout success"><span class="ci">✅</span><div>Tras 2–5 minutos, las métricas aparecerán en <strong>Explore → Metrics</strong> y podrás consultarlas con PromQL: <code>rate(otel_demo_http_errors_total[5m])</code></div></div>
+      <div class="callout success"><span class="ci">✅</span><div>After 2–5 minutes, the metrics will appear in <strong>Explore → Metrics</strong> and you can query them with PromQL: <code>rate(otel_demo_http_errors_total[5m])</code></div></div>
     </div>
 
     <hr/>
@@ -1623,32 +1623,32 @@ emailservice,notifications-team,tier-3,60</pre>
     <div class="step" id="cx-7">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">7</div>
-        <div><h2>Construir un Dashboard de salud del entorno</h2><div class="step-desc">Panel unificado con Logs, Métricas, Trazas e Infraestructura</div></div>
+        <div><h2>Build an environment health Dashboard</h2><div class="step-desc">Unified panel with Logs, Metrics, Traces and Infrastructure</div></div>
       </div>
-      <p>Ve a <strong>Dashboards → New Dashboard</strong> y crea los siguientes widgets:</p>
+      <p>Go to <strong>Dashboards → New Dashboard</strong> and create the following widgets:</p>
       <div class="table-wrap"><table>
-        <thead><tr><th>#</th><th>Widget</th><th>Tipo</th><th>Query / Fuente</th><th>Propósito</th></tr></thead>
+        <thead><tr><th>#</th><th>Widget</th><th>Type</th><th>Query / Source</th><th>Purpose</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td>Tasa de peticiones totales</td><td>Line Chart</td><td><code>rate(http_server_duration_milliseconds_count[5m])</code></td><td>Throughput general</td></tr>
-          <tr><td>2</td><td>Tasa de errores HTTP (4xx/5xx)</td><td>Line Chart</td><td><code>rate(otel_demo_http_errors_total[5m])</code></td><td>Detectar degradación</td></tr>
-          <tr><td>3</td><td>Latencia P95 por servicio</td><td>Bar Chart</td><td><code>histogram_quantile(0.95, rate(http_server_duration_milliseconds_bucket[5m]))</code></td><td>Identificar servicios lentos</td></tr>
-          <tr><td>4</td><td>Logs de errores recientes</td><td>Log Grid</td><td>Filtro: <code>severity:ERROR OR severity:CRITICAL</code></td><td>Visibilidad operacional</td></tr>
-          <tr><td>5</td><td>Pods en estado Running vs Not Ready</td><td>Gauge</td><td>Metric: <code>kube_pod_status_phase</code></td><td>Salud de infraestructura</td></tr>
-          <tr><td>6</td><td>Top 5 servicios por volumen de errores</td><td>Data Table</td><td><code>topk(5, sum by(service_name) (otel_demo_http_errors_total))</code></td><td>Priorización de incidentes</td></tr>
-          <tr><td>7</td><td>Trazas con duración > 1s</td><td>Log Grid (Spans)</td><td>Filtro: <code>duration_ms > 1000</code></td><td>Identificar transacciones lentas</td></tr>
-          <tr><td>8</td><td>Uso de CPU/RAM por nodo</td><td>Line Chart</td><td><code>node_cpu_seconds_total</code> / <code>node_memory_MemAvailable_bytes</code></td><td>Capacidad de infraestructura</td></tr>
+          <tr><td>1</td><td>Total request rate</td><td>Line Chart</td><td><code>rate(http_server_duration_milliseconds_count[5m])</code></td><td>Overall throughput</td></tr>
+          <tr><td>2</td><td>HTTP error rate (4xx/5xx)</td><td>Line Chart</td><td><code>rate(otel_demo_http_errors_total[5m])</code></td><td>Detect degradation</td></tr>
+          <tr><td>3</td><td>P95 latency per service</td><td>Bar Chart</td><td><code>histogram_quantile(0.95, rate(http_server_duration_milliseconds_bucket[5m]))</code></td><td>Identify slow services</td></tr>
+          <tr><td>4</td><td>Recent error logs</td><td>Log Grid</td><td>Filter: <code>severity:ERROR OR severity:CRITICAL</code></td><td>Operational visibility</td></tr>
+          <tr><td>5</td><td>Pods Running vs Not Ready</td><td>Gauge</td><td>Metric: <code>kube_pod_status_phase</code></td><td>Infrastructure health</td></tr>
+          <tr><td>6</td><td>Top 5 services by error volume</td><td>Data Table</td><td><code>topk(5, sum by(service_name) (otel_demo_http_errors_total))</code></td><td>Incident prioritization</td></tr>
+          <tr><td>7</td><td>Traces with duration > 1s</td><td>Log Grid (Spans)</td><td>Filter: <code>duration_ms > 1000</code></td><td>Identify slow transactions</td></tr>
+          <tr><td>8</td><td>CPU/RAM usage per node</td><td>Line Chart</td><td><code>node_cpu_seconds_total</code> / <code>node_memory_MemAvailable_bytes</code></td><td>Infrastructure capacity</td></tr>
         </tbody>
       </table></div>
       <div class="callout cxp"><span class="ci">💡</span><div>
-        <strong>Organización recomendada del dashboard en secciones:</strong>
+        <strong>Recommended dashboard organization by sections:</strong>
         <ul style="margin-top:6px;padding-left:18px;">
-          <li><strong>Sección 1 — Disponibilidad:</strong> Tasa de peticiones + Tasa de errores + Pods status</li>
-          <li><strong>Sección 2 — Rendimiento:</strong> Latencias P50/P95/P99 + Trazas lentas</li>
-          <li><strong>Sección 3 — Infraestructura:</strong> CPU, RAM, red por nodo</li>
-          <li><strong>Sección 4 — Logs recientes:</strong> Grid de errores en tiempo real</li>
+          <li><strong>Section 1 — Availability:</strong> Request rate + Error rate + Pod status</li>
+          <li><strong>Section 2 — Performance:</strong> P50/P95/P99 latencies + Slow traces</li>
+          <li><strong>Section 3 — Infrastructure:</strong> CPU, RAM, network per node</li>
+          <li><strong>Section 4 — Recent Logs:</strong> Real-time error grid</li>
         </ul>
       </div></div>
-      <p>Guarda el dashboard y compártelo con tu equipo desde <strong>Dashboard → Share → Copy Link</strong>.</p>
+      <p>Save the dashboard and share it with your team from <strong>Dashboard → Share → Copy Link</strong>.</p>
     </div>
 
     <hr/>
@@ -1657,52 +1657,52 @@ emailservice,notifications-team,tier-3,60</pre>
     <div class="step" id="cx-8">
       <div class="step-header">
         <div class="step-circle" style="background:#7e22ce;">8</div>
-        <div><h2>Configurar Alertas proactivas</h2><div class="step-desc">Detección temprana de problemas antes de que impacten a los usuarios</div></div>
+        <div><h2>Configure Proactive Alerts</h2><div class="step-desc">Early detection of problems before they impact users</div></div>
       </div>
-      <p>Ve a <strong>Alerts → New Alert</strong> y crea las siguientes alertas para monitorear el OTel Demo:</p>
+      <p>Go to <strong>Alerts → New Alert</strong> and create the following alerts to monitor the OTel Demo:</p>
       <div class="table-wrap"><table>
-        <thead><tr><th>Alerta</th><th>Tipo</th><th>Condición</th><th>Severidad</th><th>Propósito</th></tr></thead>
+        <thead><tr><th>Alert</th><th>Type</th><th>Condition</th><th>Severity</th><th>Purpose</th></tr></thead>
         <tbody>
-          <tr><td><strong>Alta tasa de errores 5xx</strong></td><td>Metric Alert</td><td><code>rate(otel_demo_http_errors_total{status_code=~"5.."}[5m]) &gt; 0.1</code></td><td>Critical</td><td>Detectar fallos del servidor</td></tr>
-          <tr><td><strong>Latencia P95 elevada</strong></td><td>Metric Alert</td><td><code>histogram_quantile(0.95, rate(http_server_duration_milliseconds_bucket[5m])) &gt; 2000</code></td><td>High</td><td>Degradación de rendimiento</td></tr>
-          <tr><td><strong>Pod en CrashLoopBackOff</strong></td><td>Log Alert</td><td>Log text contains <code>CrashLoopBackOff</code></td><td>Critical</td><td>Fallo de aplicación</td></tr>
-          <tr><td><strong>Excepción no controlada</strong></td><td>Log Alert</td><td>Severity = <code>ERROR</code> AND <code>exception.type</code> exists — más de 10 en 5 min</td><td>High</td><td>Errores de aplicación frecuentes</td></tr>
-          <tr><td><strong>Checkoutservice sin tráfico</strong></td><td>Metric Alert (absence)</td><td><code>rate(http_server_duration_milliseconds_count{service="checkoutservice"}[10m]) == 0</code></td><td>High</td><td>Servicio crítico caído</td></tr>
-          <tr><td><strong>Uso de memoria > 85%</strong></td><td>Metric Alert</td><td><code>(1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) &gt; 0.85</code></td><td>Medium</td><td>Riesgo de OOM en nodos</td></tr>
-          <tr><td><strong>OTel Collector sin datos</strong></td><td>Metric Alert (absence)</td><td>No hay datos en el exporter en 10 min</td><td>Critical</td><td>Pipeline de telemetría roto</td></tr>
+          <tr><td><strong>High 5xx error rate</strong></td><td>Metric Alert</td><td><code>rate(otel_demo_http_errors_total{status_code=~"5.."}[5m]) &gt; 0.1</code></td><td>Critical</td><td>Detect server failures</td></tr>
+          <tr><td><strong>Elevated P95 latency</strong></td><td>Metric Alert</td><td><code>histogram_quantile(0.95, rate(http_server_duration_milliseconds_bucket[5m])) &gt; 2000</code></td><td>High</td><td>Performance degradation</td></tr>
+          <tr><td><strong>Pod in CrashLoopBackOff</strong></td><td>Log Alert</td><td>Log text contains <code>CrashLoopBackOff</code></td><td>Critical</td><td>Application failure</td></tr>
+          <tr><td><strong>Unhandled exception</strong></td><td>Log Alert</td><td>Severity = <code>ERROR</code> AND <code>exception.type</code> exists — more than 10 in 5 min</td><td>High</td><td>Frequent application errors</td></tr>
+          <tr><td><strong>Checkoutservice with no traffic</strong></td><td>Metric Alert (absence)</td><td><code>rate(http_server_duration_milliseconds_count{service="checkoutservice"}[10m]) == 0</code></td><td>High</td><td>Critical service down</td></tr>
+          <tr><td><strong>Memory usage > 85%</strong></td><td>Metric Alert</td><td><code>(1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) &gt; 0.85</code></td><td>Medium</td><td>OOM risk on nodes</td></tr>
+          <tr><td><strong>OTel Collector with no data</strong></td><td>Metric Alert (absence)</td><td>No data from the exporter for 10 min</td><td>Critical</td><td>Broken telemetry pipeline</td></tr>
         </tbody>
       </table></div>
-      <p><strong>Configurar notificaciones para las alertas:</strong></p>
+      <p><strong>Configure notifications for alerts:</strong></p>
       <ol>
-        <li>En cada alerta, ve a la sección <strong>Notify</strong>.</li>
-        <li>Elige el canal: <strong>Email</strong>, <strong>Slack</strong>, <strong>PagerDuty</strong>, <strong>Webhook</strong>, etc.</li>
-        <li>Configura el <strong>Notification Group</strong> (quién recibe qué severidad).</li>
-        <li>Activa el <strong>Alert Suppression</strong> para evitar flapping en alertas ruidosas.</li>
+        <li>In each alert, go to the <strong>Notify</strong> section.</li>
+        <li>Choose the channel: <strong>Email</strong>, <strong>Slack</strong>, <strong>PagerDuty</strong>, <strong>Webhook</strong>, etc.</li>
+        <li>Configure the <strong>Notification Group</strong> (who receives which severity).</li>
+        <li>Enable <strong>Alert Suppression</strong> to avoid flapping on noisy alerts.</li>
       </ol>
-      <div class="callout success"><span class="ci">✅</span><div><strong>¡Integración completa con Coralogix!</strong> El OTel Demo envía Logs, Métricas, Trazas e Infrastructure Metrics. Los logs están parseados y enriquecidos, tienes métricas persistentes vía Events2Metrics, un dashboard de salud completo y alertas proactivas configuradas.</div></div>
+      <div class="callout success"><span class="ci">✅</span><div><strong>Full Coralogix integration complete!</strong> The OTel Demo sends Logs, Metrics, Traces and Infrastructure Metrics. Logs are parsed and enriched, you have persistent metrics via Events2Metrics, a complete health dashboard and proactive alerts configured.</div></div>
       <hr/>
-      <p><strong>Verificación final del flujo completo:</strong></p>
-      <pre><span class="cmt"># Confirmar que el Collector está enviando datos</span>
+      <p><strong>Final verification of the complete flow:</strong></p>
+      <pre><span class="cmt"># Confirm the Collector is sending data</span>
 <span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector | grep -i "exporter"
 
-<span class="cmt"># Ver número de spans exportados</span>
+<span class="cmt"># View number of exported spans</span>
 <span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector | grep "TracesExporter"
 
-<span class="cmt"># Ver número de logs exportados</span>
+<span class="cmt"># View number of exported logs</span>
 <span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector | grep "LogsExporter"</pre>
     </div>
 
     <div class="refs">
       <hr/>
-      <p><strong>Referencias Coralogix</strong></p>
+      <p><strong>Coralogix References</strong></p>
       <ul>
-        <li><a href="https://coralogix.com/docs/opentelemetry/" target="_blank">Coralogix — Integración con OpenTelemetry</a></li>
-        <li><a href="https://coralogix.com/docs/opentelemetry-collector-coralogix-exporter/" target="_blank">Coralogix Exporter para OTel Collector</a></li>
-        <li><a href="https://coralogix.com/docs/events-to-metrics/" target="_blank">Events2Metrics — Documentación oficial</a></li>
-        <li><a href="https://coralogix.com/docs/parsing-rules/" target="_blank">Parsing Rules en Coralogix</a></li>
+        <li><a href="https://coralogix.com/docs/opentelemetry/" target="_blank">Coralogix — OpenTelemetry Integration</a></li>
+        <li><a href="https://coralogix.com/docs/opentelemetry-collector-coralogix-exporter/" target="_blank">Coralogix Exporter for OTel Collector</a></li>
+        <li><a href="https://coralogix.com/docs/events-to-metrics/" target="_blank">Events2Metrics — Official Documentation</a></li>
+        <li><a href="https://coralogix.com/docs/parsing-rules/" target="_blank">Parsing Rules in Coralogix</a></li>
         <li><a href="https://coralogix.com/docs/custom-enrichment/" target="_blank">Custom Enrichment — Lookup Tables</a></li>
-        <li><a href="https://coralogix.com/docs/alerts/" target="_blank">Alertas en Coralogix</a></li>
-        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
+        <li><a href="https://coralogix.com/docs/alerts/" target="_blank">Alerts in Coralogix</a></li>
+        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Official Documentation</a></li>
       </ul>
     </div>
 
@@ -1716,52 +1716,52 @@ emailservice,notifications-team,tier-3,60</pre>
     <div class="step" id="d-prep">
       <div class="step-header">
         <div class="step-circle" style="background:#1e293b;">✓</div>
-        <div><h2>Preparación previa</h2></div>
+        <div><h2>Pre-demo preparation</h2></div>
       </div>
       <div class="tip-row">
         <div class="tip-card">
-          <h4>Clúster y Demo</h4>
+          <h4>Cluster &amp; Demo</h4>
           <ul>
-            <li>Clúster K8s activo (OCI, GKE, kind…)</li>
-            <li>OTel Demo desplegado y todos los Pods en Running</li>
-            <li>Load generator activo generando tráfico</li>
-            <li>Port-forward del frontend en http://localhost:8080</li>
+            <li>Active K8s cluster (OCI, GKE, kind…)</li>
+            <li>OTel Demo deployed with all Pods in Running state</li>
+            <li>Load generator active and generating traffic</li>
+            <li>Frontend port-forwarded at http://localhost:8080</li>
           </ul>
         </div>
         <div class="tip-card">
-          <h4>Coralogix pre-configurado</h4>
+          <h4>Coralogix pre-configured</h4>
           <ul>
-            <li>Collector configurado y enviando datos a Coralogix</li>
-            <li>Logs, Métricas y Trazas ya visibles en Explore</li>
-            <li>Dashboard de salud creado y con datos</li>
-            <li>Al menos 1 alerta configurada</li>
+            <li>Collector configured and sending data to Coralogix</li>
+            <li>Logs, Metrics and Traces already visible in Explore</li>
+            <li>Health dashboard created and populated with data</li>
+            <li>At least 1 alert configured</li>
           </ul>
         </div>
         <div class="tip-card">
-          <h4>Tabs del navegador abiertos</h4>
+          <h4>Browser tabs open</h4>
           <ul>
-            <li>Tab 1: OTel Demo frontend (tienda web)</li>
+            <li>Tab 1: OTel Demo frontend (web store)</li>
             <li>Tab 2: Coralogix → Explore → Logs</li>
             <li>Tab 3: Coralogix → APM (Traces)</li>
-            <li>Tab 4: Coralogix → Dashboard de salud</li>
+            <li>Tab 4: Coralogix → Health Dashboard</li>
           </ul>
         </div>
         <div class="tip-card">
-          <h4>Datos de conexión a mano</h4>
+          <h4>Connection details at hand</h4>
           <ul>
-            <li>URL de la cuenta Coralogix asignada</li>
-            <li>Región y dominio correcto (ej. coralogix.com)</li>
+            <li>Assigned Coralogix account URL</li>
+            <li>Correct region and domain (e.g. coralogix.com)</li>
             <li>Endpoint: <code>ingress.&lt;domain&gt;:443</code></li>
-            <li>Send-Your-Data API Key lista</li>
+            <li>Send-Your-Data API Key ready</li>
           </ul>
         </div>
       </div>
-      <p><strong>Comando rápido para verificar que todo está listo:</strong></p>
-      <pre><span class="cmt"># Todo en Running?</span>
+      <p><strong>Quick command to verify everything is ready:</strong></p>
+      <pre><span class="cmt"># Everything in Running?</span>
 <span class="cmd">kubectl</span> get pods -n otel-demo | grep -v Running
-<span class="cmt"># Si no devuelve nada: perfecto, todos están Running</span>
+<span class="cmt"># If nothing is returned: all pods are Running</span>
 
-<span class="cmt"># Collector enviando datos?</span>
+<span class="cmt"># Collector sending data?</span>
 <span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector --tail=20 | grep -i export</pre>
     </div>
 
@@ -1771,7 +1771,7 @@ emailservice,notifications-team,tier-3,60</pre>
     <div class="step" id="d-timeline">
       <div class="step-header">
         <div class="step-circle" style="background:#1e293b;">⏱</div>
-        <div><h2>Timeline de la demo — 20 minutos</h2><div class="step-desc">Distribución exacta del tiempo para mantener el ritmo y el impacto</div></div>
+        <div><h2>Demo timeline — 20 minutes</h2><div class="step-desc">Exact time distribution to maintain pace and impact</div></div>
       </div>
 
       <ul class="timeline">
@@ -1780,13 +1780,13 @@ emailservice,notifications-team,tier-3,60</pre>
         <li>
           <div class="tl-dot prep">1</div>
           <div class="tl-body">
-            <span class="tl-time">Min 0–2 · Contexto</span>
-            <h3>Contexto: ¿Qué es el OTel Demo y por qué importa?</h3>
-            <p>Establece el escenario antes de mostrar cualquier herramienta.</p>
+            <span class="tl-time">Min 0–2 · Context</span>
+            <h3>Context: What is the OTel Demo and why does it matter?</h3>
+            <p>Set the scene before showing any tool.</p>
             <ul class="tl-tips">
-              <li>Presenta el OTel Demo como una tienda online de microservicios reales: <em>"20+ servicios, 11 lenguajes, tráfico real generado automáticamente — igual que su entorno de producción."</em></li>
-              <li>Abre el frontend en <strong>http://localhost:8080</strong> y haz una compra rápida para que el cliente vea la aplicación en vivo.</li>
-              <li>Mensaje clave: <em>"Cada acción que ves aquí genera trazas, métricas y logs. Vamos a ver cómo Coralogix los centraliza en tiempo real."</em></li>
+              <li>Present the OTel Demo as a real microservices online store: <em>"20+ services, 11 languages, real traffic generated automatically — just like your production environment."</em></li>
+              <li>Open the frontend at <strong>http://localhost:8080</strong> and make a quick purchase so the customer sees the application live.</li>
+              <li>Key message: <em>"Every action you see here generates traces, metrics and logs. Let's see how Coralogix centralizes them in real time."</em></li>
             </ul>
           </div>
         </li>
@@ -1795,16 +1795,16 @@ emailservice,notifications-team,tier-3,60</pre>
         <li>
           <div class="tl-dot live">2</div>
           <div class="tl-body">
-            <span class="tl-time">Min 2–5 · Logs en tiempo real</span>
-            <h3>Live Tail — Los datos llegan en tiempo real</h3>
-            <p>El primer momento WOW: el cliente ve datos fluyendo al instante.</p>
+            <span class="tl-time">Min 2–5 · Real-time Logs</span>
+            <h3>Live Tail — Data arrives in real time</h3>
+            <p>The first WOW moment: the customer sees data flowing instantly.</p>
             <ul class="tl-tips">
-              <li>Abre Coralogix → <strong>Explore → Live Tail</strong>.</li>
-              <li>Filtra por <code>Application: otel-demo</code>. Muestra el flujo de logs en tiempo real.</li>
-              <li>Haz otra compra en el frontend y muestra cómo los logs del <code>checkoutservice</code> aparecen en segundos.</li>
-              <li>Mensaje clave: <em>"No hay delay, no hay batch de 5 minutos — el dato está aquí en el segundo en que ocurre."</em></li>
-              <li>Cambia a <strong>Explore → Logs</strong> y muestra el filtrado por severidad: filtra <code>severity: ERROR</code>. Si hay errores, úsalos. Si no, usa <code>severity: WARN</code>.</li>
-              <li>Muestra que puedes hacer click en cualquier log y ver el JSON completo con todos los atributos OTel enriquecidos.</li>
+              <li>Open Coralogix → <strong>Explore → Live Tail</strong>.</li>
+              <li>Filter by <code>Application: otel-demo</code>. Show the real-time log stream.</li>
+              <li>Make another purchase on the frontend and show how <code>checkoutservice</code> logs appear within seconds.</li>
+              <li>Key message: <em>"No delay, no 5-minute batch — the data is here the second it happens."</em></li>
+              <li>Switch to <strong>Explore → Logs</strong> and show severity filtering: filter <code>severity: ERROR</code>. Use any errors found, or fall back to <code>severity: WARN</code>.</li>
+              <li>Show that you can click any log and see the full JSON with all enriched OTel attributes.</li>
             </ul>
             <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/coralogix-live-tail/" target="_blank">Live Tail</a> · <a href="https://coralogix.com/docs/explore-screen/" target="_blank">Explore Screen</a></div></div>
           </div>
@@ -1814,17 +1814,17 @@ emailservice,notifications-team,tier-3,60</pre>
         <li>
           <div class="tl-dot live">3</div>
           <div class="tl-body">
-            <span class="tl-time">Min 5–8 · Trazas distribuidas</span>
-            <h3>APM — Sigue una petición a través de 10 microservicios</h3>
-            <p>El momento más visualmente impresionante de la demo.</p>
+            <span class="tl-time">Min 5–8 · Distributed traces</span>
+            <h3>APM — Follow a request through 10 microservices</h3>
+            <p>The most visually impressive moment of the demo.</p>
             <ul class="tl-tips">
-              <li>Ve a Coralogix → <strong>APM → Tracing</strong>.</li>
-              <li>Busca trazas del servicio <code>frontend</code>. Filtra por las de mayor duración (ordenar por <code>duration DESC</code>).</li>
-              <li>Abre una traza de checkout y expande el gráfico de Gantt con todos los spans.</li>
-              <li>Señala: <em>"Aquí ves la petición entrando al frontend, pasando por el cartservice, el checkoutservice, el paymentservice, el emailservice... todo en una sola vista."</em></li>
-              <li>Muestra el span de un servicio lento y el atributo <code>http.status_code</code>, <code>db.statement</code> o similar.</li>
-              <li>Usa <strong>Correlate to Logs</strong> para saltar del span al log correspondiente — este es un momento WOW muy fuerte.</li>
-              <li>Mensaje clave: <em>"En vez de buscar en 20 dashboards de 20 servicios, en un click ves exactamente dónde falló y por qué."</em></li>
+              <li>Go to Coralogix → <strong>APM → Tracing</strong>.</li>
+              <li>Search for traces from the <code>frontend</code> service. Filter by longest duration (sort by <code>duration DESC</code>).</li>
+              <li>Open a checkout trace and expand the Gantt chart with all spans.</li>
+              <li>Point out: <em>"Here you see the request entering the frontend, going through the cartservice, checkoutservice, paymentservice, emailservice... all in a single view."</em></li>
+              <li>Show the span of a slow service and attributes like <code>http.status_code</code>, <code>db.statement</code> or similar.</li>
+              <li>Use <strong>Correlate to Logs</strong> to jump from the span to the corresponding log — this is a very strong WOW moment.</li>
+              <li>Key message: <em>"Instead of searching through 20 dashboards for 20 services, one click shows you exactly where it failed and why."</em></li>
             </ul>
             <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/opentelemetry/" target="_blank">Coralogix OTel Overview</a> · <a href="https://coralogix.com/docs/opentelemetry/kubernetes-observability/kubernetes-complete-observability-basic-configuration/" target="_blank">K8s Observability config</a></div></div>
           </div>
@@ -1835,12 +1835,12 @@ emailservice,notifications-team,tier-3,60</pre>
           <div class="tl-dot wow">4</div>
           <div class="tl-body">
             <span class="tl-time">Min 8–12 · Dashboard + Parsing + Enrichment</span>
-            <h3>Dashboard de salud + Parsing + Enrichment</h3>
-            <p>Muestra que Coralogix no solo almacena datos — los enriquece y los hace accionables.</p>
+            <h3>Health Dashboard + Parsing + Enrichment</h3>
+            <p>Show that Coralogix not only stores data — it enriches it and makes it actionable.</p>
             <ul class="tl-tips">
-              <li><strong>Dashboard (2 min):</strong> Abre el dashboard pre-construido. Señala: tasa de peticiones, tasa de errores, latencia P95 por servicio y pods Running. Mensaje: <em>"Esto es el estado de salud de todo el entorno en una pantalla."</em></li>
-              <li><strong>Parsing (1 min):</strong> Ve a <strong>Data Flow → Parsing Rules</strong>. Muestra la regla JSON Extract activa sobre los logs del OTel Demo. Luego filtra en Explore por el campo parseado (ej. <code>http_status:500</code>) — muestra que el campo extraído es consultable.</li>
-              <li><strong>Enrichment (1 min):</strong> Muestra el Custom Enrichment con el CSV de <code>service_name → team → tier → sla_minutes</code>. Abre un log y señala los campos enriquecidos (<code>team</code>, <code>sla_minutes</code>). Mensaje: <em>"Saben inmediatamente qué equipo es responsable sin abrir Confluence."</em></li>
+              <li><strong>Dashboard (2 min):</strong> Open the pre-built dashboard. Highlight: request rate, error rate, P95 latency per service and Running pods. Message: <em>"This is the health status of the entire environment on one screen."</em></li>
+              <li><strong>Parsing (1 min):</strong> Go to <strong>Data Flow → Parsing Rules</strong>. Show the active JSON Extract rule on OTel Demo logs. Then filter in Explore by the parsed field (e.g. <code>http_status:500</code>) — show that the extracted field is queryable.</li>
+              <li><strong>Enrichment (1 min):</strong> Show the Custom Enrichment with the CSV of <code>service_name → team → tier → sla_minutes</code>. Open a log and point to the enriched fields (<code>team</code>, <code>sla_minutes</code>). Message: <em>"They immediately know which team is responsible without opening Confluence."</em></li>
             </ul>
             <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/user-guides/custom-dashboards/getting-started/" target="_blank">Custom Dashboards</a> · <a href="https://coralogix.com/docs/user-guides/data-transformation/parsing-rules/" target="_blank">Parsing Rules</a> · <a href="https://coralogix.com/docs/user-guides/enrichment_rules/" target="_blank">Enrichment</a></div></div>
           </div>
@@ -1850,16 +1850,16 @@ emailservice,notifications-team,tier-3,60</pre>
         <li>
           <div class="tl-dot wow">5</div>
           <div class="tl-body">
-            <span class="tl-time">Min 12–16 · Alertas proactivas</span>
-            <h3>Alertas — De reactivo a proactivo</h3>
-            <p>Cierra el argumento del valor: Coralogix te avisa antes de que el cliente lo note.</p>
+            <span class="tl-time">Min 12–16 · Proactive alerts</span>
+            <h3>Alerts — From reactive to proactive</h3>
+            <p>Close the value argument: Coralogix notifies you before the customer notices.</p>
             <ul class="tl-tips">
-              <li>Ve a <strong>Alerts</strong> y muestra las alertas configuradas.</li>
-              <li>Abre la alerta de <em>"Alta tasa de errores 5xx"</em> y muestra su condición PromQL, severidad y canal de notificación (Slack/email).</li>
-              <li>Si tienes historial de triggered alerts, muéstralo. Si no, muestra el panel de <strong>Alert History</strong> vacío y explica la lógica.</li>
-              <li>Muestra la alerta de <em>"Pod en CrashLoopBackOff"</em> (Log Alert). Explica: <em>"Esta alerta mira los logs, no las métricas — porque algunos problemas no generan métricas hasta que ya es tarde."</em></li>
-              <li>Muestra la alerta de <em>"ausencia de datos"</em> del Checkoutservice: <em>"Si el servicio deja de emitir datos, la alerta se dispara. Es la diferencia entre saber que algo falló y asumir que todo está bien."</em></li>
-              <li>Mensaje clave: <em>"Sus equipos duermen mejor sabiendo que Coralogix los avisa antes de que el cliente abra un ticket."</em></li>
+              <li>Go to <strong>Alerts</strong> and show the configured alerts.</li>
+              <li>Open the <em>"High 5xx error rate"</em> alert and show its PromQL condition, severity and notification channel (Slack/email).</li>
+              <li>If you have triggered alert history, show it. If not, show the empty <strong>Alert History</strong> panel and explain the logic.</li>
+              <li>Show the <em>"Pod in CrashLoopBackOff"</em> alert (Log Alert). Explain: <em>"This alert looks at logs, not metrics — because some problems don't generate metrics until it's already too late."</em></li>
+              <li>Show the <em>"data absence"</em> alert for Checkoutservice: <em>"If the service stops emitting data, the alert fires. That's the difference between knowing something failed and assuming everything is fine."</em></li>
+              <li>Key message: <em>"Your teams sleep better knowing Coralogix alerts them before the customer opens a ticket."</em></li>
             </ul>
             <div class="callout info" style="margin-top:10px;"><span class="ci">ℹ</span><div><strong>Ref:</strong> <a href="https://coralogix.com/docs/getting-started-with-coralogix-alerts/" target="_blank">Getting started with alerts</a> · <a href="https://coralogix.com/docs/coralogix-user-defined-alerts/" target="_blank">Alert types reference</a></div></div>
           </div>
@@ -1870,14 +1870,14 @@ emailservice,notifications-team,tier-3,60</pre>
           <div class="tl-dot close">6</div>
           <div class="tl-body">
             <span class="tl-time">Min 16–18 · Events2Metrics</span>
-            <h3>Events2Metrics — KPIs de negocio desde logs</h3>
-            <p>Diferenciador clave frente a competidores: métricas a largo plazo sin código.</p>
+            <h3>Events2Metrics — Business KPIs from logs</h3>
+            <p>Key differentiator from competitors: long-term metrics without code changes.</p>
             <ul class="tl-tips">
-              <li>Ve a <strong>Data Flow → Events2Metrics</strong>.</li>
-              <li>Muestra la métrica <code>otel_demo_http_errors_total</code> (counter desde spans).</li>
-              <li>Abre Explore → Metrics y ejecuta: <code>rate(otel_demo_http_errors_total[5m])</code></li>
-              <li>Mensaje clave: <em>"Sin un solo cambio en el código de la aplicación, están midiendo la tasa de errores HTTP por servicio con retención de meses, no de horas."</em></li>
-              <li>Si el cliente usa Prometheus: <em>"Es compatible con PromQL. Sus dashboards de Grafana existentes funcionarían sin tocarlos."</em></li>
+              <li>Go to <strong>Data Flow → Events2Metrics</strong>.</li>
+              <li>Show the <code>otel_demo_http_errors_total</code> metric (counter from spans).</li>
+              <li>Open Explore → Metrics and run: <code>rate(otel_demo_http_errors_total[5m])</code></li>
+              <li>Key message: <em>"Without a single change to the application code, they are measuring the HTTP error rate per service with months of retention, not hours."</em></li>
+              <li>If the customer uses Prometheus: <em>"It's PromQL compatible. Their existing Grafana dashboards would work here without touching them."</em></li>
             </ul>
           </div>
         </li>
@@ -1886,14 +1886,14 @@ emailservice,notifications-team,tier-3,60</pre>
         <li>
           <div class="tl-dot close">7</div>
           <div class="tl-body">
-            <span class="tl-time">Min 18–20 · Cierre y preguntas</span>
-            <h3>Cierre — Resumen de valor y próximos pasos</h3>
-            <p>Termina con claridad sobre lo que vio y cuál es el siguiente paso.</p>
+            <span class="tl-time">Min 18–20 · Close &amp; questions</span>
+            <h3>Close — Value summary and next steps</h3>
+            <p>End with clarity about what they saw and what the next step is.</p>
             <ul class="tl-tips">
-              <li>Resume en 3 frases: <em>"Vieron datos fluyendo en tiempo real, trazas distribuidas correlacionadas con logs, y alertas proactivas. Todo sin modificar el código de la aplicación, solo configurando el OTel Collector."</em></li>
-              <li>Pregunta abierta: <em>"¿Qué parte les pareció más relevante para su entorno actual?"</em></li>
-              <li>Próximo paso concreto: propón un <strong>PoC de 2 semanas</strong> con su propia aplicación conectada a una cuenta trial de Coralogix.</li>
-              <li>Deja abierta la página con el dashboard visible — impacto visual mientras hablan.</li>
+              <li>Summarize in 3 sentences: <em>"You saw data flowing in real time, distributed traces correlated with logs, and proactive alerts. All without modifying application code — just configuring the OTel Collector."</em></li>
+              <li>Open question: <em>"Which part was most relevant to your current environment?"</em></li>
+              <li>Concrete next step: propose a <strong>2-week PoC</strong> with their own application connected to a Coralogix trial account.</li>
+              <li>Leave the page open with the dashboard visible — visual impact while you talk.</li>
             </ul>
           </div>
         </li>
@@ -1907,13 +1907,13 @@ emailservice,notifications-team,tier-3,60</pre>
     <div class="step" id="d-cheat">
       <div class="step-header">
         <div class="step-circle" style="background:#1e293b;">📋</div>
-        <div><h2>Cheat Sheet — Comandos y URLs rápidas</h2><div class="step-desc">Ten esto en otra pantalla o impreso durante la demo</div></div>
+        <div><h2>Cheat Sheet — Quick commands and URLs</h2><div class="step-desc">Keep this on a second screen or printed during the demo</div></div>
       </div>
       <div class="tip-row">
         <div class="tip-card">
-          <h4>URLs locales del demo</h4>
+          <h4>Local demo URLs</h4>
           <ul>
-            <li>Tienda web: <strong>localhost:8080</strong></li>
+            <li>Web store: <strong>localhost:8080</strong></li>
             <li>Jaeger: <strong>localhost:16686</strong></li>
             <li>Grafana: <strong>localhost:3000</strong></li>
             <li>Prometheus: <strong>localhost:9090</strong></li>
@@ -1921,17 +1921,17 @@ emailservice,notifications-team,tier-3,60</pre>
           </ul>
         </div>
         <div class="tip-card">
-          <h4>URLs en Coralogix</h4>
+          <h4>Coralogix URLs</h4>
           <ul>
-            <li>Explore → Logs: filtrar por <code>otel-demo</code></li>
-            <li>Live Tail: filtrar por Application</li>
-            <li>APM → Tracing: servicio <code>frontend</code></li>
+            <li>Explore → Logs: filter by <code>otel-demo</code></li>
+            <li>Live Tail: filter by Application</li>
+            <li>APM → Tracing: service <code>frontend</code></li>
             <li>Dashboards → OTel Demo Health</li>
-            <li>Alerts → lista de alertas activas</li>
+            <li>Alerts → active alerts list</li>
           </ul>
         </div>
         <div class="tip-card">
-          <h4>Queries PromQL listas</h4>
+          <h4>Ready-to-use PromQL queries</h4>
           <ul>
             <li><code>rate(http_server_duration_milliseconds_count[5m])</code></li>
             <li><code>rate(otel_demo_http_errors_total[5m])</code></li>
@@ -1940,20 +1940,20 @@ emailservice,notifications-team,tier-3,60</pre>
           </ul>
         </div>
         <div class="tip-card">
-          <h4>Mensajes clave de venta</h4>
+          <h4>Key selling messages</h4>
           <ul>
-            <li>"Datos en tiempo real, no en batch"</li>
-            <li>"De 20 dashboards a 1 vista unificada"</li>
-            <li>"Sin cambiar código — solo el Collector"</li>
-            <li>"De reactivo a proactivo con alertas"</li>
-            <li>"PromQL compatible con sus dashboards actuales"</li>
+            <li>"Real-time data, not batch"</li>
+            <li>"From 20 dashboards to 1 unified view"</li>
+            <li>"No code changes — just the Collector"</li>
+            <li>"From reactive to proactive with alerts"</li>
+            <li>"PromQL compatible with your existing dashboards"</li>
           </ul>
         </div>
       </div>
-      <pre><span class="cmt"># Verificación de último minuto antes de la demo (ejecutar 5 min antes)</span>
-<span class="cmd">kubectl</span> get pods -n otel-demo | grep -v Running  <span class="cmt"># debe estar vacío</span>
-<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector --tail=5 | grep -i export  <span class="cmt"># debe mostrar exports</span>
-<span class="cmd">curl</span> -s http://localhost:8080 | grep -o "&lt;title&gt;.*&lt;/title&gt;"  <span class="cmt"># frontend responde?</span></pre>
+      <pre><span class="cmt"># Last-minute check before the demo (run 5 min before)</span>
+<span class="cmd">kubectl</span> get pods -n otel-demo | grep -v Running  <span class="cmt"># should be empty</span>
+<span class="cmd">kubectl</span> logs -n otel-demo deployment/otel-collector --tail=5 | grep -i export  <span class="cmt"># should show exports</span>
+<span class="cmd">curl</span> -s http://localhost:8080 | grep -o "&lt;title&gt;.*&lt;/title&gt;"  <span class="cmt"># frontend responding?</span></pre>
     </div>
 
     <hr/>
@@ -1962,27 +1962,27 @@ emailservice,notifications-team,tier-3,60</pre>
     <div class="step" id="d-tips">
       <div class="step-header">
         <div class="step-circle" style="background:#10b981;">💡</div>
-        <div><h2>Tips para maximizar el impacto</h2><div class="step-desc">Pequeños detalles que hacen la diferencia en una demo</div></div>
+        <div><h2>Tips to maximize impact</h2><div class="step-desc">Small details that make a difference in a demo</div></div>
       </div>
       <div class="table-wrap"><table>
-        <thead><tr><th>Situación</th><th>Qué hacer</th></tr></thead>
+        <thead><tr><th>Situation</th><th>What to do</th></tr></thead>
         <tbody>
-          <tr><td>No hay errores visibles en logs</td><td>Fuerza un error: <code>kubectl delete pod -n otel-demo -l app=cartservice</code> — genera CrashLoopBackOff visible en logs y alerta</td></tr>
-          <tr><td>El cliente dice "usamos Grafana"</td><td>Muestra la métrica en PromQL: "Coralogix es compatible — sus dashboards actuales funcionan aquí sin cambios"</td></tr>
-          <tr><td>El cliente dice "usamos Datadog/Splunk"</td><td>Enfócate en el costo: "¿Cuánto pagan por ingestar estos logs? Coralogix tiene TCO hasta 70% menor con la misma visibilidad"</td></tr>
-          <tr><td>La demo tarda en cargar</td><td>Mantén el ritmo hablando del arquitectura mientras carga — nunca silencio incómodo</td></tr>
-          <tr><td>Un Pod está en Error durante la demo</td><td>Úsalo a tu favor: "Miren — tenemos un pod fallando ahora mismo. Veamos cómo Coralogix lo detecta..."</td></tr>
-          <tr><td>El cliente tiene muchos servicios</td><td>"El OTel Demo tiene 20 servicios — imaginen esto con sus 200 servicios. El Collector se escala horizontalmente sin cambiar nada"</td></tr>
+          <tr><td>No errors visible in logs</td><td>Force an error: <code>kubectl delete pod -n otel-demo -l app=cartservice</code> — generates a CrashLoopBackOff visible in logs and triggers an alert</td></tr>
+          <tr><td>Customer says "we use Grafana"</td><td>Show the metric in PromQL: "Coralogix is compatible — your current dashboards work here without changes"</td></tr>
+          <tr><td>Customer says "we use Datadog/Splunk"</td><td>Focus on cost: "How much do you pay to ingest these logs? Coralogix has up to 70% lower TCO with the same visibility"</td></tr>
+          <tr><td>The demo takes time to load</td><td>Keep the pace by talking about the architecture while it loads — never an awkward silence</td></tr>
+          <tr><td>A Pod is in Error during the demo</td><td>Use it to your advantage: "Look — we have a failing pod right now. Let's see how Coralogix detects it..."</td></tr>
+          <tr><td>Customer has many services</td><td>"The OTel Demo has 20 services — imagine this with your 200 services. The Collector scales horizontally without changing anything"</td></tr>
         </tbody>
       </table></div>
-      <div class="callout success"><span class="ci">✅</span><div><strong>El objetivo final de la demo:</strong> Que el cliente salga con una respuesta clara a <em>"¿Qué hace Coralogix que no puedo hacer hoy?"</em> — y con ganas de hacer un PoC con su propia aplicación.</div></div>
+      <div class="callout success"><span class="ci">✅</span><div><strong>The ultimate goal of the demo:</strong> The customer leaves with a clear answer to <em>"What does Coralogix do that I can't do today?"</em> — and eager to do a PoC with their own application.</div></div>
     </div>
 
     <div class="refs">
       <hr/>
-      <p><strong>Referencias de la demo</strong></p>
+      <p><strong>Demo References</strong></p>
       <ul>
-        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Documentación oficial</a></li>
+        <li><a href="https://opentelemetry.io/docs/demo/" target="_blank">OTel Demo — Official Documentation</a></li>
         <li><a href="https://opentelemetry.io/docs/demo/kubernetes-deployment/" target="_blank">OTel Demo — Kubernetes Deployment Guide</a></li>
         <li><a href="https://coralogix.com/docs/opentelemetry/" target="_blank">Coralogix OTel — Overview y Getting Started</a></li>
         <li><a href="https://coralogix.com/docs/opentelemetry/kubernetes-observability/kubernetes-complete-observability-basic-configuration/" target="_blank">K8s Observability — Basic Configuration</a></li>
